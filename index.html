@@ -14,8 +14,6 @@
 :root{--bg:#0f0f13;--bg2:#17171e;--bg3:#1e1e28;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#f0f0f4;--text2:#8888a0;--text3:#55556a;--accent:#7c6af7;--accent2:#a097fa;--green:#3ecf8e;--red:#f06070;--yellow:#f0b429;--radius:14px;--radius-sm:8px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
-
-/* LOGIN */
 .login-screen{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px}
 .login-logo{font-size:56px;margin-bottom:16px}
 .login-title{font-size:28px;font-weight:600;letter-spacing:-1px;margin-bottom:8px;text-align:center}
@@ -31,8 +29,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .login-note{font-size:12px;color:var(--text3);margin-top:16px;text-align:center}
 .user-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;cursor:pointer;border:2px solid var(--border2)}
 .user-initials{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
-
-/* APP */
 .app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto}
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden}
 .screen.active{display:flex}
@@ -42,8 +38,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .scroll{flex:1;overflow-y:auto;padding:16px 20px}
 .scroll::-webkit-scrollbar{width:3px}
 .scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-
-/* HOME */
 .welcome{text-align:center;padding:32px 0 24px}
 .logo{font-size:42px;margin-bottom:8px}
 .welcome h2{font-size:24px;font-weight:600;letter-spacing:-.5px}
@@ -63,8 +57,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .review-banner .rb-text h3{font-size:14px;font-weight:500}
 .review-banner .rb-text p{font-size:12px;color:var(--text2);margin-top:2px}
 .review-banner .rb-arrow{margin-left:auto;color:var(--accent2);font-size:20px}
-
-/* ADD */
 .form-section{margin-bottom:16px}
 .form-section label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px}
 .form-section input{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 14px;outline:none;transition:border .15s}
@@ -74,8 +66,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .wp-word{font-size:22px;font-weight:600;letter-spacing:-.5px}
 .wp-trans{font-size:13px;color:var(--accent2);margin:4px 0}
 .wp-ipa{font-family:'DM Mono',monospace;font-size:13px;color:var(--text2)}
-
-/* AUTOCOMPLETE */
 .ac-wrap{position:relative}
 .ac-list{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);z-index:50;max-height:200px;overflow-y:auto;display:none;margin-top:2px}
 .ac-list.show{display:block}
@@ -83,8 +73,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .ac-item:last-child{border-bottom:none}
 .ac-item:hover,.ac-item.selected{background:var(--bg3)}
 .ac-item mark{background:transparent;color:var(--accent2);font-weight:500}
-
-/* VOCAB */
 .search-bar{position:relative;margin-bottom:14px}
 .search-bar input{padding-left:38px}
 .search-bar .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px;pointer-events:none}
@@ -102,8 +90,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .wi-status.new{background:var(--yellow)}
 .wi-status.learning{background:var(--accent)}
 .wi-status.mastered{background:var(--green)}
-
-/* CARDS */
 .card-progress{height:3px;background:var(--bg3);border-radius:3px;margin-bottom:16px;overflow:hidden}
 .card-progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
 .card-meta{text-align:center;color:var(--text2);font-size:13px;margin-bottom:16px}
@@ -121,8 +107,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .ca-btn{padding:14px;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer}
 .ca-wrong{background:rgba(240,96,112,.15);color:var(--red)}
 .ca-right{background:rgba(62,207,142,.15);color:var(--green)}
-
-/* QUIZ */
 .quiz-q{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;text-align:center}
 .qq-type{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px}
 .qq-word{font-size:26px;font-weight:600;letter-spacing:-.5px}
@@ -135,8 +119,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .qs-emoji{font-size:52px;margin-bottom:16px}
 .qs-title{font-size:22px;font-weight:600;letter-spacing:-.5px;margin-bottom:8px}
 .qs-sub{font-size:15px;color:var(--text2);margin-bottom:24px}
-
-/* PROGRESS */
 .prog-section{margin-bottom:24px}
 .prog-section h3{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:12px}
 .prog-bar-item{margin-bottom:10px}
@@ -148,8 +130,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .hw-item:last-child{border-bottom:none}
 .hw-word{font-weight:500;flex:1}
 .hw-stat{font-size:12px;color:var(--red);font-family:'DM Mono',monospace}
-
-/* DETAIL */
 .detail-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
 .dc-word{font-size:28px;font-weight:600;letter-spacing:-1px;margin-bottom:4px}
 .dc-ipa{font-family:'DM Mono',monospace;font-size:14px;color:var(--text2);margin-bottom:8px}
@@ -158,43 +138,29 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .dc-stat{background:var(--bg3);border-radius:var(--radius-sm);padding:10px;text-align:center}
 .dc-stat .n{font-size:20px;font-weight:600}
 .dc-stat .l{font-size:11px;color:var(--text2);margin-top:2px}
-
-/* NAV */
 .bottom-nav{display:flex;border-top:1px solid var(--border);background:var(--bg);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px)}
 .nav-btn{flex:1;padding:10px 4px 8px;border:none;background:transparent;color:var(--text3);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'DM Sans',sans-serif;transition:color .15s}
 .nav-btn.active{color:var(--accent2)}
 .nav-btn .nb-icon{font-size:22px}
 .nav-btn .nb-label{font-size:10px;letter-spacing:.3px}
-
-/* BUTTONS */
 .btn-primary{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer}
 .btn-primary:active{opacity:.8}
 .btn-secondary{width:100%;padding:13px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;cursor:pointer}
 .btn-danger{color:var(--red);border-color:rgba(240,96,112,.3)}
-
-/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:flex-end}
 .modal-overlay.show{display:flex}
 .modal{background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border2);padding:20px;width:100%;max-height:80vh;overflow-y:auto;animation:slideUp .25s ease}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal-handle{width:40px;height:4px;background:var(--border2);border-radius:4px;margin:0 auto 16px}
 .modal h3{font-size:17px;font-weight:600;margin-bottom:16px}
-
-/* TOAST */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 18px;font-size:14px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:999}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* LOADER */
 .loader{display:flex;align-items:center;gap:8px;justify-content:center;padding:20px;color:var(--text2);font-size:14px}
 .spinner{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* EMPTY */
 .empty{text-align:center;padding:60px 20px}
 .empty .ei{font-size:40px;margin-bottom:12px}
 .empty p{color:var(--text2);font-size:14px;line-height:1.6}
-
-/* SETTINGS */
 .settings-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)}
 .settings-item:last-child{border-bottom:none}
 .si-text h4{font-size:15px;font-weight:400}
@@ -202,9 +168,165 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 10px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px}
 </style>
 </head>
-<body>
-
-<!-- LOGIN SCREEN -->
+<style>
+:root{--bg:#0f0f13;--bg2:#17171e;--bg3:#1e1e28;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#f0f0f4;--text2:#8888a0;--text3:#55556a;--accent:#7c6af7;--accent2:#a097fa;--green:#3ecf8e;--red:#f06070;--yellow:#f0b429;--radius:14px;--radius-sm:8px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+.login-screen{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px}
+.login-logo{font-size:56px;margin-bottom:16px}
+.login-title{font-size:28px;font-weight:600;letter-spacing:-1px;margin-bottom:8px;text-align:center}
+.login-sub{font-size:15px;color:var(--text2);text-align:center;line-height:1.6;margin-bottom:40px}
+.login-features{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;margin-bottom:36px}
+.login-feature{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.lf-icon{font-size:22px;flex-shrink:0}
+.lf-text{font-size:14px;color:var(--text2);line-height:1.4}
+.lf-text strong{color:var(--text);display:block;font-size:15px;margin-bottom:2px}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:320px;padding:16px;background:#fff;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;color:#1f1f1f;cursor:pointer;box-shadow:0 2px 16px rgba(0,0,0,.35)}
+.btn-google:active{opacity:.85}
+.btn-google img{width:22px;height:22px}
+.login-note{font-size:12px;color:var(--text3);margin-top:16px;text-align:center}
+.user-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;cursor:pointer;border:2px solid var(--border2)}
+.user-initials{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto}
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden}
+.screen.active{display:flex}
+.topbar{padding:16px 20px 12px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid var(--border);background:var(--bg)}
+.sub{font-size:12px;color:var(--text2);margin-top:1px}
+.icon-btn{width:36px;height:36px;border:none;background:var(--bg3);border-radius:10px;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.scroll{flex:1;overflow-y:auto;padding:16px 20px}
+.scroll::-webkit-scrollbar{width:3px}
+.scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+.welcome{text-align:center;padding:32px 0 24px}
+.logo{font-size:42px;margin-bottom:8px}
+.welcome h2{font-size:24px;font-weight:600;letter-spacing:-.5px}
+.welcome p{color:var(--text2);font-size:14px;margin-top:6px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 10px;text-align:center}
+.stat-card .num{font-size:26px;font-weight:600;letter-spacing:-1px}
+.stat-card .lbl{font-size:11px;color:var(--text2);margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.menu-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:8px}
+.menu-card:active{transform:scale(.97);background:var(--bg3)}
+.menu-card .mc-icon{font-size:26px}
+.menu-card .mc-title{font-size:15px;font-weight:500}
+.menu-card .mc-sub{font-size:12px;color:var(--text2);line-height:1.4}
+.review-banner{background:linear-gradient(135deg,#2a2060,#1a1a30);border:1px solid rgba(124,106,247,.3);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:20px}
+.review-banner .rb-icon{font-size:28px;flex-shrink:0}
+.review-banner .rb-text h3{font-size:14px;font-weight:500}
+.review-banner .rb-text p{font-size:12px;color:var(--text2);margin-top:2px}
+.review-banner .rb-arrow{margin-left:auto;color:var(--accent2);font-size:20px}
+.form-section{margin-bottom:16px}
+.form-section label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px}
+.form-section input{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 14px;outline:none;transition:border .15s}
+.form-section input:focus{border-color:var(--accent)}
+.word-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;display:none}
+.word-preview.show{display:block}
+.wp-word{font-size:22px;font-weight:600;letter-spacing:-.5px}
+.wp-trans{font-size:13px;color:var(--accent2);margin:4px 0}
+.wp-ipa{font-family:'DM Mono',monospace;font-size:13px;color:var(--text2)}
+.ac-wrap{position:relative}
+.ac-list{position:absolute;top:100%;left:0;right:0;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);z-index:50;max-height:200px;overflow-y:auto;display:none;margin-top:2px}
+.ac-list.show{display:block}
+.ac-item{padding:10px 14px;font-size:14px;cursor:pointer;color:var(--text);border-bottom:1px solid var(--border)}
+.ac-item:last-child{border-bottom:none}
+.ac-item:hover,.ac-item.selected{background:var(--bg3)}
+.ac-item mark{background:transparent;color:var(--accent2);font-weight:500}
+.search-bar{position:relative;margin-bottom:14px}
+.search-bar input{padding-left:38px}
+.search-bar .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px;pointer-events:none}
+.filter-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.filter-row::-webkit-scrollbar{display:none}
+.filter-chip{white-space:nowrap;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;color:var(--text2)}
+.filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.word-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.wi-left{flex:1;min-width:0}
+.wi-word{font-size:16px;font-weight:500}
+.wi-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.wi-right{text-align:right;flex-shrink:0}
+.wi-trans{font-size:13px;color:var(--text2)}
+.wi-status{width:8px;height:8px;border-radius:50%;margin-left:auto;margin-top:4px}
+.wi-status.new{background:var(--yellow)}
+.wi-status.learning{background:var(--accent)}
+.wi-status.mastered{background:var(--green)}
+.card-progress{height:3px;background:var(--bg3);border-radius:3px;margin-bottom:16px;overflow:hidden}
+.card-progress-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.card-meta{text-align:center;color:var(--text2);font-size:13px;margin-bottom:16px}
+.flashcard-wrap{perspective:1000px;height:260px;margin-bottom:20px;cursor:pointer}
+.flashcard{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.flashcard.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;backface-visibility:hidden}
+.card-back{transform:rotateY(180deg)}
+.cf-hint{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:16px}
+.cf-word{font-size:32px;font-weight:600;letter-spacing:-1px;text-align:center}
+.cf-ipa{font-family:'DM Mono',monospace;font-size:14px;color:var(--text2);margin-top:8px}
+.cf-trans{font-size:22px;font-weight:500;color:var(--accent2);text-align:center}
+.tap-hint{text-align:center;font-size:12px;color:var(--text3);margin-bottom:20px}
+.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ca-btn{padding:14px;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer}
+.ca-wrong{background:rgba(240,96,112,.15);color:var(--red)}
+.ca-right{background:rgba(62,207,142,.15);color:var(--green)}
+.quiz-q{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;text-align:center}
+.qq-type{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px}
+.qq-word{font-size:26px;font-weight:600;letter-spacing:-.5px}
+.qq-ipa{font-family:'DM Mono',monospace;font-size:13px;color:var(--text2);margin-top:6px}
+.quiz-options{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.qo-btn{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 16px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);cursor:pointer;text-align:left}
+.qo-btn.correct{background:rgba(62,207,142,.15);border-color:var(--green);color:var(--green)}
+.qo-btn.wrong{background:rgba(240,96,112,.1);border-color:var(--red);color:var(--red)}
+.quiz-score{text-align:center;padding:40px 20px}
+.qs-emoji{font-size:52px;margin-bottom:16px}
+.qs-title{font-size:22px;font-weight:600;letter-spacing:-.5px;margin-bottom:8px}
+.qs-sub{font-size:15px;color:var(--text2);margin-bottom:24px}
+.prog-section{margin-bottom:24px}
+.prog-section h3{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:12px}
+.prog-bar-item{margin-bottom:10px}
+.pbi-header{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.pbi-header span:last-child{color:var(--text2)}
+.pbi-track{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.pbi-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.hw-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.hw-item:last-child{border-bottom:none}
+.hw-word{font-weight:500;flex:1}
+.hw-stat{font-size:12px;color:var(--red);font-family:'DM Mono',monospace}
+.detail-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.dc-word{font-size:28px;font-weight:600;letter-spacing:-1px;margin-bottom:4px}
+.dc-ipa{font-family:'DM Mono',monospace;font-size:14px;color:var(--text2);margin-bottom:8px}
+.dc-trans{font-size:17px;color:var(--accent2);font-weight:500;margin-bottom:16px}
+.dc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.dc-stat{background:var(--bg3);border-radius:var(--radius-sm);padding:10px;text-align:center}
+.dc-stat .n{font-size:20px;font-weight:600}
+.dc-stat .l{font-size:11px;color:var(--text2);margin-top:2px}
+.bottom-nav{display:flex;border-top:1px solid var(--border);background:var(--bg);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:transparent;color:var(--text3);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'DM Sans',sans-serif;transition:color .15s}
+.nav-btn.active{color:var(--accent2)}
+.nav-btn .nb-icon{font-size:22px}
+.nav-btn .nb-label{font-size:10px;letter-spacing:.3px}
+.btn-primary{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer}
+.btn-primary:active{opacity:.8}
+.btn-secondary{width:100%;padding:13px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;cursor:pointer}
+.btn-danger{color:var(--red);border-color:rgba(240,96,112,.3)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:flex-end}
+.modal-overlay.show{display:flex}
+.modal{background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border2);padding:20px;width:100%;max-height:80vh;overflow-y:auto;animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:var(--border2);border-radius:4px;margin:0 auto 16px}
+.modal h3{font-size:17px;font-weight:600;margin-bottom:16px}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 18px;font-size:14px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.loader{display:flex;align-items:center;gap:8px;justify-content:center;padding:20px;color:var(--text2);font-size:14px}
+.spinner{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:60px 20px}
+.empty .ei{font-size:40px;margin-bottom:12px}
+.empty p{color:var(--text2);font-size:14px;line-height:1.6}
+.settings-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border)}
+.settings-item:last-child{border-bottom:none}
+.si-text h4{font-size:15px;font-weight:400}
+.si-text p{font-size:12px;color:var(--text2);margin-top:2px}
+select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 10px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px}
+</style>
+</head>
+  <body>
 <div class="login-screen" id="login-screen">
   <div class="login-logo">📖</div>
   <div class="login-title">MyVocabolik</div>
@@ -220,10 +342,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   </button>
   <div class="login-note">Безкоштовно · Без спаму</div>
 </div>
-
-<!-- MAIN APP -->
 <div class="app" id="main-app" style="display:none">
-
 <div class="screen active" id="screen-home">
   <div class="topbar">
     <div><div style="font-size:18px;font-weight:600;letter-spacing:-.3px">MyVocabolik</div><div class="sub" id="home-subtitle">Завантаження...</div></div>
@@ -245,7 +364,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     </div>
   </div>
 </div>
-
 <div class="screen" id="screen-add">
   <div class="topbar">
     <button class="icon-btn" onclick="showScreen('home')">←</button>
@@ -275,7 +393,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div style="height:20px"></div>
   </div>
 </div>
-
 <div class="screen" id="screen-vocab">
   <div class="topbar">
     <div><div style="font-size:17px;font-weight:600">Словник</div><div class="sub" id="vocab-count"></div></div>
@@ -293,7 +410,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   </div>
   <div class="scroll" id="vocab-list"></div>
 </div>
-
 <div class="screen" id="screen-cards">
   <div class="topbar">
     <button class="icon-btn" onclick="showScreen('home')">←</button>
@@ -322,7 +438,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     </div>
   </div>
 </div>
-
 <div class="screen" id="screen-quiz">
   <div class="topbar">
     <button class="icon-btn" onclick="showScreen('home')">←</button>
@@ -331,12 +446,10 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   </div>
   <div class="scroll" id="quiz-content"></div>
 </div>
-
 <div class="screen" id="screen-progress">
   <div class="topbar"><div><div style="font-size:17px;font-weight:600">Прогрес</div></div><div style="width:36px"></div></div>
   <div class="scroll" id="progress-content"></div>
 </div>
-
 <div class="screen" id="screen-detail">
   <div class="topbar">
     <button class="icon-btn" onclick="goBack()">←</button>
@@ -345,7 +458,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   </div>
   <div class="scroll" id="detail-content"></div>
 </div>
-
 <div class="screen" id="screen-settings">
   <div class="topbar">
     <button class="icon-btn" onclick="showScreen('home')">←</button>
@@ -361,7 +473,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div style="height:20px"></div>
   </div>
 </div>
-
 <nav class="bottom-nav">
   <button class="nav-btn active" id="nav-home" onclick="showScreen('home')"><span class="nb-icon">🏠</span><span class="nb-label">Головна</span></button>
   <button class="nav-btn" id="nav-vocab" onclick="showScreen('vocab')"><span class="nb-icon">📚</span><span class="nb-label">Словник</span></button>
@@ -369,429 +480,82 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   <button class="nav-btn" id="nav-quiz" onclick="startQuiz()"><span class="nb-icon">✏️</span><span class="nb-label">Тест</span></button>
   <button class="nav-btn" id="nav-progress" onclick="showScreen('progress')"><span class="nb-icon">📊</span><span class="nb-label">Прогрес</span></button>
 </nav>
-</div><!-- end main-app -->
-
+</div>
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal"><div class="modal-handle"></div><div id="modal-body"></div></div>
 </div>
 <div class="toast" id="toast"></div>
-
 <script>
-// ═══════════════════════════════════════════════════════════════
-// STORAGE
-// ═══════════════════════════════════════════════════════════════
-const CACHE_KEY = 'myvocabolik_words';
-const UID_KEY   = 'myvocabolik_uid';
-let W = {}; // words cache
-
-function getWords() { return Object.values(W).filter(w => w && w.word && w.stats); }
-function getWord(id) { return W[id]; }
-
-function saveLocal() {
-  try { localStorage.setItem(CACHE_KEY, JSON.stringify(W)); } catch(e) {}
-}
-function loadLocal() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
-    const data = raw.words ? raw.words : raw;
-    const clean = {};
-    for (const [id, w] of Object.entries(data)) {
-      if (w && w.word && w.stats) clean[id] = w;
-    }
-    return clean;
-  } catch(e) { return {}; }
-}
-
-// Wait for Firebase
-function waitFb(timeout=10000) {
-  if (window._FB) return Promise.resolve(window._FB);
-  return new Promise(res => {
-    const h = () => res(window._FB);
-    window.addEventListener('fb-ready', h, { once: true });
-    setTimeout(() => { window.removeEventListener('fb-ready', h); res(null); }, timeout);
-  });
-}
-
-function dbSave(w) {
-  W[w.id] = w; saveLocal(); refreshHome();
-  waitFb().then(fb => fb && fb.save(w)).catch(() => {});
-  return Promise.resolve();
-}
-function dbDel(id) {
-  delete W[id]; saveLocal(); refreshHome();
-  waitFb().then(fb => fb && fb.del(id)).catch(() => {});
-  return Promise.resolve();
-}
-
-// Init after login
-function initApp(uid) {
-  // Clear cache if different user
-  const savedUID = localStorage.getItem(UID_KEY);
-  if (savedUID && savedUID !== uid) {
-    localStorage.removeItem(CACHE_KEY);
-    W = {};
-  } else {
-    W = loadLocal();
-  }
-  localStorage.setItem(UID_KEY, uid);
-  refreshHome();
-
-  // Connect Firebase realtime
-  waitFb().then(fb => {
-    if (!fb) return;
-    fb.listen(cloudWords => {
-      const clean = {};
-      for (const [id, w] of Object.entries(cloudWords)) {
-        if (w && w.word && w.stats) clean[id] = w;
-      }
-      W = clean;
-      saveLocal();
-      refreshHome();
-      if (document.getElementById('screen-vocab').classList.contains('active')) renderVocab();
-      if (document.getElementById('screen-progress').classList.contains('active')) renderProgress();
-    });
-  }).catch(() => {});
-}
-
-// ═══════════════════════════════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════════════════════════════
-function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
-function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
-function nextDays(w) { const c=w.stats.correct; return c===0?1:c===1?3:c===2?7:14; }
-function isDue(w) { if(!w.stats.lastSeen) return true; return (Date.now()-new Date(w.stats.lastSeen))/86400000>=nextDays(w); }
-function statusOf(w) { return w.stats.mastered?'mastered':w.stats.seen===0?'new':'learning'; }
-
-// ═══════════════════════════════════════════════════════════════
-// SCREENS
-// ═══════════════════════════════════════════════════════════════
-let curScreen='home', prevScreen='home';
-function showScreen(name) {
-  prevScreen=curScreen; curScreen=name;
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const nb=document.getElementById('nav-'+name); if(nb) nb.classList.add('active');
-  if(name==='home') refreshHome();
-  if(name==='vocab') renderVocab();
-  if(name==='progress') renderProgress();
-  if(name==='add') resetAdd();
-}
-function goBack() { showScreen(prevScreen==='detail'?'vocab':prevScreen); }
-
-// ═══════════════════════════════════════════════════════════════
-// HOME
-// ═══════════════════════════════════════════════════════════════
-function refreshHome() {
-  const words=getWords();
-  const mastered=words.filter(w=>w.stats.mastered).length;
-  const due=words.filter(w=>isDue(w)&&w.stats.seen>0).length;
-  document.getElementById('stat-total').textContent=words.length;
-  document.getElementById('stat-mastered').textContent=mastered;
-  document.getElementById('stat-review').textContent=due;
-  document.getElementById('home-subtitle').textContent=words.length>0?`${words.length} слів у словнику`:'Почни додавати слова';
-  const b=document.getElementById('review-banner-wrap');
-  b.innerHTML=due>0?`<div class="review-banner" onclick="startCards(true)"><div class="rb-icon">🔁</div><div class="rb-text"><h3>До повторення сьогодні</h3><p>${due} ${due===1?'слово':due<5?'слова':'слів'}</p></div><div class="rb-arrow">›</div></div>`:'';
-}
-
-// ═══════════════════════════════════════════════════════════════
-// ADD WORD
-// ═══════════════════════════════════════════════════════════════
-let pendingWord=null, manualVisible=false, wordTimer=null;
-
-function resetAdd() {
-  document.getElementById('input-word').value='';
-  document.getElementById('input-trans').value='';
-  document.getElementById('input-ipa').value='';
-  document.getElementById('word-preview').classList.remove('show');
-  document.getElementById('word-preview').innerHTML='';
-  document.getElementById('add-loading').style.display='none';
-  document.getElementById('add-btn').style.display='none';
-  document.getElementById('manual-btn').style.display='none';
-  document.getElementById('manual-fields').style.display='none';
-  document.getElementById('ac-list').classList.remove('show');
-  manualVisible=false; pendingWord=null; clearTimeout(wordTimer);
-}
-
-function onWordInput(val) {
-  showAC(val);
-  clearTimeout(wordTimer); pendingWord=null;
-  document.getElementById('word-preview').classList.remove('show');
-  document.getElementById('add-loading').style.display='none';
-  document.getElementById('add-btn').style.display='none';
-  document.getElementById('manual-btn').style.display='none';
-  if(val.trim().length<2) return;
-  wordTimer=setTimeout(()=>lookupWord(val.trim()),700);
-}
-
-async function lookupWord(word) {
-  document.getElementById('add-loading').style.display='block';
-  try {
-    const r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|uk`);
-    const d=await r.json();
-    const translation=d.responseData?.translatedText||'';
-    let ipa='';
-    try {
-      const r2=await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
-      const d2=await r2.json();
-      if(Array.isArray(d2)&&d2[0]?.phonetics){const ph=d2[0].phonetics.find(p=>p.text)||d2[0].phonetics[0];ipa=ph?.text||'';}
-    } catch(e){}
-    pendingWord={word,translation,transcription:ipa};
-    showPreview(pendingWord);
-  } catch(e) {
-    document.getElementById('add-loading').style.display='none';
-    showToast('Не вдалось знайти переклад — заповни вручну');
-    document.getElementById('manual-btn').style.display='block';
-  }
-}
-
-function showPreview(w) {
-  document.getElementById('add-loading').style.display='none';
-  const p=document.getElementById('word-preview');
-  p.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><div class="wp-word" style="flex:1">${w.word}</div><button onclick="pronounce('${w.word.replace(/'/g,"\\'")}')" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:16px;cursor:pointer;color:var(--text)">🔊</button></div>${w.transcription?`<div class="wp-ipa">${w.transcription}</div>`:''}<div class="wp-trans">${w.translation||'—'}</div>`;
-  p.classList.add('show');
-  document.getElementById('add-btn').style.display='block';
-  document.getElementById('manual-btn').style.display='block';
-}
-
-function toggleManual() {
-  manualVisible=!manualVisible;
-  document.getElementById('manual-fields').style.display=manualVisible?'block':'none';
-  if(manualVisible&&pendingWord){document.getElementById('input-trans').value=pendingWord.translation||'';document.getElementById('input-ipa').value=pendingWord.transcription||'';}
-  document.getElementById('add-btn').style.display='block';
-}
-
-function addWord() {
-  const wordInput=document.getElementById('input-word').value.trim();
-  if(!wordInput){showToast('Введи слово');return;}
-  let translation=pendingWord?.translation||'';
-  let transcription=pendingWord?.transcription||'';
-  if(manualVisible){translation=document.getElementById('input-trans').value.trim()||translation;transcription=document.getElementById('input-ipa').value.trim()||transcription;}
-  if(!translation){showToast('Потрібен переклад');return;}
-  const existing=getWords().find(x=>x&&x.word&&x.word.toLowerCase()===wordInput.toLowerCase());
-  if(existing){showToast('Слово вже є в словнику');showDetail(existing.id);return;}
-  const w={id:genId(),word:wordInput,translation,transcription,addedAt:new Date().toISOString(),stats:{seen:0,correct:0,incorrect:0,lastSeen:null,mastered:false}};
-  dbSave(w); showToast('✓ Слово збережено'); resetAdd();
-}
-
-// ═══════════════════════════════════════════════════════════════
-// VOCAB
-// ═══════════════════════════════════════════════════════════════
+const CACHE_KEY='myvocabolik_words';
+const UID_KEY='myvocabolik_uid';
+let W={};
+function getWords(){return Object.values(W).filter(w=>w&&w.word&&w.stats);}
+function getWord(id){return W[id];}
+function saveLocal(){try{localStorage.setItem(CACHE_KEY,JSON.stringify(W));}catch(e){}}
+function loadLocal(){try{const raw=JSON.parse(localStorage.getItem(CACHE_KEY)||'{}');const data=raw.words?raw.words:raw;const clean={};for(const[id,w]of Object.entries(data)){if(w&&w.word&&w.stats)clean[id]=w;}return clean;}catch(e){return{};}}
+function waitFb(t=10000){if(window._FB)return Promise.resolve(window._FB);return new Promise(res=>{const h=()=>res(window._FB);window.addEventListener('fb-ready',h,{once:true});setTimeout(()=>{window.removeEventListener('fb-ready',h);res(null);},t);});}
+function dbSave(w){W[w.id]=w;saveLocal();refreshHome();waitFb().then(fb=>fb&&fb.save(w)).catch(()=>{});return Promise.resolve();}
+function dbDel(id){delete W[id];saveLocal();refreshHome();waitFb().then(fb=>fb&&fb.del(id)).catch(()=>{});return Promise.resolve();}
+function initApp(uid){const savedUID=localStorage.getItem(UID_KEY);if(savedUID&&savedUID!==uid){localStorage.removeItem(CACHE_KEY);W={};}else{W=loadLocal();}localStorage.setItem(UID_KEY,uid);refreshHome();waitFb().then(fb=>{if(!fb)return;fb.listen(cloudWords=>{const clean={};for(const[id,w]of Object.entries(cloudWords)){if(w&&w.word&&w.stats)clean[id]=w;}W=clean;saveLocal();refreshHome();if(document.getElementById('screen-vocab').classList.contains('active'))renderVocab();if(document.getElementById('screen-progress').classList.contains('active'))renderProgress();});}).catch(()=>{});}
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function nextDays(w){const c=w.stats.correct;return c===0?1:c===1?3:c===2?7:14;}
+function isDue(w){if(!w.stats.lastSeen)return true;return(Date.now()-new Date(w.stats.lastSeen))/86400000>=nextDays(w);}
+function statusOf(w){return w.stats.mastered?'mastered':w.stats.seen===0?'new':'learning';}
+let curScreen='home',prevScreen='home';
+function showScreen(name){prevScreen=curScreen;curScreen=name;document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+name).classList.add('active');document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const nb=document.getElementById('nav-'+name);if(nb)nb.classList.add('active');if(name==='home')refreshHome();if(name==='vocab')renderVocab();if(name==='progress')renderProgress();if(name==='add')resetAdd();}
+function goBack(){showScreen(prevScreen==='detail'?'vocab':prevScreen);}
+function refreshHome(){const words=getWords();const mastered=words.filter(w=>w.stats.mastered).length;const due=words.filter(w=>isDue(w)&&w.stats.seen>0).length;document.getElementById('stat-total').textContent=words.length;document.getElementById('stat-mastered').textContent=mastered;document.getElementById('stat-review').textContent=due;document.getElementById('home-subtitle').textContent=words.length>0?`${words.length} слів у словнику`:'Почни додавати слова';const b=document.getElementById('review-banner-wrap');b.innerHTML=due>0?`<div class="review-banner" onclick="startCards(true)"><div class="rb-icon">🔁</div><div class="rb-text"><h3>До повторення сьогодні</h3><p>${due} ${due===1?'слово':due<5?'слова':'слів'}</p></div><div class="rb-arrow">›</div></div>`:'';}
+let pendingWord=null,manualVisible=false,wordTimer=null;
+function resetAdd(){document.getElementById('input-word').value='';document.getElementById('input-trans').value='';document.getElementById('input-ipa').value='';document.getElementById('word-preview').classList.remove('show');document.getElementById('word-preview').innerHTML='';document.getElementById('add-loading').style.display='none';document.getElementById('add-btn').style.display='none';document.getElementById('manual-btn').style.display='none';document.getElementById('manual-fields').style.display='none';document.getElementById('ac-list').classList.remove('show');manualVisible=false;pendingWord=null;clearTimeout(wordTimer);}
+function onWordInput(val){showAC(val);clearTimeout(wordTimer);pendingWord=null;document.getElementById('word-preview').classList.remove('show');document.getElementById('add-loading').style.display='none';document.getElementById('add-btn').style.display='none';document.getElementById('manual-btn').style.display='none';if(val.trim().length<2)return;wordTimer=setTimeout(()=>lookupWord(val.trim()),700);}
+async function lookupWord(word){document.getElementById('add-loading').style.display='block';try{const r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|uk`);const d=await r.json();const translation=d.responseData?.translatedText||'';let ipa='';try{const r2=await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);const d2=await r2.json();if(Array.isArray(d2)&&d2[0]?.phonetics){const ph=d2[0].phonetics.find(p=>p.text)||d2[0].phonetics[0];ipa=ph?.text||'';}}catch(e){}pendingWord={word,translation,transcription:ipa};showPreview(pendingWord);}catch(e){document.getElementById('add-loading').style.display='none';showToast('Не вдалось знайти переклад — заповни вручну');document.getElementById('manual-btn').style.display='block';}}
+function showPreview(w){document.getElementById('add-loading').style.display='none';const p=document.getElementById('word-preview');p.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><div class="wp-word" style="flex:1">${w.word}</div><button onclick="pronounce('${w.word.replace(/'/g,"\\'")}')" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:16px;cursor:pointer;color:var(--text)">🔊</button></div>${w.transcription?`<div class="wp-ipa">${w.transcription}</div>`:''}<div class="wp-trans">${w.translation||'—'}</div>`;p.classList.add('show');document.getElementById('add-btn').style.display='block';document.getElementById('manual-btn').style.display='block';}
+function toggleManual(){manualVisible=!manualVisible;document.getElementById('manual-fields').style.display=manualVisible?'block':'none';if(manualVisible&&pendingWord){document.getElementById('input-trans').value=pendingWord.translation||'';document.getElementById('input-ipa').value=pendingWord.transcription||'';}document.getElementById('add-btn').style.display='block';}
+function addWord(){const wordInput=document.getElementById('input-word').value.trim();if(!wordInput){showToast('Введи слово');return;}let translation=pendingWord?.translation||'';let transcription=pendingWord?.transcription||'';if(manualVisible){translation=document.getElementById('input-trans').value.trim()||translation;transcription=document.getElementById('input-ipa').value.trim()||transcription;}if(!translation){showToast('Потрібен переклад');return;}const existing=getWords().find(x=>x&&x.word&&x.word.toLowerCase()===wordInput.toLowerCase());if(existing){showToast('Слово вже є в словнику');showDetail(existing.id);return;}const w={id:genId(),word:wordInput,translation,transcription,addedAt:new Date().toISOString(),stats:{seen:0,correct:0,incorrect:0,lastSeen:null,mastered:false}};dbSave(w);showToast('✓ Слово збережено');resetAdd();}
 let activeFilter='all';
 function setFilter(el){activeFilter=el.dataset.filter;document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderVocab();}
-function renderVocab(){
-  const q=(document.getElementById('vocab-search').value||'').toLowerCase();
-  let words=getWords();
-  if(q) words=words.filter(w=>w.word.toLowerCase().includes(q)||(w.translation||'').toLowerCase().includes(q));
-  if(activeFilter==='new') words=words.filter(w=>w.stats.seen===0);
-  else if(activeFilter==='learning') words=words.filter(w=>w.stats.seen>0&&!w.stats.mastered);
-  else if(activeFilter==='mastered') words=words.filter(w=>w.stats.mastered);
-  else if(activeFilter==='review') words=words.filter(w=>isDue(w));
-  words.sort((a,b)=>new Date(b.addedAt)-new Date(a.addedAt));
-  document.getElementById('vocab-count').textContent=`${words.length} слів`;
-  const list=document.getElementById('vocab-list');
-  if(!words.length){list.innerHTML=`<div class="empty"><div class="ei">📭</div><p>${activeFilter==='all'?'Словник порожній.<br>Додай перше слово!':'Слів немає.'}</p></div>`;return;}
-  list.innerHTML=words.map(w=>`<div class="word-item" onclick="showDetail('${w.id}')"><div class="wi-left"><div class="wi-word">${w.word}</div><div class="wi-sub" style="font-family:'DM Mono',monospace">${w.transcription||''}</div></div><div class="wi-right"><div class="wi-trans">${w.translation||''}</div><div class="wi-status ${statusOf(w)}"></div></div></div>`).join('');
-}
-
-// ═══════════════════════════════════════════════════════════════
-// DETAIL
-// ═══════════════════════════════════════════════════════════════
-function showDetail(id){
-  prevScreen=curScreen; const w=getWord(id); if(!w) return;
-  document.getElementById('detail-content').innerHTML=`<div class="detail-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><div class="dc-word" style="flex:1">${w.word}</div><button onclick="pronounce('${w.word.replace(/'/g,"\\'")}') " style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:18px;cursor:pointer;color:var(--text)">🔊</button></div><div class="dc-ipa">${w.transcription||''}</div><div class="dc-trans">${w.translation||''}</div><div class="dc-stats"><div class="dc-stat"><div class="n">${w.stats.seen}</div><div class="l">Переглядів</div></div><div class="dc-stat"><div class="n" style="color:var(--green)">${w.stats.correct}</div><div class="l">Правильно</div></div><div class="dc-stat"><div class="n" style="color:var(--red)">${w.stats.incorrect}</div><div class="l">Помилок</div></div></div></div><button class="btn-secondary" onclick="startCards(false,'${id}')" style="margin-bottom:10px">🃏 Практикувати</button>`;
-  document.getElementById('detail-delete-btn').onclick=()=>confirmDelete(id);
-  showScreen('detail');
-}
+function renderVocab(){const q=(document.getElementById('vocab-search').value||'').toLowerCase();let words=getWords();if(q)words=words.filter(w=>w.word.toLowerCase().includes(q)||(w.translation||'').toLowerCase().includes(q));if(activeFilter==='new')words=words.filter(w=>w.stats.seen===0);else if(activeFilter==='learning')words=words.filter(w=>w.stats.seen>0&&!w.stats.mastered);else if(activeFilter==='mastered')words=words.filter(w=>w.stats.mastered);else if(activeFilter==='review')words=words.filter(w=>isDue(w));words.sort((a,b)=>new Date(b.addedAt)-new Date(a.addedAt));document.getElementById('vocab-count').textContent=`${words.length} слів`;const list=document.getElementById('vocab-list');if(!words.length){list.innerHTML=`<div class="empty"><div class="ei">📭</div><p>${activeFilter==='all'?'Словник порожній.<br>Додай перше слово!':'Слів немає.'}</p></div>`;return;}list.innerHTML=words.map(w=>`<div class="word-item" onclick="showDetail('${w.id}')"><div class="wi-left"><div class="wi-word">${w.word}</div><div class="wi-sub" style="font-family:'DM Mono',monospace">${w.transcription||''}</div></div><div class="wi-right"><div class="wi-trans">${w.translation||''}</div><div class="wi-status ${statusOf(w)}"></div></div></div>`).join('');}
+function showDetail(id){prevScreen=curScreen;const w=getWord(id);if(!w)return;document.getElementById('detail-content').innerHTML=`<div class="detail-card"><div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><div class="dc-word" style="flex:1">${w.word}</div><button onclick="pronounce('${w.word.replace(/'/g,"\\'")}')" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:18px;cursor:pointer;color:var(--text)">🔊</button></div><div class="dc-ipa">${w.transcription||''}</div><div class="dc-trans">${w.translation||''}</div><div class="dc-stats"><div class="dc-stat"><div class="n">${w.stats.seen}</div><div class="l">Переглядів</div></div><div class="dc-stat"><div class="n" style="color:var(--green)">${w.stats.correct}</div><div class="l">Правильно</div></div><div class="dc-stat"><div class="n" style="color:var(--red)">${w.stats.incorrect}</div><div class="l">Помилок</div></div></div></div><button class="btn-secondary" onclick="startCards(false,'${id}')" style="margin-bottom:10px">🃏 Практикувати</button>`;document.getElementById('detail-delete-btn').onclick=()=>confirmDelete(id);showScreen('detail');}
 function confirmDelete(id){const w=getWord(id);showModal(`<h3>Видалити "${w.word}"?</h3><p style="color:var(--text2);font-size:14px;margin-bottom:20px">Незворотна дія</p><button class="btn-primary" style="background:var(--red);margin-bottom:10px" onclick="doDelete('${id}')">Видалити</button><button class="btn-secondary" onclick="closeModal()">Скасувати</button>`);}
 function doDelete(id){dbDel(id);closeModal();goBack();showToast('Слово видалено');}
-
-// ═══════════════════════════════════════════════════════════════
-// CARDS
-// ═══════════════════════════════════════════════════════════════
 let cardQ=[],cardIdx=0,cardFlipped=false,cardCorrect=0;
-function startCards(reviewOnly=false,forceId=null){
-  let words=getWords();
-  if(!words.length){showToast('Спочатку додай слова');return;}
-  if(forceId){words=[getWord(forceId)].filter(Boolean);}
-  else if(reviewOnly===true){words=words.filter(w=>isDue(w));}
-  if(!words.length){showToast('Немає слів для повторення');return;}
-  const count=parseInt(document.getElementById('s-cardcount')?.value||'20');
-  cardQ=shuffle(words).slice(0,count); cardIdx=0; cardCorrect=0; cardFlipped=false;
-  showScreen('cards');
-  document.getElementById('cards-done').style.display='none';
-  document.getElementById('flashcard-wrap').style.display='block';
-  document.getElementById('card-actions').style.display='none';
-  document.getElementById('tap-hint').style.display='block';
-  showCard();
-}
-function showCard(){
-  if(cardIdx>=cardQ.length){showCardsDone();return;}
-  const w=cardQ[cardIdx];
-  const mode=document.getElementById('s-cardmode')?.value||'en-ua';
-  const isEN=mode==='en-ua'||(mode==='mixed'&&Math.random()>.5);
-  cardFlipped=false;
-  document.getElementById('flashcard').classList.remove('flipped');
-  document.getElementById('card-front').innerHTML=`<div class="cf-hint">${isEN?'Англійська':'Українська'}</div><div class="cf-word">${isEN?w.word:w.translation}</div>${isEN&&w.transcription?`<div class="cf-ipa">${w.transcription}</div>`:''} ${isEN?`<button onclick="event.stopPropagation();pronounce('${w.word.replace(/'/g,"\\'")}') " style="margin-top:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:16px;cursor:pointer;color:var(--text)">🔊</button>`:''}`;
-  document.getElementById('card-back').innerHTML=`<div class="cf-hint">${isEN?'Переклад':'English'}</div><div class="cf-trans">${isEN?w.translation:w.word}</div>${!isEN&&w.transcription?`<div class="cf-ipa">${w.transcription}</div>`:''}`;
-  document.getElementById('cards-meta').textContent=`${cardIdx+1} / ${cardQ.length}`;
-  document.getElementById('cards-prog').style.width=`${(cardIdx/cardQ.length)*100}%`;
-  document.getElementById('card-actions').style.display='none';
-  document.getElementById('tap-hint').style.display='block';
-}
-function flipCard(){
-  if(cardIdx>=cardQ.length) return;
-  cardFlipped=!cardFlipped;
-  document.getElementById('flashcard').classList.toggle('flipped',cardFlipped);
-  if(cardFlipped){
-    document.getElementById('card-actions').style.display='grid';
-    document.getElementById('tap-hint').style.display='none';
-    const w=cardQ[cardIdx]; w.stats.seen++; w.stats.lastSeen=new Date().toISOString(); dbSave(w);
-  }
-}
-function cardAnswer(ok){
-  const w=cardQ[cardIdx];
-  if(ok){w.stats.correct++;cardCorrect++;}else{w.stats.incorrect++;w.stats.correct=Math.max(0,w.stats.correct-1);}
-  if(w.stats.correct>=3) w.stats.mastered=true;
-  dbSave(w); cardIdx++; showCard();
-}
-function showCardsDone(){
-  document.getElementById('flashcard-wrap').style.display='none';
-  document.getElementById('card-actions').style.display='none';
-  document.getElementById('tap-hint').style.display='none';
-  document.getElementById('cards-done').style.display='block';
-  const pct=Math.round((cardCorrect/cardQ.length)*100);
-  document.getElementById('cards-done-sub').textContent=`Правильно: ${cardCorrect} з ${cardQ.length} (${pct}%)`;
-  refreshHome();
-}
-
-// ═══════════════════════════════════════════════════════════════
-// QUIZ
-// ═══════════════════════════════════════════════════════════════
+function startCards(reviewOnly=false,forceId=null){let words=getWords();if(!words.length){showToast('Спочатку додай слова');return;}if(forceId){words=[getWord(forceId)].filter(Boolean);}else if(reviewOnly===true){words=words.filter(w=>isDue(w));}if(!words.length){showToast('Немає слів для повторення');return;}const count=parseInt(document.getElementById('s-cardcount')?.value||'20');cardQ=shuffle(words).slice(0,count);cardIdx=0;cardCorrect=0;cardFlipped=false;showScreen('cards');document.getElementById('cards-done').style.display='none';document.getElementById('flashcard-wrap').style.display='block';document.getElementById('card-actions').style.display='none';document.getElementById('tap-hint').style.display='block';showCard();}
+function showCard(){if(cardIdx>=cardQ.length){showCardsDone();return;}const w=cardQ[cardIdx];const mode=document.getElementById('s-cardmode')?.value||'en-ua';const isEN=mode==='en-ua'||(mode==='mixed'&&Math.random()>.5);cardFlipped=false;document.getElementById('flashcard').classList.remove('flipped');document.getElementById('card-front').innerHTML=`<div class="cf-hint">${isEN?'Англійська':'Українська'}</div><div class="cf-word">${isEN?w.word:w.translation}</div>${isEN&&w.transcription?`<div class="cf-ipa">${w.transcription}</div>`:''} ${isEN?`<button onclick="event.stopPropagation();pronounce('${w.word.replace(/'/g,"\\'")}')" style="margin-top:12px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:16px;cursor:pointer;color:var(--text)">🔊</button>`:''}`;document.getElementById('card-back').innerHTML=`<div class="cf-hint">${isEN?'Переклад':'English'}</div><div class="cf-trans">${isEN?w.translation:w.word}</div>${!isEN&&w.transcription?`<div class="cf-ipa">${w.transcription}</div>`:''}`;document.getElementById('cards-meta').textContent=`${cardIdx+1} / ${cardQ.length}`;document.getElementById('cards-prog').style.width=`${(cardIdx/cardQ.length)*100}%`;document.getElementById('card-actions').style.display='none';document.getElementById('tap-hint').style.display='block';}
+function flipCard(){if(cardIdx>=cardQ.length)return;cardFlipped=!cardFlipped;document.getElementById('flashcard').classList.toggle('flipped',cardFlipped);if(cardFlipped){document.getElementById('card-actions').style.display='grid';document.getElementById('tap-hint').style.display='none';const w=cardQ[cardIdx];w.stats.seen++;w.stats.lastSeen=new Date().toISOString();dbSave(w);}}
+function cardAnswer(ok){const w=cardQ[cardIdx];if(ok){w.stats.correct++;cardCorrect++;}else{w.stats.incorrect++;w.stats.correct=Math.max(0,w.stats.correct-1);}if(w.stats.correct>=3)w.stats.mastered=true;dbSave(w);cardIdx++;showCard();}
+function showCardsDone(){document.getElementById('flashcard-wrap').style.display='none';document.getElementById('card-actions').style.display='none';document.getElementById('tap-hint').style.display='none';document.getElementById('cards-done').style.display='block';const pct=Math.round((cardCorrect/cardQ.length)*100);document.getElementById('cards-done-sub').textContent=`Правильно: ${cardCorrect} з ${cardQ.length} (${pct}%)`;refreshHome();}
 let quizQs=[],quizIdx=0,quizScore=0,quizAnswered=false;
-function startQuiz(){
-  const words=getWords();
-  if(words.length<4){showToast('Потрібно мінімум 4 слова');return;}
-  const count=parseInt(document.getElementById('s-quizcount')?.value||'10');
-  const pool=shuffle(words).slice(0,Math.min(count,words.length));
-  quizQs=pool.map(w=>{const wrong=shuffle(words.filter(x=>x.id!==w.id)).slice(0,3).map(x=>x.translation);return{word:w,options:shuffle([w.translation,...wrong]),correct:w.translation};});
-  quizIdx=0; quizScore=0; showScreen('quiz'); renderQ();
-}
-function renderQ(){
-  const qc=document.getElementById('quiz-content');
-  if(quizIdx>=quizQs.length){renderQDone();return;}
-  const q=quizQs[quizIdx]; quizAnswered=false;
-  document.getElementById('quiz-sub').textContent=`${quizIdx+1} / ${quizQs.length}`;
-  qc.innerHTML=`<div class="card-progress" style="margin-bottom:16px"><div class="card-progress-fill" style="width:${(quizIdx/quizQs.length)*100}%"></div></div><div class="quiz-q"><div class="qq-type">Обери переклад</div><div class="qq-word">${q.word.word}</div><div class="qq-ipa">${q.word.transcription||''}</div></div><div class="quiz-options">${q.options.map((opt,i)=>`<button class="qo-btn" id="qo${i}" onclick="answerQ(${i},'${opt.replace(/'/g,"\\'")}')">${opt}</button>`).join('')}</div>`;
-}
-function answerQ(idx,chosen){
-  if(quizAnswered) return; quizAnswered=true;
-  const q=quizQs[quizIdx]; const ok=chosen===q.correct;
-  if(ok) quizScore++;
-  const w=q.word; w.stats.seen++; w.stats.lastSeen=new Date().toISOString();
-  if(ok) w.stats.correct++; else w.stats.incorrect++;
-  if(w.stats.correct>=3) w.stats.mastered=true;
-  dbSave(w);
-  document.querySelectorAll('.qo-btn').forEach((btn,i)=>{btn.disabled=true;if(btn.textContent===q.correct)btn.classList.add('correct');else if(i===idx&&!ok)btn.classList.add('wrong');});
-  setTimeout(()=>{quizIdx++;renderQ();},1200);
-}
-function renderQDone(){
-  const pct=Math.round((quizScore/quizQs.length)*100);
-  document.getElementById('quiz-content').innerHTML=`<div class="quiz-score"><div class="qs-emoji">${pct>=80?'🏆':pct>=60?'👍':'💪'}</div><div class="qs-title">${pct>=80?'Відмінно!':pct>=60?'Непогано!':'Продовжуй!'}</div><div class="qs-sub">Правильно: ${quizScore} з ${quizQs.length} (${pct}%)</div><button class="btn-primary" onclick="startQuiz()" style="margin-bottom:10px">Ще раз</button><button class="btn-secondary" onclick="showScreen('home')">На головну</button></div>`;
-  refreshHome();
-}
-
-// ═══════════════════════════════════════════════════════════════
-// PROGRESS
-// ═══════════════════════════════════════════════════════════════
-function renderProgress(){
-  const words=getWords(); const total=words.length;
-  if(!total){document.getElementById('progress-content').innerHTML=`<div class="empty"><div class="ei">📊</div><p>Додай слова, щоб бачити статистику</p></div>`;return;}
-  const mastered=words.filter(w=>w.stats.mastered).length;
-  const learning=words.filter(w=>w.stats.seen>0&&!w.stats.mastered).length;
-  const unseen=words.filter(w=>w.stats.seen===0).length;
-  const tc=words.reduce((s,w)=>s+w.stats.correct,0);
-  const ta=words.reduce((s,w)=>s+w.stats.correct+w.stats.incorrect,0);
-  const acc=ta>0?Math.round(tc/ta*100):0;
-  const hard=words.filter(w=>w.stats.incorrect>0).sort((a,b)=>b.stats.incorrect-a.stats.incorrect).slice(0,5);
-  document.getElementById('progress-content').innerHTML=`<div class="stats-row" style="margin-top:16px"><div class="stat-card"><div class="num">${total}</div><div class="lbl">Всього</div></div><div class="stat-card"><div class="num" style="color:var(--green)">${mastered}</div><div class="lbl">Вивчено</div></div><div class="stat-card"><div class="num" style="color:var(--accent)">${acc}%</div><div class="lbl">Точність</div></div></div><div class="prog-section"><h3>Статус слів</h3><div class="prog-bar-item"><div class="pbi-header"><span>Вивчені</span><span>${mastered}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?mastered/total*100:0}%;background:var(--green)"></div></div></div><div class="prog-bar-item"><div class="pbi-header"><span>Вивчаю</span><span>${learning}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?learning/total*100:0}%;background:var(--accent)"></div></div></div><div class="prog-bar-item"><div class="pbi-header"><span>Нові</span><span>${unseen}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?unseen/total*100:0}%;background:var(--text3)"></div></div></div></div>${hard.length?`<div class="prog-section"><h3>Складні слова</h3>${hard.map(w=>`<div class="hw-item"><div class="hw-word">${w.word}<div style="font-size:12px;color:var(--text2)">${w.translation||''}</div></div><div class="hw-stat">✗ ${w.stats.incorrect}</div></div>`).join('')}</div>`:''}<button class="btn-secondary" onclick="startQuiz()" style="margin-bottom:10px">✏️ Тест</button><button class="btn-secondary" onclick="startCards()">🃏 Картки</button><div style="height:20px"></div>`;
-}
-
-// ═══════════════════════════════════════════════════════════════
-// USER MENU
-// ═══════════════════════════════════════════════════════════════
-function openUserMenu(){
-  const name=window._uName||''; const email=window._uEmail||'';
-  showModal('<div style="text-align:center;margin-bottom:20px"><div style="width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;margin:0 auto 10px">'+(name.charAt(0)||'?').toUpperCase()+'</div><div style="font-size:16px;font-weight:500">'+name+'</div><div style="font-size:13px;color:var(--text2);margin-top:4px">'+email+'</div></div><button class="btn-secondary" style="width:100%;padding:13px;margin-bottom:10px" onclick="showScreen(\'settings\');closeModal()">⚙️ Налаштування</button><button class="btn-secondary btn-danger" style="width:100%;padding:13px" onclick="askSignOut()">🚪 Вийти з акаунту</button>');
-}
-function askSignOut(){
-  closeModal();
-  setTimeout(()=>showModal('<h3>Вийти з акаунту?</h3><p style="color:var(--text2);font-size:14px;margin-bottom:20px">Слова збережені і не зникнуть</p><button class="btn-primary" style="background:var(--red);margin-bottom:10px;width:100%;border:none;padding:14px;border-radius:14px;font-size:15px;cursor:pointer;color:#fff" onclick="doSignOut()">Вийти</button><button class="btn-secondary" onclick="closeModal()">Скасувати</button>'),150);
-}
-function doSignOut(){
-  closeModal();
-  // Clear local cache
-  try{localStorage.removeItem(CACHE_KEY);localStorage.removeItem(UID_KEY);}catch(e){}
-  W={};
-  if(window._fbSignOut) window._fbSignOut();
-}
-
-// ═══════════════════════════════════════════════════════════════
-// MODAL / TOAST
-// ═══════════════════════════════════════════════════════════════
+function startQuiz(){const words=getWords();if(words.length<4){showToast('Потрібно мінімум 4 слова');return;}const count=parseInt(document.getElementById('s-quizcount')?.value||'10');const pool=shuffle(words).slice(0,Math.min(count,words.length));quizQs=pool.map(w=>{const wrong=shuffle(words.filter(x=>x.id!==w.id)).slice(0,3).map(x=>x.translation);return{word:w,options:shuffle([w.translation,...wrong]),correct:w.translation};});quizIdx=0;quizScore=0;showScreen('quiz');renderQ();}
+function renderQ(){const qc=document.getElementById('quiz-content');if(quizIdx>=quizQs.length){renderQDone();return;}const q=quizQs[quizIdx];quizAnswered=false;document.getElementById('quiz-sub').textContent=`${quizIdx+1} / ${quizQs.length}`;qc.innerHTML=`<div class="card-progress" style="margin-bottom:16px"><div class="card-progress-fill" style="width:${(quizIdx/quizQs.length)*100}%"></div></div><div class="quiz-q"><div class="qq-type">Обери переклад</div><div class="qq-word">${q.word.word}</div><div class="qq-ipa">${q.word.transcription||''}</div></div><div class="quiz-options">${q.options.map((opt,i)=>`<button class="qo-btn" id="qo${i}" onclick="answerQ(${i},'${opt.replace(/'/g,"\\'")}')">${opt}</button>`).join('')}</div>`;}
+function answerQ(idx,chosen){if(quizAnswered)return;quizAnswered=true;const q=quizQs[quizIdx];const ok=chosen===q.correct;if(ok)quizScore++;const w=q.word;w.stats.seen++;w.stats.lastSeen=new Date().toISOString();if(ok)w.stats.correct++;else w.stats.incorrect++;if(w.stats.correct>=3)w.stats.mastered=true;dbSave(w);document.querySelectorAll('.qo-btn').forEach((btn,i)=>{btn.disabled=true;if(btn.textContent===q.correct)btn.classList.add('correct');else if(i===idx&&!ok)btn.classList.add('wrong');});setTimeout(()=>{quizIdx++;renderQ();},1200);}
+function renderQDone(){const pct=Math.round((quizScore/quizQs.length)*100);document.getElementById('quiz-content').innerHTML=`<div class="quiz-score"><div class="qs-emoji">${pct>=80?'🏆':pct>=60?'👍':'💪'}</div><div class="qs-title">${pct>=80?'Відмінно!':pct>=60?'Непогано!':'Продовжуй!'}</div><div class="qs-sub">Правильно: ${quizScore} з ${quizQs.length} (${pct}%)</div><button class="btn-primary" onclick="startQuiz()" style="margin-bottom:10px">Ще раз</button><button class="btn-secondary" onclick="showScreen('home')">На головну</button></div>`;refreshHome();}
+function renderProgress(){const words=getWords();const total=words.length;if(!total){document.getElementById('progress-content').innerHTML=`<div class="empty"><div class="ei">📊</div><p>Додай слова, щоб бачити статистику</p></div>`;return;}const mastered=words.filter(w=>w.stats.mastered).length;const learning=words.filter(w=>w.stats.seen>0&&!w.stats.mastered).length;const unseen=words.filter(w=>w.stats.seen===0).length;const tc=words.reduce((s,w)=>s+w.stats.correct,0);const ta=words.reduce((s,w)=>s+w.stats.correct+w.stats.incorrect,0);const acc=ta>0?Math.round(tc/ta*100):0;const hard=words.filter(w=>w.stats.incorrect>0).sort((a,b)=>b.stats.incorrect-a.stats.incorrect).slice(0,5);document.getElementById('progress-content').innerHTML=`<div class="stats-row" style="margin-top:16px"><div class="stat-card"><div class="num">${total}</div><div class="lbl">Всього</div></div><div class="stat-card"><div class="num" style="color:var(--green)">${mastered}</div><div class="lbl">Вивчено</div></div><div class="stat-card"><div class="num" style="color:var(--accent)">${acc}%</div><div class="lbl">Точність</div></div></div><div class="prog-section"><h3>Статус слів</h3><div class="prog-bar-item"><div class="pbi-header"><span>Вивчені</span><span>${mastered}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?mastered/total*100:0}%;background:var(--green)"></div></div></div><div class="prog-bar-item"><div class="pbi-header"><span>Вивчаю</span><span>${learning}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?learning/total*100:0}%;background:var(--accent)"></div></div></div><div class="prog-bar-item"><div class="pbi-header"><span>Нові</span><span>${unseen}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?unseen/total*100:0}%;background:var(--text3)"></div></div></div></div>${hard.length?`<div class="prog-section"><h3>Складні слова</h3>${hard.map(w=>`<div class="hw-item"><div class="hw-word">${w.word}<div style="font-size:12px;color:var(--text2)">${w.translation||''}</div></div><div class="hw-stat">✗ ${w.stats.incorrect}</div></div>`).join('')}</div>`:''}<button class="btn-secondary" onclick="startQuiz()" style="margin-bottom:10px">✏️ Тест</button><button class="btn-secondary" onclick="startCards()">🃏 Картки</button><div style="height:20px"></div>`;}
+function openUserMenu(){const name=window._uName||'';const email=window._uEmail||'';showModal('<div style="text-align:center;margin-bottom:20px"><div style="width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;margin:0 auto 10px">'+(name.charAt(0)||'?').toUpperCase()+'</div><div style="font-size:16px;font-weight:500">'+name+'</div><div style="font-size:13px;color:var(--text2);margin-top:4px">'+email+'</div></div><button class="btn-secondary" style="width:100%;padding:13px;margin-bottom:10px" onclick="showScreen(\'settings\');closeModal()">⚙️ Налаштування</button><button class="btn-secondary btn-danger" style="width:100%;padding:13px" onclick="askSignOut()">🚪 Вийти з акаунту</button>');}
+function askSignOut(){closeModal();setTimeout(()=>showModal('<h3>Вийти з акаунту?</h3><p style="color:var(--text2);font-size:14px;margin-bottom:20px">Слова збережені і не зникнуть</p><button class="btn-primary" style="background:var(--red);margin-bottom:10px;width:100%;border:none;padding:14px;border-radius:14px;font-size:15px;cursor:pointer;color:#fff" onclick="doSignOut()">Вийти</button><button class="btn-secondary" onclick="closeModal()">Скасувати</button>'),150);}
+function doSignOut(){closeModal();try{localStorage.removeItem(CACHE_KEY);localStorage.removeItem(UID_KEY);}catch(e){}W={};if(window._fbSignOut)window._fbSignOut();}
 function showModal(html){document.getElementById('modal-body').innerHTML=html;document.getElementById('modal-overlay').classList.add('show');}
 function closeModal(e){if(!e||e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('show');}
 function confirmClearAll(){showModal(`<h3>Видалити всі слова?</h3><p style="color:var(--text2);font-size:14px;margin-bottom:20px">Незворотна дія</p><button class="btn-primary" style="background:var(--red);margin-bottom:10px" onclick="doClearAll()">Видалити все</button><button class="btn-secondary" onclick="closeModal()">Скасувати</button>`);}
 function doClearAll(){const ids=Object.keys(W);W={};saveLocal();refreshHome();waitFb().then(fb=>{if(!fb)return;ids.forEach(id=>fb.del(id));}).catch(()=>{});closeModal();showScreen('home');showToast('Словник очищено');}
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
-function setSyncStatus(s){const el=document.getElementById('home-subtitle');if(el&&!getWords().length)el.textContent='Почни додавати слова';}
-
-// ═══════════════════════════════════════════════════════════════
-// AUTOCOMPLETE
-// ═══════════════════════════════════════════════════════════════
-const WORDS=["abandon","ability","able","abnormal","aboard","absence","absolute","absolutely","abstract","academic","accept","access","accident","account","accurate","achieve","achievement","acid","acknowledge","acquire","across","act","action","active","activity","actor","actual","actually","adapt","add","addition","additional","address","adequate","adjust","administration","admit","adult","advance","advantage","adventure","advice","advise","affect","afford","afraid","after","afternoon","again","against","age","agency","aggressive","ago","agree","agreement","ahead","aid","aim","air","airport","alarm","alert","alive","allow","almost","alone","along","already","also","although","always","amazing","ambition","ambitious","among","amount","analyze","anger","angry","animal","announce","another","answer","anxiety","anxious","apart","apartment","appeal","appear","apple","apply","approach","approximately","area","argue","arm","army","around","arrange","arrest","arrive","art","article","artificial","artist","aspect","assemble","assess","assist","assume","atmosphere","attach","attempt","attend","attitude","attract","aunt","author","automatic","available","avoid","award","baby","back","bad","bag","balance","ball","banana","bar","basic","basically","basis","beach","bean","bear","beautiful","beauty","become","bed","before","begin","behavior","behind","believe","below","benefit","best","better","between","beyond","big","bird","black","blame","block","blue","body","book","boring","both","box","boy","bread","break","bridge","bright","bring","broad","broken","brother","brown","build","burden","burn","bus","business","butter","cafe","cake","calculate","call","calm","camera","capable","car","card","care","carry","cat","cause","century","chair","challenge","champion","change","cheap","check","child","children","chocolate","choice","choose","city","claim","class","clear","clever","client","close","clothes","cloud","coffee","cold","collar","collect","college","color","come","comfortable","commit","common","communicate","community","company","compare","compete","complete","complex","concern","confident","connect","consider","contain","contribute","control","convince","cook","cool","corner","correct","country","couple","courage","create","creative","crime","crisis","cross","crowd","culture","daily","damage","dangerous","data","daughter","day","deal","decide","decision","deliver","demand","depend","describe","design","desk","despite","detail","determine","develop","difference","difficult","dinner","direct","discover","discuss","distance","doctor","document","dog","door","draw","dream","dress","drink","drive","drop","dry","each","early","easy","economic","educate","education","egg","email","emotional","enable","encourage","energy","enjoy","enough","ensure","enter","environment","equal","especially","establish","evaluate","examine","excellent","exercise","exist","experience","explain","explore","express","extend","face","fail","family","famous","far","feel","film","final","find","fire","first","fish","fit","floor","focus","follow","food","football","foreign","forget","form","forward","free","fresh","friend","fruit","full","fun","future","garden","gate","general","get","gift","girl","give","glasses","global","goal","good","government","great","green","ground","group","grow","guess","gym","hand","handle","handsome","hang","happy","hard","have","head","health","help","high","hold","home","honest","hope","hospital","hot","house","human","hundred","hurt","idea","identify","imagine","immediately","important","improve","include","indicate","influence","inform","instead","interest","international","introduce","involve","island","job","join","joke","journey","judge","jump","just","justify","keep","key","kind","kitchen","know","language","large","late","laugh","lead","learn","left","letter","level","life","like","limit","listen","little","live","local","look","lose","love","low","lucky","lunch","main","maintain","make","man","manage","market","may","media","meet","message","minute","miss","modern","money","month","more","morning","mother","move","music","must","name","national","natural","nature","never","new","newspaper","nice","night","normal","note","number","offer","often","old","once","only","open","opinion","order","other","outside","paper","parent","park","part","participate","pay","peace","people","phone","pick","picture","plan","play","please","point","police","popular","possible","power","present","pretty","probably","problem","project","promote","provide","public","push","put","rain","read","ready","real","receive","remember","reply","result","rice","right","road","run","safe","say","school","search","see","seem","sell","share","shop","short","shoulder","show","similar","sister","situation","sleep","slow","small","smile","social","some","sometimes","sorry","sound","special","start","station","stay","still","student","study","suddenly","sugar","suit","summer","sure","swim","table","talk","teacher","television","tell","thank","think","together","tomorrow","town","try","understand","university","vegetable","very","view","visit","voice","walk","want","warm","watch","water","weak","weather","wedding","week","welcome","well","window","wish","woman","wonder","work","write","wrong","year","yesterday","young","zero","break down","break up","bring about","bring up","call off","call on","carry on","carry out","check in","check out","come across","come back","come up","cut off","cut out","fall apart","fall behind","fall out","get along","get away","get back","get in","get off","get on","get out","get over","get through","get up","give away","give back","give in","give up","go ahead","go away","go back","go on","go out","go over","go through","grow up","hand in","hand out","hold on","hold up","keep on","keep up","let down","let out","look after","look at","look for","look forward to","look into","look out","look up","make out","make sure","make up","pass away","pass on","pick out","pick up","put away","put down","put off","put on","put up","run away","run into","run out","set off","set out","set up","show off","show up","slow down","stand by","stand for","stand out","take after","take away","take back","take off","take on","take out","take over","take part","take up","turn around","turn down","turn off","turn on","turn out","turn up","wake up","work on","work out","add up","back up","catch up","count on","figure out","fill in","fill out","find out","give way","hang on","hang out","kick off","lay off","lay out","make sense","narrow down","open up","pay attention","pay off","point out","pull off","reach out","rule out","settle down","sign up","sort out","speak up","speed up","stand out","start over","step up","stick to","sum up","take care","take place","think over","track down","try out","wake up","wind up","wrap up","write down"];
+</script>
+<script>
+const WORDS=["abandon","ability","able","abnormal","aboard","absence","absolute","absolutely","abstract","academic","accept","access","accident","account","accurate","achieve","achievement","acid","acknowledge","acquire","across","act","action","active","activity","actor","actual","actually","adapt","add","addition","additional","address","adequate","adjust","administration","admit","adult","advance","advantage","adventure","advice","advise","affect","afford","afraid","after","afternoon","again","against","age","agency","aggressive","ago","agree","agreement","ahead","aid","aim","air","airport","alarm","alert","alive","allow","almost","alone","along","already","also","although","always","amazing","ambition","ambitious","among","amount","analyze","anger","angry","animal","announce","another","answer","anxiety","anxious","apart","apartment","appeal","appear","apple","apply","approach","approximately","area","argue","arm","army","around","arrange","arrest","arrive","art","article","artificial","artist","aspect","assemble","assess","assist","assume","atmosphere","attach","attempt","attend","attitude","attract","aunt","author","automatic","available","avoid","award","baby","back","bad","bag","balance","ball","banana","bar","basic","basically","basis","beach","bean","bear","beautiful","beauty","become","bed","before","begin","behavior","behind","believe","below","benefit","best","better","between","beyond","big","bird","black","blame","block","blue","body","book","boring","both","box","boy","bread","break","bridge","bright","bring","broad","broken","brother","brown","build","burden","burn","bus","business","butter","cafe","cake","calculate","call","calm","camera","capable","car","card","care","carry","cat","cause","century","chair","challenge","champion","change","cheap","check","child","children","chocolate","choice","choose","city","claim","class","clear","clever","client","close","clothes","cloud","coffee","cold","collar","collect","college","color","come","comfortable","commit","common","communicate","community","company","compare","compete","complete","complex","concern","confident","connect","consider","contain","contribute","control","convince","cook","cool","corner","correct","country","couple","courage","create","creative","crime","crisis","cross","crowd","culture","daily","damage","dangerous","data","daughter","day","deal","decide","decision","deliver","demand","depend","describe","design","desk","despite","detail","determine","develop","difference","difficult","dinner","direct","discover","discuss","distance","doctor","document","dog","door","draw","dream","dress","drink","drive","drop","dry","each","early","easy","economic","educate","education","egg","email","emotional","enable","encourage","energy","enjoy","enough","ensure","enter","environment","equal","especially","establish","evaluate","examine","excellent","exercise","exist","experience","explain","explore","express","extend","face","fail","family","famous","far","feel","film","final","find","fire","first","fish","fit","floor","focus","follow","food","football","foreign","forget","form","forward","free","fresh","friend","fruit","full","fun","future","garden","gate","general","get","gift","girl","give","glasses","global","goal","good","government","great","green","ground","group","grow","guess","gym","hand","handle","handsome","hang","happy","hard","have","head","health","help","high","hold","home","honest","hope","hospital","hot","house","human","hundred","hurt","idea","identify","imagine","immediately","important","improve","include","indicate","influence","inform","instead","interest","international","introduce","involve","island","job","join","joke","journey","judge","jump","just","justify","keep","key","kind","kitchen","know","language","large","late","laugh","lead","learn","left","letter","level","life","like","limit","listen","little","live","local","look","lose","love","low","lucky","lunch","main","maintain","make","man","manage","market","may","media","meet","message","minute","miss","modern","money","month","more","morning","mother","move","music","must","name","national","natural","nature","never","new","newspaper","nice","night","normal","note","number","offer","often","old","once","only","open","opinion","order","other","outside","paper","parent","park","part","participate","pay","peace","people","phone","pick","picture","plan","play","please","point","police","popular","possible","power","present","pretty","probably","problem","project","promote","provide","public","push","put","rain","read","ready","real","receive","remember","reply","result","rice","right","road","run","safe","say","school","search","see","seem","sell","share","shop","short","shoulder","show","similar","sister","situation","sleep","slow","small","smile","social","some","sometimes","sorry","sound","special","start","station","stay","still","student","study","suddenly","sugar","suit","summer","sure","swim","table","talk","teacher","television","tell","thank","think","together","tomorrow","town","try","understand","university","vegetable","very","view","visit","voice","walk","want","warm","watch","water","weak","weather","wedding","week","welcome","well","window","wish","woman","wonder","work","write","wrong","year","yesterday","young","zero","break down","break up","bring about","bring up","call off","call on","carry on","carry out","check in","check out","come across","come back","come up","cut off","cut out","fall apart","fall behind","fall out","get along","get away","get back","get in","get off","get on","get out","get over","get through","get up","give away","give back","give in","give up","go ahead","go away","go back","go on","go out","go over","go through","grow up","hand in","hand out","hold on","hold up","keep on","keep up","let down","let out","look after","look at","look for","look forward to","look into","look out","look up","make out","make sure","make up","pass away","pass on","pick out","pick up","put away","put down","put off","put on","put up","run away","run into","run out","set off","set out","set up","show off","show up","slow down","stand by","stand for","stand out","take after","take away","take back","take off","take on","take out","take over","take part","take up","turn around","turn down","turn off","turn on","turn out","turn up","wake up","work on","work out","add up","back up","catch up","count on","figure out","fill in","fill out","find out","give way","hang on","hang out","kick off","lay off","lay out","make sense","narrow down","open up","pay attention","pay off","point out","pull off","reach out","rule out","settle down","sign up","sort out","speak up","speed up","stand out","start over","step up","stick to","sum up","take care","take place","think over","track down","try out","wind up","wrap up","write down"];
 let acSel=-1;
-function showAC(val){const list=document.getElementById('ac-list');if(!val||val.length<2){list.classList.remove('show');return;}const v=val.toLowerCase();const m=WORDS.filter(w=>w.startsWith(v)).slice(0,8);if(!m.length){list.classList.remove('show');return;}list.innerHTML=m.map((w,i)=>`<div class="ac-item" data-word="${w}" onmousedown="pickAC('${w.replace(/'/g,"\\'")}')"><mark>${val}</mark>${w.slice(val.length)}</div>`).join('');acSel=-1;list.classList.add('show');}
+function showAC(val){const list=document.getElementById('ac-list');if(!val||val.length<2){list.classList.remove('show');return;}const v=val.toLowerCase();const m=WORDS.filter(w=>w.startsWith(v)).slice(0,8);if(!m.length){list.classList.remove('show');return;}list.innerHTML=m.map((w,i)=>`<div class="ac-item" data-word="${w}" onmousedown="pickAC('${w.replace(/'/g,"\\'")}')" ><mark>${val}</mark>${w.slice(val.length)}</div>`).join('');acSel=-1;list.classList.add('show');}
 function pickAC(word){document.getElementById('input-word').value=word;document.getElementById('ac-list').classList.remove('show');onWordInput(word);}
 function onWordKey(e){const list=document.getElementById('ac-list');const items=list.querySelectorAll('.ac-item');if(e.key==='ArrowDown'){e.preventDefault();acSel=Math.min(acSel+1,items.length-1);items.forEach((el,i)=>el.classList.toggle('selected',i===acSel));}else if(e.key==='ArrowUp'){e.preventDefault();acSel=Math.max(acSel-1,-1);items.forEach((el,i)=>el.classList.toggle('selected',i===acSel));}else if(e.key==='Enter'&&acSel>=0){e.preventDefault();pickAC(items[acSel].dataset.word);}else if(e.key==='Escape'){list.classList.remove('show');}}
 document.addEventListener('click',e=>{if(!e.target.closest('.ac-wrap'))document.getElementById('ac-list')?.classList.remove('show');});
-
-// ═══════════════════════════════════════════════════════════════
-// VOICE
-// ═══════════════════════════════════════════════════════════════
 let recognition=null,isListening=false;
-function startVoice(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!SR){showToast('Голосовий ввід не підтримується');return;}
-  if(isListening){recognition&&recognition.stop();return;}
-  recognition=new SR(); recognition.lang='en-US'; recognition.continuous=false; recognition.interimResults=true;
-  const mic=document.getElementById('mic-btn'); const vs=document.getElementById('voice-status');
-  recognition.onstart=()=>{isListening=true;mic.textContent='⏹';mic.style.background='rgba(240,96,112,0.2)';vs.style.display='block';vs.innerHTML='<span style="color:var(--red)">● Говори англійською...</span>';};
-  recognition.onresult=e=>{const t=e.results[0][0].transcript.trim();document.getElementById('input-word').value=t;vs.textContent='✓ Почуто: '+t;if(e.results[0].isFinal)onWordInput(t);};
-  recognition.onerror=e=>{showToast('Помилка: '+e.error);stopVoice();};
-  recognition.onend=()=>{stopVoice();const w=document.getElementById('input-word').value.trim();if(w.length>=2)onWordInput(w);};
-  recognition.start();
-}
+function startVoice(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){showToast('Голосовий ввід не підтримується');return;}if(isListening){recognition&&recognition.stop();return;}recognition=new SR();recognition.lang='en-US';recognition.continuous=false;recognition.interimResults=true;const mic=document.getElementById('mic-btn');const vs=document.getElementById('voice-status');recognition.onstart=()=>{isListening=true;mic.textContent='⏹';mic.style.background='rgba(240,96,112,0.2)';vs.style.display='block';vs.innerHTML='<span style="color:var(--red)">● Говори англійською...</span>';};recognition.onresult=e=>{const t=e.results[0][0].transcript.trim();document.getElementById('input-word').value=t;vs.textContent='✓ Почуто: '+t;if(e.results[0].isFinal)onWordInput(t);};recognition.onerror=e=>{showToast('Помилка: '+e.error);stopVoice();};recognition.onend=()=>{stopVoice();const w=document.getElementById('input-word').value.trim();if(w.length>=2)onWordInput(w);};recognition.start();}
 function stopVoice(){isListening=false;const mic=document.getElementById('mic-btn');const vs=document.getElementById('voice-status');if(mic){mic.textContent='🎤';mic.style.background='var(--bg2)';mic.style.borderColor='var(--border2)';}setTimeout(()=>{if(vs)vs.style.display='none';},2000);}
-
-// ═══════════════════════════════════════════════════════════════
-// PRONOUNCE
-// ═══════════════════════════════════════════════════════════════
-function pronounce(word){
-  if(!word) return;
-  window.speechSynthesis.cancel();
-  const utt=new SpeechSynthesisUtterance(word);
-  utt.lang='en-US'; utt.rate=0.85; utt.pitch=1.0; utt.volume=1.0;
-  function speak(){const voices=window.speechSynthesis.getVoices();const pref=voices.find(v=>v.name==='Google US English')||voices.find(v=>v.name==='Samantha')||voices.find(v=>v.name==='Karen')||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(pref)utt.voice=pref;window.speechSynthesis.speak(utt);}
-  if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,300);}
-}
+function pronounce(word){if(!word)return;window.speechSynthesis.cancel();const utt=new SpeechSynthesisUtterance(word);utt.lang='en-US';utt.rate=0.85;utt.pitch=1.0;utt.volume=1.0;function speak(){const voices=window.speechSynthesis.getVoices();const pref=voices.find(v=>v.name==='Google US English')||voices.find(v=>v.name==='Samantha')||voices.find(v=>v.name==='Karen')||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(pref)utt.voice=pref;window.speechSynthesis.speak(utt);}if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,300);}}
 </script>
-
-<!-- FIREBASE with Google Auth -->
 <script type="module">
-import { initializeApp }     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs } from 'https.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const firebaseConfig = {
@@ -804,9 +568,9 @@ const firebaseConfig = {
 };
 
 const fbApp = initializeApp(firebaseConfig);
-const db    = getFirestore(fbApp);
-const auth  = getAuth(fbApp);
-let unsub   = null;
+const db = getFirestore(fbApp);
+const auth = getAuth(fbApp);
+let unsub = null;
 
 window.doSignIn = async () => {
   const btn = document.getElementById('google-btn');
@@ -831,7 +595,6 @@ onAuthStateChanged(auth, async user => {
   if (user) {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('main-app').style.display = 'flex';
-
     const el = document.getElementById('user-initials');
     if (el) {
       if (user.photoURL) {
@@ -840,17 +603,10 @@ onAuthStateChanged(auth, async user => {
         el.textContent = (user.displayName||user.email||'?').charAt(0).toUpperCase();
       }
     }
-    window._uName  = user.displayName || user.email || '';
+    window._uName = user.displayName || user.email || '';
     window._uEmail = user.email || '';
-
-    setDoc(doc(db,'users',user.uid),{
-      uid:user.uid, email:user.email||'', name:user.displayName||'',
-      photo:user.photoURL||'', lastSeen:new Date().toISOString()
-    },{merge:true}).catch(()=>{});
-
+    setDoc(doc(db,'users',user.uid),{uid:user.uid,email:user.email||'',name:user.displayName||'',photo:user.photoURL||'',lastSeen:new Date().toISOString()},{merge:true}).catch(()=>{});
     const col = collection(db, 'users', user.uid, 'words');
-
-    // Migrate old shared words
     try {
       const migKey = 'migrated_'+user.uid;
       if (!localStorage.getItem(migKey)) {
@@ -862,10 +618,9 @@ onAuthStateChanged(auth, async user => {
         if (!oldSnap.empty) localStorage.setItem(migKey,'1');
       }
     } catch(e) {}
-
     window._FB = {
-      save: async w  => { await setDoc(doc(col, w.id), w); },
-      del:  async id => { await deleteDoc(doc(col, id)); },
+      save: async w => { await setDoc(doc(col, w.id), w); },
+      del: async id => { await deleteDoc(doc(col, id)); },
       listen: cb => {
         if (unsub) unsub();
         unsub = onSnapshot(col, snap => {
@@ -875,10 +630,8 @@ onAuthStateChanged(auth, async user => {
         });
       }
     };
-
     window.dispatchEvent(new Event('fb-ready'));
     window.initApp(user.uid);
-
   } else {
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('main-app').style.display = 'none';
