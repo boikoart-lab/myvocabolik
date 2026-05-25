@@ -1031,7 +1031,7 @@ function pronounce(word) {
 <!-- FIREBASE with Google Auth -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const firebaseConfig = {
@@ -1120,6 +1120,27 @@ onAuthStateChanged(auth, async user => {
         });
       }
     };
+
+    // Міграція старих слів зі спільної колекції в особисту
+    (async () => {
+      try {
+        const oldCol = collection(db, 'words');
+        const oldSnap = await getDocs(oldCol);
+        if (!oldSnap.empty) {
+          const migrated = localStorage.getItem('migrated_' + user.uid);
+          if (!migrated) {
+            for (const d of oldSnap.docs) {
+              const w = d.data();
+              if (w && w.word) {
+                await setDoc(doc(col, d.id), w);
+              }
+            }
+            localStorage.setItem('migrated_' + user.uid, '1');
+            console.log('Міграція завершена:', oldSnap.size, 'слів');
+          }
+        }
+      } catch(e) { console.log('Міграція:', e); }
+    })();
 
     window._fbReady = true;
     window.dispatchEvent(new Event('fb-ready'));
