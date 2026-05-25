@@ -1026,14 +1026,37 @@ function pronounce(word) {
   }
 }
 
+
+// ── Запуск після Google Auth ──
+function initApp() {
+  _wordsCache = _loadLocal();
+  setSyncStatus('ok');
+  refreshHome();
+  _waitFb().then(fb => {
+    if (!fb) return;
+    fb.listen(cloudWords => {
+      const clean = {};
+      for (const [id, w] of Object.entries(cloudWords)) {
+        if (w && typeof w === 'object' && w.word && w.stats) clean[id] = w;
+      }
+      _wordsCache = clean;
+      _saveLocal();
+      setSyncStatus('ok');
+      refreshHome();
+      if (document.getElementById('screen-vocab').classList.contains('active')) renderVocab();
+      if (document.getElementById('screen-progress').classList.contains('active')) renderProgress();
+    });
+  }).catch(()=>{});
+}
+
+window.addEventListener('fb-ready', () => { initApp(); }, { once: true });
 </script>
 
-<!-- FIREBASE with Google Auth -->
+<!-- FIREBASE (background sync) -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-
 const firebaseConfig = {
   apiKey: "AIzaSyDV2BZcuhT1K3uZMfzah0dYz77PFlt2A3A",
   authDomain: "myvocab-ce034.firebaseapp.com",
@@ -1042,11 +1065,11 @@ const firebaseConfig = {
   messagingSenderId: "595967940007",
   appId: "1:595967940007:web:3b9d58bd90e4131f209282"
 };
-
-const fbApp = initializeApp(firebaseConfig);
-const db    = getFirestore(fbApp);
-const auth  = getAuth(fbApp);
-let unsubListener = null;
+const fbAppAuth = initializeApp(firebaseConfig);
+const db = getFirestore(fbAppAuth);
+// Auth + per-user collections
+const auth = getAuth(fbAppAuth);
+let _unsubWords = null;
 
 window.signInWithGoogle = async () => {
   const btn = document.querySelector('.btn-google');
@@ -1062,58 +1085,62 @@ window.signInWithGoogle = async () => {
 };
 
 window.signOutUser = async () => {
-  if (unsubListener) { unsubListener(); unsubListener = null; }
+  if (_unsubWords) { _unsubWords(); _unsubWords = null; }
   window._fb = null;
-  // Чистимо кеш щоб наступний юзер не бачив чужих слів
-  try { localStorage.removeItem('myvocabolik_v1'); localStorage.removeItem('myvocabolik_uid'); } catch(e){}
-  if (window._wordsCache !== undefined) window._wordsCache = {};
+  try {
+    localStorage.removeItem('myvocabolik_v1');
+    localStorage.removeItem('myvocabolik_uid');
+  } catch(e) {}
+  if (typeof _wordsCache !== 'undefined') _wordsCache = {};
   await signOut(auth);
 };
 
-onAuthStateChanged(auth, async user => {
+onAuthStateChanged(auth, user => {
   if (user) {
     // Показуємо апку
-    const loginScreen = document.getElementById('login-screen');
-    const mainApp = document.getElementById('main-app') || document.querySelector('.app');
-    if (loginScreen) loginScreen.style.display = 'none';
-    if (mainApp) mainApp.style.display = 'flex';
+    const ls = document.getElementById('login-screen');
+    const ma = document.getElementById('main-app');
+    if (ls) ls.style.display = 'none';
+    if (ma) ma.style.display = 'flex';
 
     // Аватар
     const wrap = document.getElementById('user-initials');
     if (wrap) {
       if (user.photoURL) {
-        wrap.outerHTML = '<img src="' + user.photoURL + '" class="user-avatar" id="user-initials" onclick="showUserMenu && showUserMenu()" referrerpolicy="no-referrer">';
+        wrap.outerHTML = '<img src="' + user.photoURL + '" class="user-avatar" id="user-initials" onclick="window.showUserMenu && window.showUserMenu()" referrerpolicy="no-referrer">';
       } else {
         wrap.textContent = (user.displayName || user.email || '?').charAt(0).toUpperCase();
       }
     }
-
     window._currentUser  = user.displayName || user.email || '';
     window._currentEmail = user.email || '';
     window._currentUID   = user.uid;
 
-    // Зберігаємо профіль юзера для адмінки
+    // Очищаємо кеш якщо інший юзер
+    try {
+      const savedUID = localStorage.getItem('myvocabolik_uid');
+      if (savedUID && savedUID !== user.uid) {
+        localStorage.removeItem('myvocabolik_v1');
+        if (typeof _wordsCache !== 'undefined') _wordsCache = {};
+      }
+      localStorage.setItem('myvocabolik_uid', user.uid);
+    } catch(e) {}
+
+    // Зберігаємо профіль для адмінки
     setDoc(doc(db, 'users', user.uid), {
       uid: user.uid, email: user.email || '',
       name: user.displayName || '', photo: user.photoURL || '',
-      lastSeen: new Date().toISOString(), blocked: false
+      lastSeen: new Date().toISOString()
     }, { merge: true }).catch(()=>{});
 
-    setDoc(doc(db, 'user_meta', user.uid), {
-      name: user.displayName || '', email: user.email || '',
-      photo: user.photoURL || '', lastSeen: new Date().toISOString(),
-      firstSeen: new Date().toISOString()
-    }, { merge: true }).catch(()=>{});
-
-    // *** КЛЮЧОВА ЗМІНА: слова окремо для кожного юзера ***
+    // Окрема колекція для кожного юзера
     const col = collection(db, 'users', user.uid, 'words');
-
     window._fb = {
       save:   async (w)  => { await setDoc(doc(col, w.id), w); },
       del:    async (id) => { await deleteDoc(doc(col, id)); },
       listen: (cb) => {
-        if (unsubListener) unsubListener();
-        unsubListener = onSnapshot(col, snap => {
+        if (_unsubWords) _unsubWords();
+        _unsubWords = onSnapshot(col, snap => {
           const words = {};
           snap.forEach(d => { words[d.id] = d.data(); });
           cb(words);
@@ -1121,42 +1148,21 @@ onAuthStateChanged(auth, async user => {
       }
     };
 
-    // Міграція старих слів зі спільної колекції в особисту
-    (async () => {
-      try {
-        const oldCol = collection(db, 'words');
-        const oldSnap = await getDocs(oldCol);
-        if (!oldSnap.empty) {
-          const migrated = localStorage.getItem('migrated_' + user.uid);
-          if (!migrated) {
-            for (const d of oldSnap.docs) {
-              const w = d.data();
-              if (w && w.word) {
-                await setDoc(doc(col, d.id), w);
-              }
-            }
-            localStorage.setItem('migrated_' + user.uid, '1');
-            console.log('Міграція завершена:', oldSnap.size, 'слів');
-          }
-        }
-      } catch(e) { console.log('Міграція:', e); }
-    })();
-
     window._fbReady = true;
     window.dispatchEvent(new Event('fb-ready'));
   } else {
     // Показуємо логін
-    const loginScreen = document.getElementById('login-screen');
-    const mainApp = document.getElementById('main-app') || document.querySelector('.app');
-    if (loginScreen) loginScreen.style.display = 'flex';
-    if (mainApp) mainApp.style.display = 'none';
+    const ls = document.getElementById('login-screen');
+    const ma = document.getElementById('main-app');
+    if (ls) ls.style.display = 'flex';
+    if (ma) ma.style.display = 'none';
     window._fb = null;
     window._fbReady = false;
   }
 });
 
 window.showUserMenu = function() {
-  const name = window._currentUser || '';
+  const name  = window._currentUser  || '';
   const email = window._currentEmail || '';
   if (typeof showModal === 'undefined') return;
   showModal(
@@ -1164,19 +1170,21 @@ window.showUserMenu = function() {
     '<div style="width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;margin:0 auto 10px">' + (name.charAt(0)||'?').toUpperCase() + '</div>' +
     '<div style="font-size:16px;font-weight:500">' + name + '</div>' +
     '<div style="font-size:13px;color:var(--text2);margin-top:4px">' + email + '</div></div>' +
-    '<button class="btn-secondary" style="margin-bottom:10px" onclick="showScreen(&quot;settings&quot;);closeModal()">⚙️ Налаштування</button>' +
-    '<button class="btn-secondary btn-danger" onclick="confirmSignOut()">🚪 Вийти з акаунту</button>'
+    '<button class="btn-secondary" style="width:100%;padding:13px;margin-bottom:10px" onclick="showScreen(\'settings\');closeModal()">⚙️ Налаштування</button>' +
+    '<button class="btn-secondary btn-danger" style="width:100%;padding:13px" onclick="window.confirmSignOut()">🚪 Вийти з акаунту</button>'
   );
 };
 
 window.confirmSignOut = function() {
-  closeModal();
-  setTimeout(() => showModal(
-    '<h3>Вийти з акаунту?</h3>' +
-    '<p style="color:var(--text2);font-size:14px;margin-bottom:20px">Слова збережені і не зникнуть</p>' +
-    '<button class="btn-primary" style="background:var(--red);margin-bottom:10px" onclick="window.signOutUser();closeModal()">Вийти</button>' +
-    '<button class="btn-secondary" onclick="closeModal()">Скасувати</button>'
-  ), 150);
+  if (typeof closeModal !== 'undefined') closeModal();
+  setTimeout(() => {
+    if (typeof showModal !== 'undefined') showModal(
+      '<h3>Вийти з акаунту?</h3>' +
+      '<p style="color:var(--text2);font-size:14px;margin-bottom:20px">Слова збережені і не зникнуть</p>' +
+      '<button class="btn-primary" style="background:var(--red);margin-bottom:10px;width:100%;padding:14px;border:none;border-radius:14px;font-size:15px;cursor:pointer;color:#fff" onclick="window.signOutUser();closeModal()">Вийти</button>' +
+      '<button class="btn-secondary" style="width:100%" onclick="closeModal()">Скасувати</button>'
+    );
+  }, 150);
 };
 </script>
 </body></html>
