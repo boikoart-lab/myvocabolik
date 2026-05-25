@@ -181,16 +181,49 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .ac-item:last-child{border-bottom:none}
 .ac-item:hover,.ac-item.selected{background:var(--bg3)}
 .ac-item mark{background:transparent;color:var(--accent2);font-weight:500}
+
+/* LOGIN SCREEN */
+.login-screen{position:fixed;inset:0;background:var(--bg);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px}
+.login-logo{font-size:56px;margin-bottom:16px}
+.login-title{font-size:28px;font-weight:600;letter-spacing:-1px;margin-bottom:8px;text-align:center}
+.login-sub{font-size:15px;color:var(--text2);text-align:center;line-height:1.6;margin-bottom:40px}
+.login-features{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px;margin-bottom:36px}
+.login-feature{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+.lf-icon{font-size:22px;flex-shrink:0}
+.lf-text{font-size:14px;color:var(--text2);line-height:1.4}
+.lf-text strong{color:var(--text);display:block;font-size:15px;margin-bottom:2px}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:320px;padding:16px;background:#fff;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;color:#1f1f1f;cursor:pointer;box-shadow:0 2px 16px rgba(0,0,0,0.35)}
+.btn-google:active{opacity:.85}
+.btn-google img{width:22px;height:22px}
+.login-note{font-size:12px;color:var(--text3);margin-top:16px;text-align:center}
+.user-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;cursor:pointer;border:2px solid var(--border2)}
+.user-initials{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;flex-shrink:0}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="login-screen" id="login-screen">
+  <div class="login-logo">📖</div>
+  <div class="login-title">MyVocabolik</div>
+  <div class="login-sub">Вивчай англійські слова.<br>Синхронізація на всіх пристроях.</div>
+  <div class="login-features">
+    <div class="login-feature"><div class="lf-icon">🔄</div><div class="lf-text"><strong>Синхронізація</strong>Телефон, планшет, комп'ютер — скрізь однакові слова</div></div>
+    <div class="login-feature"><div class="lf-icon">🃏</div><div class="lf-text"><strong>Картки і тести</strong>Флеш-картки, multiple choice, статистика</div></div>
+    <div class="login-feature"><div class="lf-icon">🎤</div><div class="lf-text"><strong>Голосовий ввід</strong>Додавай слова голосом</div></div>
+  </div>
+  <button class="btn-google" onclick="signInWithGoogle()">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
+    Увійти через Google
+  </button>
+  <div class="login-note">Безкоштовно · Тільки твої дані</div>
+</div>
+
+<div class="app" id="main-app" style="display:none">
 
 <!-- HOME -->
 <div class="screen active" id="screen-home">
   <div class="topbar">
     <div><div style="font-size:18px;font-weight:600;letter-spacing:-.3px">MyVocabolik</div><div class="sub" id="home-subtitle">Твій словник</div></div>
-    <button class="icon-btn" onclick="showScreen('settings')">⚙️</button>
+    <div id="user-avatar-wrap" onclick="showUserMenu()"><div class="user-initials" id="user-initials">?</div></div>
   </div>
   <div class="scroll">
     <div class="welcome">
@@ -374,56 +407,116 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 
 
 <script>
-// ─── STORAGE (localStorage + Firebase background sync) ───────────────────────
+// ─── STORAGE ──────────────────────────────────────────────────────────────────
+// Firebase = єдине джерело правди. localStorage = кеш для швидкості.
 const DB_KEY = 'myvocabolik_v1';
-function loadDB() {
-  try { return JSON.parse(localStorage.getItem(DB_KEY) || '{"words":{}}'); }
-  catch(e) { return {words:{}}; }
-}
-function saveDB(db) { localStorage.setItem(DB_KEY, JSON.stringify(db)); }
-function getWords() { return Object.values(loadDB().words); }
-function getWord(id) { return loadDB().words[id]; }
+let _wordsCache = {}; // живий кеш, завжди актуальний
 
-// Save: instantly local, then background Firebase
-function fbSave(w) {
-  const db = loadDB(); db.words[w.id] = w; saveDB(db);
-  fbCloud().then(fb => fb && fb.save(w)).catch(()=>{});
-  return Promise.resolve();
-}
-function fbDel(id) {
-  const db = loadDB(); delete db.words[id]; saveDB(db);
-  fbCloud().then(fb => fb && fb.del(id)).catch(()=>{});
-  return Promise.resolve();
-}
+// Читаємо з кешу (миттєво)
+function getWords() { return Object.values(_wordsCache).filter(w => w && w.word && w.stats); }
+function getWord(id) { return _wordsCache[id]; }
 
-// Firebase cloud reference (lazy)
-let _fbCloud = null;
-function fbCloud() {
-  if (_fbCloud) return Promise.resolve(_fbCloud);
-  if (window._fb) { _fbCloud = window._fb; return Promise.resolve(_fbCloud); }
-  return new Promise(res => {
-    window.addEventListener('fb-ready', () => { _fbCloud = window._fb; res(_fbCloud); }, {once:true});
-    setTimeout(() => res(null), 3000);
-  });
+// Локальний кеш
+function _saveLocal() {
+  try { localStorage.setItem(DB_KEY, JSON.stringify(_wordsCache)); } catch(e) {}
 }
-
-// Sync FROM Firebase to localStorage on load
-function syncFromCloud() {
-  fbCloud().then(fb => {
-    if (!fb) return;
-    fb.listen(cloudWords => {
-      const db = loadDB();
-      // Merge cloud into local (cloud wins for newer items)
-      let changed = false;
-      for (const [id, word] of Object.entries(cloudWords)) {
-        const local = db.words[id];
-        if (!local || new Date(word.addedAt) >= new Date(local.addedAt)) {
-          db.words[id] = word; changed = true;
-        }
+function _loadLocal() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(DB_KEY) || '{}');
+    // Handle old format {words: {...}} and new format {...}
+    const data = raw.words ? raw.words : raw;
+    // Filter out any undefined/null/invalid entries
+    const clean = {};
+    for (const [id, w] of Object.entries(data)) {
+      if (w && typeof w === 'object' && w.word && w.stats) {
+        clean[id] = w;
       }
-      if (changed) { saveDB(db); refreshHome(); renderVocab(); }
-    });
+    }
+    return clean;
+  } catch(e) { return {}; }
+}
+
+// Зберегти слово: миттєво в кеш + localStorage, потім у Firebase
+function fbSave(w) {
+  _wordsCache[w.id] = w;
+  _saveLocal();
+  refreshHome();
+  _waitFb().then(fb => { if (fb) fb.save(w); }).catch(() => {});
+  return Promise.resolve();
+}
+
+// Видалити слово: миттєво з кешу + localStorage, потім з Firebase
+function fbDel(id) {
+  delete _wordsCache[id];
+  _saveLocal();
+  refreshHome();
+  _waitFb().then(fb => { if (fb) fb.del(id); }).catch(() => {});
+  return Promise.resolve();
+}
+
+// Очистити все
+function clearAll() {
+  const ids = Object.keys(_wordsCache);
+  _wordsCache = {};
+  _saveLocal();
+  refreshHome();
+  _waitFb().then(fb => {
+    if (!fb) return;
+    ids.forEach(id => fb.del(id));
+  }).catch(() => {});
+  closeModal(); showScreen('home'); showToast('Словник очищено');
+}
+
+// Чекаємо поки Firebase завантажиться
+function _waitFb() {
+  if (window._fb) return Promise.resolve(window._fb);
+  return new Promise(res => {
+    const h = () => res(window._fb);
+    window.addEventListener('fb-ready', h, { once: true });
+    setTimeout(() => { window.removeEventListener('fb-ready', h); res(null); }, 8000);
   });
+}
+
+// ── ГОЛОВНА ІНІЦІАЛІЗАЦІЯ ────────────────────────────────────────────────────
+function initApp() {
+  // 1. Завжди показуємо з localStorage миттєво
+  _wordsCache = _loadLocal();
+  setSyncStatus('ok');
+  refreshHome();
+
+  // 2. Firebase синхронізація у фоні — не блокує роботу
+  _waitFb().then(fb => {
+    if (!fb) return; // офлайн — працюємо з localStorage
+
+    fb.listen(cloudWords => {
+      // Фільтруємо невалідні записи з хмари
+      const clean = {};
+      for (const [id, w] of Object.entries(cloudWords)) {
+        if (w && typeof w === 'object' && w.word && w.stats) clean[id] = w;
+      }
+      // Мержимо: хмара + локальні яких нема в хмарі
+      const merged = { ...clean };
+      for (const [id, w] of Object.entries(_wordsCache)) {
+        if (w && w.word && w.stats && !merged[id]) merged[id] = w;
+      }
+      _wordsCache = merged;
+      _saveLocal();
+      setSyncStatus('ok');
+      refreshHome();
+      if (document.getElementById('screen-vocab').classList.contains('active')) renderVocab();
+      if (document.getElementById('screen-progress').classList.contains('active')) renderProgress();
+      // Закидаємо локальні слова в Firebase якщо їх там нема
+      for (const [id, w] of Object.entries(merged)) {
+        if (!clean[id]) fb.save(w).catch(()=>{});
+      }
+    });
+  }).catch(() => {}); // будь-яка помилка Firebase — мовчки ігноруємо
+}
+
+function setSyncStatus(state) {
+  const el = document.getElementById('sync-status-text');
+  if (!el) return;
+  if (state === 'ok') el.innerHTML = 'Картки · Тести · Словник';
 }
 
 // ─── UTILS ──────────────────────────────────────────────────────────────────
@@ -580,7 +673,7 @@ async function addWord() {
 
   if (!translation) { showToast('Потрібен переклад'); return; }
 
-  const existing = getWords().find(x => x.word.toLowerCase()===wordInput.toLowerCase());
+  const existing = getWords().find(x => x && x.word && x.word.toLowerCase()===wordInput.toLowerCase());
   if (existing) { showToast('Слово вже є в словнику'); showDetail(existing.id); return; }
 
   const w = {
@@ -592,16 +685,9 @@ async function addWord() {
     stats: { seen:0, correct:0, incorrect:0, lastSeen:null, mastered:false }
   };
 
-  try {
-    document.getElementById('add-btn').textContent = 'Зберігаю...';
-    await fbSave(w);
-    showToast('✓ Слово збережено');
-    resetAddForm();
-  } catch(e) {
-    showToast('Помилка збереження');
-  } finally {
-    document.getElementById('add-btn').textContent = 'Зберегти слово';
-  }
+  fbSave(w);
+  showToast('✓ Слово збережено');
+  resetAddForm();
 }
 
 // ─── VOCAB ──────────────────────────────────────────────────────────────────
@@ -672,7 +758,7 @@ function confirmDelete(id) {
     <button class="btn-secondary" onclick="closeModal()">Скасувати</button>`);
 }
 async function doDelete(id) {
-  await fbDel(id); closeModal(); goBackFromDetail(); showToast('Слово видалено');
+  fbDel(id); closeModal(); goBackFromDetail(); showToast('Слово видалено');
 }
 
 // ─── CARDS ───────────────────────────────────────────────────────────────────
@@ -733,7 +819,7 @@ async function cardAnswer(correct) {
   if (correct) { w.stats.correct++; cardCorrect++; } 
   else { w.stats.incorrect++; w.stats.correct=Math.max(0,w.stats.correct-1); }
   if (w.stats.correct>=3) w.stats.mastered=true;
-  await fbSave(w);
+  fbSave(w);
   cardIdx++; showCard();
 }
 function showCardsDone() {
@@ -1028,35 +1114,15 @@ function pronounce(word) {
 
 
 // ── Запуск після Google Auth ──
-function initApp() {
-  _wordsCache = _loadLocal();
-  setSyncStatus('ok');
-  refreshHome();
-  _waitFb().then(fb => {
-    if (!fb) return;
-    fb.listen(cloudWords => {
-      const clean = {};
-      for (const [id, w] of Object.entries(cloudWords)) {
-        if (w && typeof w === 'object' && w.word && w.stats) clean[id] = w;
-      }
-      _wordsCache = clean;
-      _saveLocal();
-      setSyncStatus('ok');
-      refreshHome();
-      if (document.getElementById('screen-vocab').classList.contains('active')) renderVocab();
-      if (document.getElementById('screen-progress').classList.contains('active')) renderProgress();
-    });
-  }).catch(()=>{});
-}
-
 window.addEventListener('fb-ready', () => { initApp(); }, { once: true });
 </script>
 
-<!-- FIREBASE (background sync) -->
+<!-- FIREBASE with Google Auth -->
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { initializeApp }                                          from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
 const firebaseConfig = {
   apiKey: "AIzaSyDV2BZcuhT1K3uZMfzah0dYz77PFlt2A3A",
   authDomain: "myvocab-ce034.firebaseapp.com",
@@ -1065,126 +1131,124 @@ const firebaseConfig = {
   messagingSenderId: "595967940007",
   appId: "1:595967940007:web:3b9d58bd90e4131f209282"
 };
-const fbAppAuth = initializeApp(firebaseConfig);
-const db = getFirestore(fbAppAuth);
-// Auth + per-user collections
-const auth = getAuth(fbAppAuth);
-let _unsubWords = null;
+
+const fbApp = initializeApp(firebaseConfig);
+const db    = getFirestore(fbApp);
+const auth  = getAuth(fbApp);
+let unsubListener = null;
 
 window.signInWithGoogle = async () => {
   const btn = document.querySelector('.btn-google');
   try {
-    btn.innerHTML = '<span>Завантаження...</span>';
+    btn.innerHTML = '<span style="font-size:14px">Завантаження...</span>';
     btn.disabled = true;
     await signInWithPopup(auth, new GoogleAuthProvider());
   } catch(e) {
     btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:22px"> Увійти через Google';
     btn.disabled = false;
-    window.showToast && window.showToast('Помилка: ' + (e.code || e.message));
+    window.showToast('Помилка: ' + (e.code || e.message));
   }
 };
 
 window.signOutUser = async () => {
-  if (_unsubWords) { _unsubWords(); _unsubWords = null; }
+  if (unsubListener) { unsubListener(); unsubListener = null; }
   window._fb = null;
-  try {
-    localStorage.removeItem('myvocabolik_v1');
-    localStorage.removeItem('myvocabolik_uid');
-  } catch(e) {}
-  if (typeof _wordsCache !== 'undefined') _wordsCache = {};
   await signOut(auth);
 };
 
 onAuthStateChanged(auth, user => {
   if (user) {
-    // Показуємо апку
-    const ls = document.getElementById('login-screen');
-    const ma = document.getElementById('main-app');
-    if (ls) ls.style.display = 'none';
-    if (ma) ma.style.display = 'flex';
-
-    // Аватар
+    // Show app
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'flex';
+    // Avatar
     const wrap = document.getElementById('user-initials');
     if (wrap) {
       if (user.photoURL) {
-        wrap.outerHTML = '<img src="' + user.photoURL + '" class="user-avatar" id="user-initials" onclick="window.showUserMenu && window.showUserMenu()" referrerpolicy="no-referrer">';
+        wrap.outerHTML = '<img src="' + user.photoURL + '" class="user-avatar" id="user-initials" onclick="showUserMenu()" referrerpolicy="no-referrer">';
       } else {
         wrap.textContent = (user.displayName || user.email || '?').charAt(0).toUpperCase();
       }
     }
-    window._currentUser  = user.displayName || user.email || '';
-    window._currentEmail = user.email || '';
-    window._currentUID   = user.uid;
-
-    // Очищаємо кеш якщо інший юзер
-    try {
-      const savedUID = localStorage.getItem('myvocabolik_uid');
-      if (savedUID && savedUID !== user.uid) {
-        localStorage.removeItem('myvocabolik_v1');
-        if (typeof _wordsCache !== 'undefined') _wordsCache = {};
-      }
-      localStorage.setItem('myvocabolik_uid', user.uid);
-    } catch(e) {}
-
-    // Зберігаємо профіль для адмінки
-    setDoc(doc(db, 'users', user.uid), {
-      uid: user.uid, email: user.email || '',
-      name: user.displayName || '', photo: user.photoURL || '',
-      lastSeen: new Date().toISOString()
-    }, { merge: true }).catch(()=>{});
-
-    // Окрема колекція для кожного юзера
+    window._currentUser = user.displayName || user.email;
+    window._currentEmail = user.email;
+    window._currentUID = user.uid;
+    // Connect Firestore to this user's collection
     const col = collection(db, 'users', user.uid, 'words');
     window._fb = {
       save:   async (w)  => { await setDoc(doc(col, w.id), w); },
       del:    async (id) => { await deleteDoc(doc(col, id)); },
       listen: (cb) => {
-        if (_unsubWords) _unsubWords();
-        _unsubWords = onSnapshot(col, snap => {
+        if (unsubListener) unsubListener();
+        unsubListener = onSnapshot(col, snap => {
           const words = {};
           snap.forEach(d => { words[d.id] = d.data(); });
           cb(words);
         });
       }
     };
-
-    window._fbReady = true;
-    window.dispatchEvent(new Event('fb-ready'));
+    // Check if user is blocked + init
+    (async () => {
+      try {
+        const userSnap = await getDoc(doc(db, 'users', user.uid));
+        if (userSnap.exists() && userSnap.data().blocked) {
+          document.getElementById('login-screen').style.display = 'flex';
+          document.getElementById('main-app').style.display = 'none';
+          document.querySelector('.login-sub').innerHTML = '⛔ Твій акаунт заблоковано.<br>Зверніся до адміністратора.';
+          document.querySelector('.btn-google').style.display = 'none';
+          await signOut(auth);
+          return;
+        }
+      } catch(e) {}
+      window._fbReady = true;
+      window.dispatchEvent(new Event('fb-ready'));
+    })();
+    // Save user profile for admin panel
+    setDoc(doc(db, 'users', user.uid), {
+      uid: user.uid,
+      email: user.email,
+      name: user.displayName || '',
+      photo: user.photoURL || '',
+      lastSeen: new Date().toISOString(),
+      blocked: false
+    }, { merge: true }).catch(() => {});
   } else {
-    // Показуємо логін
-    const ls = document.getElementById('login-screen');
-    const ma = document.getElementById('main-app');
-    if (ls) ls.style.display = 'flex';
-    if (ma) ma.style.display = 'none';
+    // Show login
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('main-app').style.display = 'none';
     window._fb = null;
     window._fbReady = false;
   }
 });
 
-window.showUserMenu = function() {
-  const name  = window._currentUser  || '';
+// ─── AUTH UI ──────────────────────────────────────────────────────────────────
+function showUserMenu() {
+  const name = window._currentUser || '';
   const email = window._currentEmail || '';
-  if (typeof showModal === 'undefined') return;
+  const avatarEl = document.getElementById('user-initials');
+  const avatarHTML = avatarEl
+    ? '<img src="' + (avatarEl.src || '') + '" style="width:48px;height:48px;border-radius:50%;margin:0 auto 12px;display:block;object-fit:cover">'
+    : '<div style="width:48px;height:48px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;margin:0 auto 12px">' + (name.charAt(0)||'?') + '</div>';
   showModal(
     '<div style="text-align:center;margin-bottom:20px">' +
-    '<div style="width:52px;height:52px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;margin:0 auto 10px">' + (name.charAt(0)||'?').toUpperCase() + '</div>' +
-    '<div style="font-size:16px;font-weight:500">' + name + '</div>' +
-    '<div style="font-size:13px;color:var(--text2);margin-top:4px">' + email + '</div></div>' +
-    '<button class="btn-secondary" style="width:100%;padding:13px;margin-bottom:10px" onclick="showScreen(\'settings\');closeModal()">⚙️ Налаштування</button>' +
-    '<button class="btn-secondary btn-danger" style="width:100%;padding:13px" onclick="window.confirmSignOut()">🚪 Вийти з акаунту</button>'
+      avatarHTML +
+      '<div style="font-size:16px;font-weight:500">' + name + '</div>' +
+      '<div style="font-size:13px;color:var(--text2);margin-top:4px">' + email + '</div>' +
+    '</div>' +
+    '<button class="btn-secondary" style="margin-bottom:10px" onclick="showScreen(\'settings\');closeModal()">⚙️ Налаштування</button>' +
+    '<button class="btn-secondary btn-danger" style="margin-bottom:0" onclick="confirmSignOut()">🚪 Вийти з акаунту</button>'
   );
-};
-
-window.confirmSignOut = function() {
-  if (typeof closeModal !== 'undefined') closeModal();
+}
+function confirmSignOut() {
+  closeModal();
   setTimeout(() => {
-    if (typeof showModal !== 'undefined') showModal(
+    showModal(
       '<h3>Вийти з акаунту?</h3>' +
-      '<p style="color:var(--text2);font-size:14px;margin-bottom:20px">Слова збережені і не зникнуть</p>' +
-      '<button class="btn-primary" style="background:var(--red);margin-bottom:10px;width:100%;padding:14px;border:none;border-radius:14px;font-size:15px;cursor:pointer;color:#fff" onclick="window.signOutUser();closeModal()">Вийти</button>' +
-      '<button class="btn-secondary" style="width:100%" onclick="closeModal()">Скасувати</button>'
+      '<p style="color:var(--text2);font-size:14px;margin-bottom:20px">Твої слова збережені в хмарі і не зникнуть</p>' +
+      '<button class="btn-primary" style="background:var(--red);margin-bottom:10px" onclick="window.signOutUser();closeModal()">Вийти</button>' +
+      '<button class="btn-secondary" onclick="closeModal()">Скасувати</button>'
     );
   }, 150);
-};
+}
+
 </script>
-</body></html>
