@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#fbeed3;--bg2:#fcf3e0;--bg3:#f6e3bd;--border:rgba(139,105,40,0.12);--border2:rgba(139,105,40,0.22);--text:#7a5418;--text2:#a88a5c;--text3:#c4ab85;--accent:#f0bb42;--accent2:#d99a2b;--green:#5cb85c;--red:#e08374;--yellow:#f0bb42;--radius:20px;--radius-sm:14px}
+:root,[data-theme="light"]{--bg:#fbeed3;--bg2:#fcf3e0;--bg3:#f6e3bd;--border:rgba(139,105,40,0.12);--border2:rgba(139,105,40,0.22);--text:#7a5418;--text2:#a88a5c;--text3:#c4ab85;--accent:#f0bb42;--accent2:#d99a2b;--green:#5cb85c;--red:#e08374;--yellow:#f0bb42;--btn-text:#6b4e1a;--radius:20px;--radius-sm:14px}
+[data-theme="dark"]{--bg:#2a201a;--bg2:#362a22;--bg3:#43342a;--border:rgba(240,224,200,0.10);--border2:rgba(240,224,200,0.18);--text:#f0e0c8;--text2:#c4a886;--text3:#8a7560;--accent:#e0a850;--accent2:#f0bb55;--green:#6cc06c;--red:#e89888;--yellow:#e0a850;--btn-text:#2a201a;--radius:20px;--radius-sm:14px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
 
@@ -60,7 +61,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .menu-card .mc-sub{font-size:12px;color:var(--text2);line-height:1.4}
 .review-banner{background:linear-gradient(135deg,#f6d97a,#f0bb42);border:1px solid rgba(217,154,43,.4);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:20px}
 .review-banner .rb-icon{font-size:28px;flex-shrink:0}
-.review-banner .rb-text h3{font-size:14px;font-weight:600;color:#6b4e1a}
+.review-banner .rb-text h3{font-size:14px;font-weight:600;color:#4a3410}
 .review-banner .rb-text p{font-size:12px;color:#8a6420;margin-top:2px}
 .review-banner .rb-arrow{margin-left:auto;color:#6b4e1a;font-size:20px}
 
@@ -168,7 +169,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .nav-btn .nb-label{font-size:10px;letter-spacing:.3px}
 
 /* BUTTONS */
-.btn-primary{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius);color:#6b4e1a;font-weight:600;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer}
+.btn-primary{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius);color:var(--btn-text);font-weight:600;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer}
 .btn-primary:active{opacity:.8}
 .btn-secondary{width:100%;padding:13px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;cursor:pointer}
 .btn-danger{color:var(--red);border-color:rgba(240,96,112,.3)}
@@ -204,6 +205,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 </style>
 </head>
 <body>
+<script>(function(){try{var t=localStorage.getItem('myvocabolik_theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 
 <!-- LOGIN SCREEN -->
 <div class="login-screen" id="login-screen">
@@ -354,6 +356,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div style="width:36px"></div>
   </div>
   <div class="scroll">
+    <div class="settings-item"><div class="si-text"><h4>Тема</h4><p>Світла або темна (для вечора)</p></div><select id="s-theme" onchange="setTheme(this.value)"><option value="light">☀️ Світла</option><option value="dark">🌙 Темна</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Режим карток</h4></div><select id="s-cardmode"><option value="en-ua">EN→UA</option><option value="ua-en">UA→EN</option><option value="mixed">Змішаний</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Карток за сесію</h4></div><select id="s-cardcount"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Питань у тесті</h4></div><select id="s-quizcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div>
@@ -746,6 +749,9 @@ function confirmClearAll(){showModal(`<h3>Видалити всі слова?</h
 function doClearAll(){const ids=Object.keys(W);W={};saveLocal();refreshHome();waitFb().then(fb=>{if(!fb)return;ids.forEach(id=>fb.del(id));}).catch(()=>{});closeModal();showScreen('home');showToast('Словник очищено');}
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('myvocabolik_theme',t);}catch(e){}}
+function loadTheme(){let t='light';try{t=localStorage.getItem('myvocabolik_theme')||'light';}catch(e){}document.documentElement.setAttribute('data-theme',t);const sel=document.getElementById('s-theme');if(sel)sel.value=t;}
+
 function setSyncStatus(s){const el=document.getElementById('home-subtitle');if(el&&!getWords().length)el.textContent='Почни додавати слова';}
 
 // ═══════════════════════════════════════════════════════════════
@@ -851,18 +857,20 @@ onAuthStateChanged(auth, async user => {
 
     const col = collection(db, 'users', user.uid, 'words');
 
-    // Migrate old shared words
-    try {
-      const migKey = 'migrated_'+user.uid;
-      if (!localStorage.getItem(migKey)) {
-        const oldSnap = await getDocs(collection(db,'words'));
-        for (const d of oldSnap.docs) {
-          const w = d.data();
-          if (w && w.word) await setDoc(doc(col, d.id), w);
+    // Міграція старих слів — ТІЛЬКИ для власника акаунту
+    if (user.email === 'boikoart@gmail.com') {
+      try {
+        const migKey = 'migrated_'+user.uid;
+        if (!localStorage.getItem(migKey)) {
+          const oldSnap = await getDocs(collection(db,'words'));
+          for (const d of oldSnap.docs) {
+            const w = d.data();
+            if (w && w.word) await setDoc(doc(col, d.id), w);
+          }
+          if (!oldSnap.empty) localStorage.setItem(migKey,'1');
         }
-        if (!oldSnap.empty) localStorage.setItem(migKey,'1');
-      }
-    } catch(e) {}
+      } catch(e) {}
+    }
 
     window._FB = {
       save: async w  => { await setDoc(doc(col, w.id), w); },
