@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root,[data-theme="light"]{--bg:#fbeed3;--bg2:#fcf3e0;--bg3:#f6e3bd;--border:rgba(139,105,40,0.12);--border2:rgba(139,105,40,0.22);--text:#7a5418;--text2:#a88a5c;--text3:#c4ab85;--accent:#f0bb42;--accent2:#d99a2b;--green:#5cb85c;--red:#e08374;--yellow:#f0bb42;--btn-text:#6b4e1a;--radius:20px;--radius-sm:14px}[data-theme="dark"]{--bg:#2a201a;--bg2:#362a22;--bg3:#43342a;--border:rgba(240,224,200,0.10);--border2:rgba(240,224,200,0.18);--text:#f0e0c8;--text2:#c4a886;--text3:#8a7560;--accent:#e0a850;--accent2:#f0bb55;--green:#6cc06c;--red:#e89888;--yellow:#e0a850;--btn-text:#2a201a;--radius:20px;--radius-sm:14px}[data-theme="dark"]{--bg:#2a201a;--bg2:#362a22;--bg3:#43342a;--border:rgba(240,224,200,0.10);--border2:rgba(240,224,200,0.18);--text:#f0e0c8;--text2:#c4a886;--text3:#8a7560;--accent:#e0a850;--accent2:#f0bb55;--green:#6cc06c;--red:#e89888;--yellow:#e0a850;--btn-text:#2a201a;--radius:20px;--radius-sm:14px}
+:root,[data-theme="light"]{--bg:#fbeed3;--bg2:#fcf3e0;--bg3:#f6e3bd;--border:rgba(139,105,40,0.12);--border2:rgba(139,105,40,0.22);--text:#7a5418;--text2:#a88a5c;--text3:#c4ab85;--accent:#f0bb42;--accent2:#d99a2b;--green:#5cb85c;--red:#e08374;--yellow:#f0bb42;--btn-text:#6b4e1a;--radius:20px;--radius-sm:14px}
+[data-theme="dark"]{--bg:#2a201a;--bg2:#362a22;--bg3:#43342a;--border:rgba(240,224,200,0.10);--border2:rgba(240,224,200,0.18);--text:#f0e0c8;--text2:#c4a886;--text3:#8a7560;--accent:#e0a850;--accent2:#f0bb55;--green:#6cc06c;--red:#e89888;--yellow:#e0a850;--btn-text:#2a201a;--radius:20px;--radius-sm:14px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
 
@@ -201,6 +202,40 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .si-text h4{font-size:15px;font-weight:400}
 .si-text p{font-size:12px;color:var(--text2);margin-top:2px}
 select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 10px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px}
+
+.play-banner{background:linear-gradient(135deg,#f6d97a,#f0bb42);border:1px solid rgba(217,154,43,.4);border-radius:18px;padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:14px}
+[data-theme="dark"] .play-banner{background:linear-gradient(135deg,#5a4420,#7a5a25)}
+.play-banner:active{transform:scale(.98)}
+.pb-icon{font-size:30px;flex-shrink:0}
+.pb-text h3{font-size:16px;font-weight:600;color:#4a3410}
+[data-theme="dark"] .pb-text h3{color:#f0e0c8}
+.pb-text p{font-size:12px;color:#8a6420;margin-top:2px}
+[data-theme="dark"] .pb-text p{color:#c4a886}
+.pb-arrow{margin-left:auto;font-size:24px;color:#6b4e1a}
+[data-theme="dark"] .pb-arrow{color:#f0e0c8}
+/* GAME */
+.game-top{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;flex-shrink:0;border-bottom:1px solid var(--border)}
+.game-timer{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;color:var(--accent2)}
+.game-stat{font-size:13px;color:var(--text2)}
+.game-stat b{color:var(--green)}
+.game-grid{flex:1;overflow-y:auto;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start}
+.game-tile{background:var(--bg2);border:2px solid var(--border2);border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;font-size:15px;font-weight:500;min-height:64px;display:flex;align-items:center;justify-content:center;transition:all .15s;word-break:break-word}
+.game-tile.sel{border-color:var(--accent);background:var(--bg3);transform:scale(1.03)}
+.game-tile.correct{border-color:var(--green);background:rgba(92,184,92,.18);animation:pop .3s ease}
+.game-tile.wrong{border-color:var(--red);background:rgba(224,131,116,.18);animation:shake .3s ease}
+.game-tile.gone{opacity:0;pointer-events:none;transform:scale(.7)}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.game-tile.en{color:var(--text)}
+.game-tile.ua{color:var(--accent2)}
+.game-result{text-align:center;padding:40px 20px}
+.gr-emoji{font-size:56px;margin-bottom:16px}
+.gr-title{font-size:24px;font-weight:600;margin-bottom:20px;color:var(--text)}
+.gr-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.gr-stat{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px 8px}
+.gr-stat .n{font-size:24px;font-weight:600}
+.gr-stat .l{font-size:11px;color:var(--text2);margin-top:3px}
+.game-music-btn{width:36px;height:36px;border:none;background:var(--bg3);border-radius:10px;font-size:16px;cursor:pointer;color:var(--text)}
 </style>
 </head>
 <body>
@@ -232,13 +267,18 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div id="avatar-wrap" onclick="openUserMenu()" style="cursor:pointer"><div class="user-initials" id="user-initials">?</div></div>
   </div>
   <div class="scroll">
-    <div class="welcome" style="padding:16px 0 18px"><div class="logo" style="font-size:34px;margin-bottom:4px">📖</div><h2 style="font-size:19px">Вивчай англійську</h2><p style="font-size:12px;margin-top:2px">Картки · Тести · Словник</p></div>
+    <div style="height:8px"></div>
     <div class="stats-row">
       <div class="stat-card"><div class="num" id="stat-total">0</div><div class="lbl">Слів</div></div>
       <div class="stat-card"><div class="num" id="stat-mastered">0</div><div class="lbl">Вивчено</div></div>
       <div class="stat-card"><div class="num" id="stat-review">0</div><div class="lbl">Повторити</div></div>
     </div>
     <div id="review-banner-wrap"></div>
+    <div class="play-banner" onclick="startGame()">
+      <div class="pb-icon">🎮</div>
+      <div class="pb-text"><h3>Грати в пари</h3><p>Знайди пари слів на час</p></div>
+      <div class="pb-arrow">›</div>
+    </div>
     <div class="menu-grid">
       <div class="menu-card" onclick="showScreen('add')"><div class="mc-icon">➕</div><div class="mc-title">Додати слово</div><div class="mc-sub">Автопереклад і транскрипція</div></div>
       <div class="menu-card" onclick="startCards()"><div class="mc-icon">🃏</div><div class="mc-title">Картки</div><div class="mc-sub">Флеш-картки з перекладом</div></div>
@@ -356,11 +396,27 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   </div>
   <div class="scroll">
     <div class="settings-item"><div class="si-text"><h4>Тема</h4><p>Світла або темна (для вечора)</p></div><select id="s-theme" onchange="setTheme(this.value)"><option value="light">☀️ Світла</option><option value="dark">🌙 Темна</option></select></div>
-    <div class="settings-item"><div class="si-text"><h4>Режим карток</h4></div><select id="s-cardmode"><option value="en-ua">EN→UA</option><option value="ua-en">UA→EN</option><option value="mixed">Змішаний</option></select></div>    <div class="settings-item"><div class="si-text"><h4>Карток за сесію</h4></div><select id="s-cardcount"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></div>
+    <div class="settings-item"><div class="si-text"><h4>Режим карток</h4></div><select id="s-cardmode"><option value="en-ua">EN→UA</option><option value="ua-en">UA→EN</option><option value="mixed">Змішаний</option></select></div>
+    <div class="settings-item"><div class="si-text"><h4>Карток за сесію</h4></div><select id="s-cardcount"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Питань у тесті</h4></div><select id="s-quizcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div>
     <div style="margin-top:24px"><button class="btn-secondary btn-danger" onclick="confirmClearAll()" style="width:100%">🗑 Видалити всі слова</button></div>
     <div style="text-align:center;color:var(--text3);font-size:12px;margin-top:24px">MyVocabolik · Дані захищені</div>
     <div style="height:20px"></div>
+  </div>
+</div>
+
+<div class="screen" id="screen-game">
+  <div class="game-top">
+    <button class="icon-btn" onclick="quitGame()">←</button>
+    <div class="game-timer" id="game-timer">0:00</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="game-stat">✓ <b id="game-correct">0</b></span>
+      <button class="game-music-btn" id="game-music" onclick="toggleMusic()">🔊</button>
+    </div>
+  </div>
+  <div class="game-grid" id="game-grid"></div>
+  <div class="scroll" id="game-result-wrap" style="display:none">
+    <div class="game-result" id="game-result"></div>
   </div>
 </div>
 
@@ -751,6 +807,173 @@ function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{l
 function loadTheme(){let t='light';try{t=localStorage.getItem('myvocabolik_theme')||'light';}catch(e){}document.documentElement.setAttribute('data-theme',t);const sel=document.getElementById('s-theme');if(sel)sel.value=t;}
 
 function setSyncStatus(s){const el=document.getElementById('home-subtitle');if(el&&!getWords().length)el.textContent='Почни додавати слова';}
+
+// ═══ ГРА В ПАРИ ═══
+let gameTiles=[],gameSel=null,gameCorrect=0,gameWrong=0,gameStart=0,gameTimerInt=null,gameTotal=0;
+let audioCtx=null,musicOn=true,musicInt=null,beatStep=0;
+
+function startGame(){
+  const words=getWords();
+  if(words.length<3){showToast('Потрібно мінімум 3 слова');return;}
+  // беремо до 8 пар
+  const pool=shuffle(words).slice(0,Math.min(8,words.length));
+  gameTotal=pool.length;
+  // створюємо плитки: для кожного слова - англ + укр
+  let tiles=[];
+  pool.forEach(w=>{
+    tiles.push({id:w.id,text:w.word,type:'en',matched:false});
+    tiles.push({id:w.id,text:w.translation,type:'ua',matched:false});
+  });
+  gameTiles=shuffle(tiles);
+  gameSel=null;gameCorrect=0;gameWrong=0;
+  showScreen('game');
+  document.getElementById('game-grid').style.display='grid';
+  document.getElementById('game-result-wrap').style.display='none';
+  document.getElementById('game-correct').textContent='0';
+  renderGame();
+  // таймер
+  gameStart=Date.now();
+  clearInterval(gameTimerInt);
+  gameTimerInt=setInterval(updateTimer,200);
+  // музика
+  startMusic();
+}
+
+function renderGame(){
+  const grid=document.getElementById('game-grid');
+  grid.innerHTML=gameTiles.map((t,i)=>{
+    if(t.matched) return `<div class="game-tile gone"></div>`;
+    return `<div class="game-tile ${t.type}" id="tile-${i}" onclick="tapTile(${i})">${t.text}</div>`;
+  }).join('');
+}
+
+function tapTile(i){
+  const t=gameTiles[i];
+  if(t.matched) return;
+  const el=document.getElementById('tile-'+i);
+  if(gameSel===null){
+    gameSel=i; el.classList.add('sel'); beep(660);
+    return;
+  }
+  if(gameSel===i){ // зняти вибір
+    gameSel=null; el.classList.remove('sel'); return;
+  }
+  const prev=gameTiles[gameSel];
+  const prevEl=document.getElementById('tile-'+gameSel);
+  // перевірка пари: однаковий id, різний type
+  if(prev.id===t.id && prev.type!==t.type){
+    // правильно!
+    gameCorrect++;
+    document.getElementById('game-correct').textContent=gameCorrect;
+    el.classList.add('correct'); prevEl.classList.add('correct');
+    beep(880); setTimeout(()=>beep(1100),100);
+    t.matched=true; prev.matched=true;
+    const si=gameSel; gameSel=null;
+    setTimeout(()=>{
+      el.classList.add('gone'); prevEl.classList.add('gone');
+      // оновлюємо статистику слова
+      const w=getWord(t.id);
+      if(w){w.stats.seen++;w.stats.correct++;w.stats.lastSeen=new Date().toISOString();if(w.stats.correct>=3)w.stats.mastered=true;dbSave(w);}
+      if(gameCorrect>=gameTotal) finishGame();
+    },350);
+  } else {
+    // неправильно
+    gameWrong++;
+    el.classList.add('wrong'); prevEl.classList.add('wrong');
+    beep(200);
+    const si=gameSel; gameSel=null;
+    setTimeout(()=>{
+      el.classList.remove('wrong','sel'); prevEl.classList.remove('wrong','sel');
+    },350);
+  }
+}
+
+function updateTimer(){
+  const s=Math.floor((Date.now()-gameStart)/1000);
+  const m=Math.floor(s/60);
+  document.getElementById('game-timer').textContent=`${m}:${String(s%60).padStart(2,'0')}`;
+}
+
+function finishGame(){
+  clearInterval(gameTimerInt);
+  stopMusic();
+  const sec=Math.floor((Date.now()-gameStart)/1000);
+  const m=Math.floor(sec/60), s=sec%60;
+  const timeStr=`${m}:${String(s).padStart(2,'0')}`;
+  const total=gameCorrect+gameWrong;
+  const acc=total>0?Math.round(gameCorrect/total*100):100;
+  const emoji=gameWrong===0?'🏆':acc>=70?'🎉':'💪';
+  document.getElementById('game-grid').style.display='none';
+  document.getElementById('game-result-wrap').style.display='block';
+  document.getElementById('game-result').innerHTML=`
+    <div class="gr-emoji">${emoji}</div>
+    <div class="gr-title">${gameWrong===0?'Ідеально!':'Готово!'}</div>
+    <div class="gr-stats">
+      <div class="gr-stat"><div class="n" style="color:var(--green)">${gameCorrect}</div><div class="l">Правильно</div></div>
+      <div class="gr-stat"><div class="n" style="color:var(--red)">${gameWrong}</div><div class="l">Помилок</div></div>
+      <div class="gr-stat"><div class="n" style="color:var(--accent2)">${timeStr}</div><div class="l">Час</div></div>
+    </div>
+    <button class="btn-primary" onclick="startGame()" style="margin-bottom:10px">🎮 Ще раз</button>
+    <button class="btn-secondary" onclick="quitGame()">На головну</button>`;
+  refreshHome();
+}
+
+function quitGame(){
+  clearInterval(gameTimerInt);
+  stopMusic();
+  showScreen('home');
+}
+
+// ═══ МУЗИКА (Web Audio - простий ритм) ═══
+function ensureAudio(){
+  if(!audioCtx){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+  if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+}
+function beep(freq){
+  if(!musicOn)return;
+  ensureAudio(); if(!audioCtx)return;
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type='sine'; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.12,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.15);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime+0.15);
+}
+function startMusic(){
+  if(!musicOn)return;
+  ensureAudio(); if(!audioCtx)return;
+  beatStep=0;
+  clearInterval(musicInt);
+  // простий бадьорий ритм - бас+хай-хет
+  const notes=[130.81,164.81,196.00,164.81]; // C E G E
+  musicInt=setInterval(()=>{
+    if(!musicOn||!audioCtx)return;
+    const t=audioCtx.currentTime;
+    // бас
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.type='triangle'; o.frequency.value=notes[beatStep%notes.length];
+    g.gain.setValueAtTime(0.08,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.18);
+    o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+0.18);
+    // хай-хет (шум) кожен другий
+    if(beatStep%2===0){
+      const bufferSize=audioCtx.sampleRate*0.05;
+      const buf=audioCtx.createBuffer(1,bufferSize,audioCtx.sampleRate);
+      const data=buf.getChannelData(0);
+      for(let i=0;i<bufferSize;i++)data[i]=Math.random()*2-1;
+      const noise=audioCtx.createBufferSource();noise.buffer=buf;
+      const ng=audioCtx.createGain();ng.gain.setValueAtTime(0.03,t);ng.gain.exponentialRampToValueAtTime(0.001,t+0.05);
+      noise.connect(ng);ng.connect(audioCtx.destination);noise.start(t);
+    }
+    beatStep++;
+  },300);
+}
+function stopMusic(){clearInterval(musicInt);musicInt=null;}
+function toggleMusic(){
+  musicOn=!musicOn;
+  document.getElementById('game-music').textContent=musicOn?'🔊':'🔇';
+  if(musicOn)startMusic(); else stopMusic();
+}
+
 
 // ═══════════════════════════════════════════════════════════════
 // AUTOCOMPLETE
