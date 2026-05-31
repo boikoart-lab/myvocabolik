@@ -298,6 +298,13 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .hem-info .s{font-size:12px;color:var(--text2)}
 .hem-bar{height:6px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:6px}
 .hem-fill{height:100%;background:var(--accent);border-radius:4px}
+
+.cefr-detail{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.cefr-row{display:flex;align-items:center;gap:10px}
+.cr-lvl{width:32px;font-weight:600;font-size:14px;color:var(--accent2)}
+.cr-bar{flex:1;height:8px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.cr-fill{height:100%;background:var(--accent);border-radius:4px;transition:width .6s}
+.cr-pct{font-size:12px;color:var(--text2);font-family:'DM Mono',monospace;width:36px;text-align:right}
 </style>
 </head>
 <body>
@@ -353,7 +360,8 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     </div>
     <div class="section-label">Більше</div>
     <div class="menu-card" onclick="showScreen('vocab')" style="flex-direction:row;align-items:center;gap:14px;margin-bottom:10px"><div class="mc-icon">📚</div><div><div class="mc-title">Словник</div><div class="mc-sub">Усі збережені слова</div></div></div>
-    <div class="menu-card" onclick="showScreen('progress')" style="flex-direction:row;align-items:center;gap:14px"><div class="mc-icon">📊</div><div><div class="mc-title">Прогрес</div><div class="mc-sub">Статистика і складні слова</div></div></div>
+    <div class="menu-card" onclick="showScreen('progress')" style="flex-direction:row;align-items:center;gap:14px;margin-bottom:10px"><div class="mc-icon">📊</div><div><div class="mc-title">Прогрес</div><div class="mc-sub">Статистика і складні слова</div></div></div>
+    <div class="menu-card" onclick="startCefrTest()" style="flex-direction:row;align-items:center;gap:14px"><div class="mc-icon">🎓</div><div><div class="mc-title">Тест рівня англійської</div><div class="mc-sub">Визнач свій рівень A1–C2</div></div></div>
     <div style="height:20px"></div>
   </div>
 </div>
@@ -508,6 +516,15 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div style="width:36px"></div>
   </div>
   <div class="scroll" id="libquiz-content"></div>
+</div>
+
+<div class="screen" id="screen-cefr">
+  <div class="topbar">
+    <button class="icon-btn" onclick="quitCefr()">←</button>
+    <div><div style="font-size:17px;font-weight:600">Тест рівня</div><div class="sub" id="cefr-sub"></div></div>
+    <div style="width:36px"></div>
+  </div>
+  <div class="scroll" id="cefr-content"></div>
 </div>
 
 <nav class="bottom-nav">
@@ -1246,6 +1263,101 @@ function pronounce(word){
   function speak(){const voices=window.speechSynthesis.getVoices();const female=['Google US English','Samantha','Karen','Moira','Tessa','Victoria','Fiona','Susan','Allison','Ava','Zira','Microsoft Zira'];let pref=null;for(const n of female){pref=voices.find(v=>v.name===n);if(pref)break;}if(!pref)pref=voices.find(v=>/female|woman|zira|samantha|karen|victoria|ava/i.test(v.name)&&v.lang.startsWith('en'));if(!pref)pref=voices.find(v=>v.lang==='en-US'&&!v.localService);if(!pref)pref=voices.find(v=>v.lang.startsWith('en'));if(pref)utt.voice=pref;utt.pitch=1.15;window.speechSynthesis.speak(utt);}
   if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,300);}
 }
+
+// ═══ CEFR ТЕСТ РІВНЯ (підвантажує words.json) ═══
+let CEFR_DATA=null;
+const CEFR_ORDER=['A1','A2','B1','B2','C1','C2'];
+let cefrQs=[],cefrIdx=0,cefrAnswered=false,cefrResults=[];
+
+async function loadCefrData(){
+  if(CEFR_DATA)return CEFR_DATA;
+  try{
+    const res=await fetch('words.json');
+    CEFR_DATA=await res.json();
+    return CEFR_DATA;
+  }catch(e){return null;}
+}
+
+async function startCefrTest(){
+  showScreen('cefr');
+  document.getElementById('cefr-content').innerHTML='<div class="loader"><div class="spinner"></div> Завантаження тесту...</div>';
+  const data=await loadCefrData();
+  if(!data){
+    document.getElementById('cefr-content').innerHTML='<div class="empty"><div class="ei">⚠️</div><p>Не вдалося завантажити слова.<br>Перевір зʼєднання і спробуй ще.</p></div>';
+    return;
+  }
+  // будуємо тест: по 5 слів з кожного рівня = 30 питань, від простих до складних
+  cefrQs=[];
+  CEFR_ORDER.forEach(lvl=>{
+    const pool=shuffle([...data.levels[lvl]]).slice(0,5);
+    pool.forEach(w=>cefrQs.push({...w,level:lvl}));
+  });
+  cefrIdx=0;cefrResults=[];
+  nextCefrQ();
+}
+
+function nextCefrQ(){
+  if(cefrIdx>=cefrQs.length){finishCefr();return;}
+  const q=cefrQs[cefrIdx];
+  // варіанти: правильний + 3 з усіх рівнів (схожої складності якщо можна)
+  let allWords=[];
+  CEFR_ORDER.forEach(l=>{CEFR_DATA.levels[l].forEach(w=>allWords.push(w.ua));});
+  const wrong=shuffle(allWords.filter(u=>u!==q.ua)).slice(0,3);
+  const options=shuffle([q.ua,...wrong]);
+  cefrAnswered=false;
+  document.getElementById('cefr-sub').textContent=(cefrIdx+1)+' / '+cefrQs.length;
+  document.getElementById('cefr-content').innerHTML=
+    '<div class="card-progress" style="margin-bottom:14px"><div class="card-progress-fill" style="width:'+(cefrIdx/cefrQs.length*100)+'%"></div></div>'+
+    '<div class="diff-badge">Рівень слова: <b>'+q.level+'</b></div>'+
+    '<div class="quiz-q"><div class="qq-type">Що означає це слово?</div><div class="qq-word">'+q.en+'</div>'+
+    '<button onclick="pronounce(\''+q.en.replace(/'/g,"\\'")+'\')" style="margin-top:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:15px;cursor:pointer;color:var(--text)">🔊</button></div>'+
+    '<div class="quiz-options">'+options.map(opt=>'<button class="qo-btn" onclick="answerCefr(this,\''+opt.replace(/'/g,"\\'")+'\',\''+q.ua.replace(/'/g,"\\'")+'\',\''+q.level+'\')">'+opt+'</button>').join('')+'</div>'+
+    '<button class="btn-secondary" style="margin-top:14px" onclick="answerCefr(null,\'\',\'\',\''+q.level+'\')">Не знаю</button>';
+}
+
+function answerCefr(btn,chosen,correct,level){
+  if(cefrAnswered)return;cefrAnswered=true;
+  const ok=chosen===correct&&chosen!=='';
+  cefrResults.push({level,ok});
+  document.querySelectorAll('.qo-btn').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');else if(b.textContent===chosen&&!ok)b.classList.add('wrong');});
+  setTimeout(()=>{cefrIdx++;nextCefrQ();},900);
+}
+
+function finishCefr(){
+  // рахуємо % правильних на кожному рівні
+  const byLevel={};
+  CEFR_ORDER.forEach(l=>byLevel[l]={ok:0,total:0});
+  cefrResults.forEach(r=>{byLevel[r.level].total++;if(r.ok)byLevel[r.level].ok++;});
+  // визначаємо рівень: найвищий де є 60%+ правильних (і всі нижчі теж пройдені)
+  let achieved='—',achievedName='Новачок';
+  const names={A1:'Початковий',A2:'Базовий',B1:'Середній',B2:'Вище середнього',C1:'Просунутий',C2:'Майстерність'};
+  for(const l of CEFR_ORDER){
+    const b=byLevel[l];
+    const pct=b.total>0?b.ok/b.total:0;
+    if(pct>=0.6){achieved=l;achievedName=names[l];}
+    else break;
+  }
+  // зберігаємо
+  try{localStorage.setItem('mv_cefr_'+(window._currentUID||'guest'),JSON.stringify({level:achieved,date:new Date().toISOString()}));}catch(e){}
+  // деталі по рівнях
+  let rows='';
+  CEFR_ORDER.forEach(l=>{
+    const b=byLevel[l];const pct=b.total>0?Math.round(b.ok/b.total*100):0;
+    rows+='<div class="cefr-row"><span class="cr-lvl">'+l+'</span><div class="cr-bar"><div class="cr-fill" style="width:'+pct+'%"></div></div><span class="cr-pct">'+b.ok+'/'+b.total+'</span></div>';
+  });
+  const emoji=achieved==='C2'?'🏆':achieved==='C1'||achieved==='B2'?'🎉':achieved==='—'?'🌱':'👍';
+  document.getElementById('cefr-content').innerHTML=
+    '<div style="text-align:center;padding:20px 0 10px"><div style="font-size:52px">'+emoji+'</div>'+
+    '<div style="font-size:14px;color:var(--text2);margin-top:8px">Твій рівень англійської</div>'+
+    '<div style="font-size:48px;font-weight:700;letter-spacing:-1px;color:var(--accent2);line-height:1.1">'+achieved+'</div>'+
+    '<div style="font-size:16px;color:var(--text)">'+achievedName+'</div></div>'+
+    '<div class="cefr-detail">'+rows+'</div>'+
+    '<button class="btn-primary" style="margin-top:20px;margin-bottom:10px" onclick="startCefrTest()">Пройти ще раз</button>'+
+    '<button class="btn-secondary" onclick="showScreen(\'home\')">На головну</button><div style="height:20px"></div>';
+}
+
+function quitCefr(){showScreen('home');}
+
 </script>
 
 <!-- FIREBASE with Google Auth -->
