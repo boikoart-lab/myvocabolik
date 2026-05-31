@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root,[data-theme="light"]{--bg:#fbeed3;--bg2:#fcf3e0;--bg3:#f6e3bd;--border:rgba(139,105,40,0.12);--border2:rgba(139,105,40,0.22);--text:#7a5418;--text2:#a88a5c;--text3:#c4ab85;--accent:#f0bb42;--accent2:#d99a2b;--green:#5cb85c;--red:#e08374;--yellow:#f0bb42;--btn-text:#6b4e1a;--radius:20px;--radius-sm:14px}
-[data-theme="dark"]{--bg:#2a201a;--bg2:#362a22;--bg3:#43342a;--border:rgba(240,224,200,0.10);--border2:rgba(240,224,200,0.18);--text:#f0e0c8;--text2:#c4a886;--text3:#8a7560;--accent:#e0a850;--accent2:#f0bb55;--green:#6cc06c;--red:#e89888;--yellow:#e0a850;--btn-text:#2a201a;--radius:20px;--radius-sm:14px}
+:root,[data-theme="light"]{--bg:#eef2e9;--bg2:#ffffff;--bg3:#f2f5ed;--border:rgba(60,80,50,0.10);--border2:rgba(60,80,50,0.16);--text:#2d3a28;--text2:#7a8a72;--text3:#a8b5a0;--accent:#7bc96f;--accent2:#5aa84f;--green:#7bc96f;--red:#e08374;--yellow:#e8b94a;--btn-text:#ffffff;--radius:22px;--radius-sm:16px}
+[data-theme="dark"]{--bg:#22281f;--bg2:#2d352a;--bg3:#39423455;--border:rgba(220,235,210,0.10);--border2:rgba(220,235,210,0.18);--text:#e8f0e2;--text2:#9db094;--text3:#6a7862;--accent:#7bc96f;--accent2:#92d886;--green:#7bc96f;--red:#e89888;--yellow:#e0c060;--btn-text:#1a201a;--radius:22px;--radius-sm:16px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
 
@@ -161,12 +161,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .dc-stat .l{font-size:11px;color:var(--text2);margin-top:2px}
 
 /* NAV */
-.bottom-nav{display:flex;border-top:1px solid var(--border);background:var(--bg);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom,0px)}
-.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:transparent;color:var(--text3);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'DM Sans',sans-serif;transition:color .15s}
+.bottom-nav{display:flex;align-items:center;justify-content:space-around;background:var(--bg2);flex-shrink:0;padding:10px 24px calc(10px + env(safe-area-inset-bottom,0px));margin:0 12px 12px;border-radius:28px;box-shadow:0 4px 24px rgba(45,58,40,0.10);position:relative}
+.nav-btn{border:none;background:transparent;color:var(--text3);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'DM Sans',sans-serif;transition:color .15s;padding:6px 16px}
 .nav-btn.active{color:var(--accent2)}
-.nav-btn{color:var(--text3)}
-.nav-btn .nb-icon{font-size:22px}
+.nav-btn .nb-svg{width:24px;height:24px}
 .nav-btn .nb-label{font-size:10px;letter-spacing:.3px}
+.nav-play{width:60px;height:60px;border-radius:50%;border:none;background:var(--accent);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(123,201,111,0.45);margin-top:-28px;transition:transform .15s}
+.nav-play:active{transform:scale(.92)}
+.nav-play svg{width:26px;height:26px;margin-left:3px}
 
 /* BUTTONS */
 .btn-primary{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius);color:var(--btn-text);font-weight:600;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:500;cursor:pointer}
@@ -250,6 +252,52 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .theme-card.sel .tc-check{opacity:1}
 .diff-badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:12px;background:var(--bg3);color:var(--text2);margin-bottom:12px}
 .diff-badge b{color:var(--accent2)}
+
+/* THEME TOGGLE SWITCH */
+.theme-toggle{width:56px;height:30px;border-radius:16px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0;transition:background .2s}
+.tt-thumb{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:13px;transition:transform .25s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+[data-theme="dark"] .tt-thumb{transform:translateX(26px)}
+
+/* LEVELS UI */
+.eng-level-card{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:20px;padding:20px;margin-bottom:18px;color:#fff}
+[data-theme="dark"] .eng-level-card{color:#1a201a}
+.elc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.elc-label{font-size:12px;opacity:.85}
+.elc-code{font-size:34px;font-weight:700;letter-spacing:-1px;line-height:1.1}
+.elc-name{font-size:13px;opacity:.9}
+.elc-ring{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;flex-shrink:0}
+.elc-bar{height:8px;background:rgba(255,255,255,0.3);border-radius:6px;overflow:hidden;margin-bottom:6px}
+.elc-fill{height:100%;background:#fff;border-radius:6px;transition:width .6s}
+[data-theme="dark"] .elc-fill{background:#1a201a}
+.elc-hint{font-size:12px;opacity:.85}
+.level-list{display:flex;flex-direction:column;gap:8px}
+.level-item{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px 16px;cursor:pointer;transition:all .15s}
+.level-item:active{transform:scale(.98)}
+.level-item.locked{opacity:.5;cursor:not-allowed}
+.li-num{width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;flex-shrink:0}
+.level-item.locked .li-num{background:var(--bg3);color:var(--text3)}
+.li-info{flex:1;min-width:0}
+.li-name{font-size:15px;font-weight:500}
+.li-sub{font-size:12px;color:var(--text2);margin-top:1px}
+.li-stars{font-size:12px;flex-shrink:0}
+.q-img{font-size:64px;margin-bottom:8px;line-height:1}
+
+.home-cta{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:20px;padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:16px;color:#fff}
+[data-theme="dark"] .home-cta{color:#1a201a}
+.home-cta:active{transform:scale(.98)}
+.hc-icon{font-size:30px;flex-shrink:0}
+.hc-text h3{font-size:17px;font-weight:600}
+.hc-text p{font-size:12px;opacity:.9;margin-top:2px}
+.hc-arrow{margin-left:auto;font-size:26px;opacity:.8}
+.section-label{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin:18px 0 10px;font-weight:600}
+.home-eng-mini{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:14px;cursor:pointer}
+.hem-badge{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+[data-theme="dark"] .hem-badge{color:#1a201a}
+.hem-info{flex:1;min-width:0}
+.hem-info .t{font-size:14px;font-weight:500}
+.hem-info .s{font-size:12px;color:var(--text2)}
+.hem-bar{height:6px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-top:6px}
+.hem-fill{height:100%;background:var(--accent);border-radius:4px}
 </style>
 </head>
 <body>
@@ -278,28 +326,35 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 <div class="screen active" id="screen-home">
   <div class="topbar">
     <div><div style="font-size:18px;font-weight:600;letter-spacing:-.3px">MyVocabolik</div><div class="sub" id="home-subtitle">Завантаження...</div></div>
-    <div id="avatar-wrap" onclick="openUserMenu()" style="cursor:pointer"><div class="user-initials" id="user-initials">?</div></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="theme-toggle" id="theme-toggle" onclick="flipTheme()" title="Тема"><div class="tt-thumb" id="tt-thumb"><span id="tt-icon">☀️</span></div></div>
+      <button class="icon-btn" onclick="showScreen('settings')" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
   </div>
   <div class="scroll">
-    <div style="height:8px"></div>
+    <div id="home-eng-level"></div>
+    <div class="home-cta" onclick="openLibrary()">
+      <div class="hc-icon">🎮</div>
+      <div class="hc-text"><h3>Почати грати</h3><p>Готові рівні — навіть без своїх слів</p></div>
+      <div class="hc-arrow">›</div>
+    </div>
     <div class="stats-row">
       <div class="stat-card"><div class="num" id="stat-total">0</div><div class="lbl">Слів</div></div>
       <div class="stat-card"><div class="num" id="stat-mastered">0</div><div class="lbl">Вивчено</div></div>
       <div class="stat-card"><div class="num" id="stat-review">0</div><div class="lbl">Повторити</div></div>
     </div>
     <div id="review-banner-wrap"></div>
-    <div class="play-banner" onclick="startGame()">
-      <div class="pb-icon">🎮</div>
-      <div class="pb-text"><h3>Грати в пари</h3><p>Знайди пари слів на час</p></div>
-      <div class="pb-arrow">›</div>
-    </div>
+    <div class="section-label">Мій словник</div>
     <div class="menu-grid">
       <div class="menu-card" onclick="showScreen('add')"><div class="mc-icon">➕</div><div class="mc-title">Додати слово</div><div class="mc-sub">Автопереклад і транскрипція</div></div>
-      <div class="menu-card" onclick="startCards()"><div class="mc-icon">🃏</div><div class="mc-title">Картки</div><div class="mc-sub">Флеш-картки з перекладом</div></div>
+      <div class="menu-card" onclick="startGame()"><div class="mc-icon">🎯</div><div class="mc-title">Пари на час</div><div class="mc-sub">Гра з твоїми словами</div></div>
+      <div class="menu-card" onclick="startCards()"><div class="mc-icon">🃏</div><div class="mc-title">Картки</div><div class="mc-sub">Флеш-картки</div></div>
       <div class="menu-card" onclick="startQuiz()"><div class="mc-icon">✏️</div><div class="mc-title">Тест</div><div class="mc-sub">Multiple choice</div></div>
-      <div class="menu-card" onclick="showScreen('progress')"><div class="mc-icon">📊</div><div class="mc-title">Прогрес</div><div class="mc-sub">Статистика і складні слова</div></div>
-      <div class="menu-card" onclick="openLibrary()" style="grid-column:1/-1;flex-direction:row;align-items:center;gap:14px"><div class="mc-icon">📚</div><div><div class="mc-title">Готові тести</div><div class="mc-sub">Слова за темами — без додавання своїх</div></div></div>
     </div>
+    <div class="section-label">Більше</div>
+    <div class="menu-card" onclick="showScreen('vocab')" style="flex-direction:row;align-items:center;gap:14px;margin-bottom:10px"><div class="mc-icon">📚</div><div><div class="mc-title">Словник</div><div class="mc-sub">Усі збережені слова</div></div></div>
+    <div class="menu-card" onclick="showScreen('progress')" style="flex-direction:row;align-items:center;gap:14px"><div class="mc-icon">📊</div><div><div class="mc-title">Прогрес</div><div class="mc-sub">Статистика і складні слова</div></div></div>
+    <div style="height:20px"></div>
   </div>
 </div>
 
@@ -414,7 +469,9 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div class="settings-item"><div class="si-text"><h4>Режим карток</h4></div><select id="s-cardmode"><option value="en-ua">EN→UA</option><option value="ua-en">UA→EN</option><option value="mixed">Змішаний</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Карток за сесію</h4></div><select id="s-cardcount"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Питань у тесті</h4></div><select id="s-quizcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div>
-    <div style="margin-top:24px"><button class="btn-secondary btn-danger" onclick="confirmClearAll()" style="width:100%">🗑 Видалити всі слова</button></div>
+    <div class="settings-item" style="border:none;padding-top:18px"><div class="si-text"><h4 id="set-username">Акаунт</h4><p id="set-useremail"></p></div></div>
+    <button class="btn-secondary" onclick="askSignOut()" style="width:100%;margin-bottom:10px">🚪 Вийти з акаунту</button>
+    <div style="margin-top:14px"><button class="btn-secondary btn-danger" onclick="confirmClearAll()" style="width:100%">🗑 Видалити всі слова</button></div>
     <div style="text-align:center;color:var(--text3);font-size:12px;margin-top:24px">MyVocabolik · Дані захищені</div>
     <div style="height:20px"></div>
   </div>
@@ -438,15 +495,10 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 <div class="screen" id="screen-library">
   <div class="topbar">
     <button class="icon-btn" onclick="showScreen('home')">←</button>
-    <div><div style="font-size:17px;font-weight:600">Готові тести</div><div class="sub">Обери теми</div></div>
+    <div><div style="font-size:17px;font-weight:600">Рівні</div><div class="sub">Проходь по черзі</div></div>
     <div style="width:36px"></div>
   </div>
-  <div class="scroll">
-    <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.5">Обери одну або кілька тем. Тест почнеться з простих слів і ставатиме складнішим, якщо відповідаєш швидко 🚀</p>
-    <div class="theme-grid" id="theme-grid"></div>
-    <button class="btn-primary" id="lib-start-btn" onclick="startLibQuiz()" style="display:none">Почати тест</button>
-    <div style="height:20px"></div>
-  </div>
+  <div class="scroll" id="library-content"></div>
 </div>
 
 <div class="screen" id="screen-libquiz">
@@ -459,11 +511,17 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 </div>
 
 <nav class="bottom-nav">
-  <button class="nav-btn active" id="nav-home" onclick="showScreen('home')"><span class="nb-icon">🏠</span><span class="nb-label">Головна</span></button>
-  <button class="nav-btn" id="nav-vocab" onclick="showScreen('vocab')"><span class="nb-icon">📚</span><span class="nb-label">Словник</span></button>
-  <button class="nav-btn" id="nav-cards" onclick="startCards()"><span class="nb-icon">🃏</span><span class="nb-label">Картки</span></button>
-  <button class="nav-btn" id="nav-quiz" onclick="startQuiz()"><span class="nb-icon">✏️</span><span class="nb-label">Тест</span></button>
-  <button class="nav-btn" id="nav-progress" onclick="showScreen('progress')"><span class="nb-icon">📊</span><span class="nb-label">Прогрес</span></button>
+  <button class="nav-btn active" id="nav-home" onclick="showScreen('home')">
+    <svg class="nb-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+    <span class="nb-label">Головна</span>
+  </button>
+  <button class="nav-play" id="nav-play" onclick="openLibrary()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 5l12 7-12 7V5z"/></svg>
+  </button>
+  <button class="nav-btn" id="nav-add" onclick="showScreen('add')">
+    <svg class="nb-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 9v6M9 12h6"/></svg>
+    <span class="nb-label">Додати</span>
+  </button>
 </nav>
 </div><!-- end main-app -->
 
@@ -588,6 +646,12 @@ function refreshHome() {
   document.getElementById('home-subtitle').textContent=words.length>0?`${words.length} слів у словнику`:'Почни додавати слова';
   const b=document.getElementById('review-banner-wrap');
   b.innerHTML=due>0?`<div class="review-banner" onclick="startCards(true)"><div class="rb-icon">🔁</div><div class="rb-text"><h3>До повторення сьогодні</h3><p>${due} ${due===1?'слово':due<5?'слова':'слів'}</p></div><div class="rb-arrow">›</div></div>`:'';
+  // міні-картка рівня англійської
+  const em=document.getElementById('home-eng-level');
+  if(em&&typeof getEnglishLevel==='function'){
+    const eng=getEnglishLevel();const p=getLevelProgress();const done=Object.keys(p.scores).length;const tot=LEVELS.length;
+    em.innerHTML=`<div class="home-eng-mini" onclick="openLibrary()"><div class="hem-badge">${eng.code}</div><div class="hem-info"><div class="t">Рівень англійської: ${eng.name}</div><div class="s">Пройдено ${done} з ${tot} рівнів</div><div class="hem-bar"><div class="hem-fill" style="width:${done/tot*100}%"></div></div></div></div>`;
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -708,7 +772,7 @@ function doDelete(id){dbDel(id);closeModal();goBack();showToast('Слово ви
 let cardQ=[],cardIdx=0,cardFlipped=false,cardCorrect=0;
 function startCards(reviewOnly=false,forceId=null){
   let words=getWords();
-  if(!words.length){showToast('Спочатку додай слова');return;}
+  if(!words.length){offerLevels('Щоб грати в картки, додай свої слова — або почни з готових рівнів!');return;}
   if(forceId){words=[getWord(forceId)].filter(Boolean);}
   else if(reviewOnly===true){words=words.filter(w=>isDue(w));}
   if(!words.length){showToast('Немає слів для повторення');return;}
@@ -767,7 +831,7 @@ function showCardsDone(){
 let quizQs=[],quizIdx=0,quizScore=0,quizAnswered=false;
 function startQuiz(){
   const words=getWords();
-  if(words.length<4){showToast('Потрібно мінімум 4 слова');return;}
+  if(words.length<4){offerLevels('Для тесту потрібно 4+ своїх слів. Або спробуй готові рівні прямо зараз!');return;}
   const count=parseInt(document.getElementById('s-quizcount')?.value||'10');
   const pool=shuffle(words).slice(0,Math.min(count,words.length));
   quizQs=pool.map(w=>{const wrong=shuffle(words.filter(x=>x.id!==w.id)).slice(0,3).map(x=>x.translation);return{word:w,options:shuffle([w.translation,...wrong]),correct:w.translation};});
@@ -836,13 +900,16 @@ function doSignOut(){
 // MODAL / TOAST
 // ═══════════════════════════════════════════════════════════════
 function showModal(html){document.getElementById('modal-body').innerHTML=html;document.getElementById('modal-overlay').classList.add('show');}
+function offerLevels(msg){showModal('<div style="text-align:center;font-size:36px;margin-bottom:8px">🎮</div><h3 style="text-align:center">Почнімо грати!</h3><p style="color:var(--text2);font-size:14px;margin:10px 0 20px;text-align:center;line-height:1.5">'+msg+'</p><button class="btn-primary" style="margin-bottom:10px" onclick="closeModal();openLibrary()">🎯 Готові рівні</button><button class="btn-secondary" onclick="closeModal();showScreen(\'add\')">➕ Додати своє слово</button>');}
 function closeModal(e){if(!e||e.target===document.getElementById('modal-overlay'))document.getElementById('modal-overlay').classList.remove('show');}
 function confirmClearAll(){showModal(`<h3>Видалити всі слова?</h3><p style="color:var(--text2);font-size:14px;margin-bottom:20px">Незворотна дія</p><button class="btn-primary" style="background:var(--red);margin-bottom:10px" onclick="doClearAll()">Видалити все</button><button class="btn-secondary" onclick="closeModal()">Скасувати</button>`);}
 function doClearAll(){const ids=Object.keys(W);W={};saveLocal();refreshHome();waitFb().then(fb=>{if(!fb)return;ids.forEach(id=>fb.del(id));}).catch(()=>{});closeModal();showScreen('home');showToast('Словник очищено');}
 let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
 function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('myvocabolik_theme',t);}catch(e){}}
-function loadTheme(){let t='light';try{t=localStorage.getItem('myvocabolik_theme')||'light';}catch(e){}document.documentElement.setAttribute('data-theme',t);const sel=document.getElementById('s-theme');if(sel)sel.value=t;}
+function flipTheme(){const cur=document.documentElement.getAttribute('data-theme')||'light';const next=cur==='dark'?'light':'dark';setTheme(next);updateThemeIcon(next);}
+function updateThemeIcon(t){const ic=document.getElementById('tt-icon');if(ic)ic.textContent=t==='dark'?'🌙':'☀️';}
+function loadTheme(){let t='light';try{t=localStorage.getItem('myvocabolik_theme')||'light';}catch(e){}document.documentElement.setAttribute('data-theme',t);const sel=document.getElementById('s-theme');if(sel)sel.value=t;updateThemeIcon(t);}
 
 function setSyncStatus(s){const el=document.getElementById('home-subtitle');if(el&&!getWords().length)el.textContent='Почни додавати слова';}
 
@@ -852,7 +919,7 @@ let audioCtx=null,musicOn=true,musicInt=null,beatStep=0;
 
 function startGame(){
   const words=getWords();
-  if(words.length<3){showToast('Потрібно мінімум 3 слова');return;}
+  if(words.length<3){offerLevels('Для гри потрібно 3+ своїх слів. Або зіграй готові рівні!');return;}
   // беремо до 8 пар
   const pool=shuffle(words).slice(0,Math.min(8,words.length));
   gameTotal=pool.length;
@@ -1012,123 +1079,130 @@ function toggleMusic(){
   if(musicOn)startMusic(); else stopMusic();
 }
 
-// ═══ БІБЛІОТЕКА СЛІВ ЗА ТЕМАМИ ═══
-// рівні: 1=просто, 2=середнє, 3=складно
-const LIBRARY={
-  travel:{icon:'✈️',name:'Подорож',words:[
-    {en:'trip',ua:'подорож',lvl:1},{en:'map',ua:'карта',lvl:1},{en:'ticket',ua:'квиток',lvl:1},{en:'hotel',ua:'готель',lvl:1},{en:'airport',ua:'аеропорт',lvl:1},{en:'luggage',ua:'багаж',lvl:2},{en:'passport',ua:'паспорт',lvl:2},{en:'departure',ua:'відправлення',lvl:2},{en:'destination',ua:'пункт призначення',lvl:3},{en:'itinerary',ua:'маршрут',lvl:3},{en:'accommodation',ua:'проживання',lvl:3}
+// ═══ БІБЛІОТЕКА СЛІВ — 10 РІВНІВ З КАРТИНКАМИ (емодзі) ═══
+// Кожен рівень = набір слів. Рівні відкриваються послідовно.
+const LEVELS=[
+  {name:'Базові речі',words:[
+    {en:'dog',ua:'собака',img:'🐶'},{en:'cat',ua:'кіт',img:'🐱'},{en:'house',ua:'дім',img:'🏠'},{en:'car',ua:'машина',img:'🚗'},{en:'tree',ua:'дерево',img:'🌳'},{en:'sun',ua:'сонце',img:'☀️'},{en:'book',ua:'книга',img:'📖'},{en:'apple',ua:'яблуко',img:'🍎'}
   ]},
-  weather:{icon:'🌦️',name:'Погода',words:[
-    {en:'rain',ua:'дощ',lvl:1},{en:'sun',ua:'сонце',lvl:1},{en:'snow',ua:'сніг',lvl:1},{en:'wind',ua:'вітер',lvl:1},{en:'cloud',ua:'хмара',lvl:1},{en:'storm',ua:'буря',lvl:2},{en:'fog',ua:'туман',lvl:2},{en:'thunder',ua:'грім',lvl:2},{en:'humidity',ua:'вологість',lvl:3},{en:'forecast',ua:'прогноз',lvl:3},{en:'drizzle',ua:'мряка',lvl:3}
+  {name:'Дім і побут',words:[
+    {en:'bed',ua:'ліжко',img:'🛏️'},{en:'door',ua:'двері',img:'🚪'},{en:'window',ua:'вікно',img:'🪟'},{en:'chair',ua:'стілець',img:'🪑'},{en:'table',ua:'стіл',img:'🍽️'},{en:'key',ua:'ключ',img:'🔑'},{en:'clock',ua:'годинник',img:'🕐'},{en:'lamp',ua:'лампа',img:'💡'}
   ]},
-  home:{icon:'🏠',name:'Дім',words:[
-    {en:'house',ua:'дім',lvl:1},{en:'door',ua:'двері',lvl:1},{en:'window',ua:'вікно',lvl:1},{en:'table',ua:'стіл',lvl:1},{en:'bed',ua:'ліжко',lvl:1},{en:'kitchen',ua:'кухня',lvl:1},{en:'ceiling',ua:'стеля',lvl:2},{en:'furniture',ua:'меблі',lvl:2},{en:'drawer',ua:'шухляда',lvl:2},{en:'appliance',ua:'побутовий прилад',lvl:3},{en:'staircase',ua:'сходи',lvl:3}
+  {name:'Їжа',words:[
+    {en:'bread',ua:'хліб',img:'🍞'},{en:'milk',ua:'молоко',img:'🥛'},{en:'cheese',ua:'сир',img:'🧀'},{en:'egg',ua:'яйце',img:'🥚'},{en:'fish',ua:'риба',img:'🐟'},{en:'cake',ua:'торт',img:'🍰'},{en:'coffee',ua:'кава',img:'☕'},{en:'banana',ua:'банан',img:'🍌'}
   ]},
-  food:{icon:'🍎',name:'Їжа',words:[
-    {en:'bread',ua:'хліб',lvl:1},{en:'milk',ua:'молоко',lvl:1},{en:'apple',ua:'яблуко',lvl:1},{en:'water',ua:'вода',lvl:1},{en:'meat',ua:'мʼясо',lvl:1},{en:'cheese',ua:'сир',lvl:1},{en:'vegetable',ua:'овоч',lvl:2},{en:'breakfast',ua:'сніданок',lvl:2},{en:'dessert',ua:'десерт',lvl:2},{en:'ingredient',ua:'інгредієнт',lvl:3},{en:'nutrition',ua:'харчування',lvl:3}
+  {name:'Тварини',words:[
+    {en:'bird',ua:'птах',img:'🐦'},{en:'horse',ua:'кінь',img:'🐴'},{en:'cow',ua:'корова',img:'🐮'},{en:'bear',ua:'ведмідь',img:'🐻'},{en:'rabbit',ua:'кролик',img:'🐰'},{en:'fox',ua:'лисиця',img:'🦊'},{en:'frog',ua:'жаба',img:'🐸'},{en:'bee',ua:'бджола',img:'🐝'}
   ]},
-  animals:{icon:'🐶',name:'Тварини',words:[
-    {en:'dog',ua:'собака',lvl:1},{en:'cat',ua:'кіт',lvl:1},{en:'bird',ua:'птах',lvl:1},{en:'fish',ua:'риба',lvl:1},{en:'horse',ua:'кінь',lvl:1},{en:'cow',ua:'корова',lvl:1},{en:'rabbit',ua:'кролик',lvl:2},{en:'squirrel',ua:'білка',lvl:2},{en:'hedgehog',ua:'їжак',lvl:3},{en:'creature',ua:'істота',lvl:3},{en:'mammal',ua:'ссавець',lvl:3}
+  {name:'Природа',words:[
+    {en:'flower',ua:'квітка',img:'🌸'},{en:'river',ua:'річка',img:'🏞️'},{en:'mountain',ua:'гора',img:'⛰️'},{en:'rain',ua:'дощ',img:'🌧️'},{en:'snow',ua:'сніг',img:'❄️'},{en:'star',ua:'зірка',img:'⭐'},{en:'moon',ua:'місяць',img:'🌙'},{en:'leaf',ua:'листок',img:'🍃'}
   ]},
-  body:{icon:'💪',name:'Тіло',words:[
-    {en:'hand',ua:'рука',lvl:1},{en:'head',ua:'голова',lvl:1},{en:'eye',ua:'око',lvl:1},{en:'leg',ua:'нога',lvl:1},{en:'hair',ua:'волосся',lvl:1},{en:'finger',ua:'палець',lvl:2},{en:'shoulder',ua:'плече',lvl:2},{en:'knee',ua:'коліно',lvl:2},{en:'eyebrow',ua:'брова',lvl:3},{en:'ankle',ua:'щиколотка',lvl:3},{en:'spine',ua:'хребет',lvl:3}
+  {name:'Місто і транспорт',words:[
+    {en:'bus',ua:'автобус',img:'🚌'},{en:'train',ua:'потяг',img:'🚆'},{en:'bike',ua:'велосипед',img:'🚲'},{en:'plane',ua:'літак',img:'✈️'},{en:'ship',ua:'корабель',img:'🚢'},{en:'bridge',ua:'міст',img:'🌉'},{en:'shop',ua:'магазин',img:'🏪'},{en:'street',ua:'вулиця',img:'🛣️'}
   ]},
-  work:{icon:'💼',name:'Робота',words:[
-    {en:'job',ua:'робота',lvl:1},{en:'office',ua:'офіс',lvl:1},{en:'boss',ua:'начальник',lvl:1},{en:'money',ua:'гроші',lvl:1},{en:'team',ua:'команда',lvl:1},{en:'meeting',ua:'зустріч',lvl:2},{en:'salary',ua:'зарплата',lvl:2},{en:'deadline',ua:'дедлайн',lvl:2},{en:'colleague',ua:'колега',lvl:3},{en:'promotion',ua:'підвищення',lvl:3},{en:'responsibility',ua:'відповідальність',lvl:3}
+  {name:'Емоції',words:[
+    {en:'happy',ua:'щасливий',img:'😊'},{en:'sad',ua:'сумний',img:'😢'},{en:'angry',ua:'злий',img:'😠'},{en:'tired',ua:'втомлений',img:'😪'},{en:'scared',ua:'наляканий',img:'😨'},{en:'surprised',ua:'здивований',img:'😲'},{en:'calm',ua:'спокійний',img:'😌'},{en:'excited',ua:'схвильований',img:'🤩'}
   ]},
-  emotions:{icon:'😊',name:'Емоції',words:[
-    {en:'happy',ua:'щасливий',lvl:1},{en:'sad',ua:'сумний',lvl:1},{en:'angry',ua:'злий',lvl:1},{en:'tired',ua:'втомлений',lvl:1},{en:'scared',ua:'наляканий',lvl:2},{en:'excited',ua:'схвильований',lvl:2},{en:'bored',ua:'знуджений',lvl:2},{en:'jealous',ua:'ревнивий',lvl:3},{en:'grateful',ua:'вдячний',lvl:3},{en:'anxious',ua:'тривожний',lvl:3},{en:'confident',ua:'впевнений',lvl:3}
+  {name:'Робота і навчання',words:[
+    {en:'office',ua:'офіс',img:'🏢'},{en:'meeting',ua:'зустріч',img:'🤝'},{en:'salary',ua:'зарплата',img:'💰'},{en:'deadline',ua:'дедлайн',img:'⏰'},{en:'goal',ua:'ціль',img:'🎯'},{en:'idea',ua:'ідея',img:'💡'},{en:'team',ua:'команда',img:'👥'},{en:'success',ua:'успіх',img:'🏆'}
   ]},
-  nature:{icon:'🌳',name:'Природа',words:[
-    {en:'tree',ua:'дерево',lvl:1},{en:'flower',ua:'квітка',lvl:1},{en:'river',ua:'річка',lvl:1},{en:'mountain',ua:'гора',lvl:1},{en:'sea',ua:'море',lvl:1},{en:'forest',ua:'ліс',lvl:2},{en:'leaf',ua:'листок',lvl:2},{en:'grass',ua:'трава',lvl:2},{en:'valley',ua:'долина',lvl:3},{en:'waterfall',ua:'водоспад',lvl:3},{en:'meadow',ua:'луг',lvl:3}
+  {name:'Складніші слова',words:[
+    {en:'journey',ua:'подорож',img:'🧭'},{en:'knowledge',ua:'знання',img:'🧠'},{en:'freedom',ua:'свобода',img:'🕊️'},{en:'courage',ua:'сміливість',img:'🦁'},{en:'patience',ua:'терпіння',img:'⏳'},{en:'balance',ua:'рівновага',img:'⚖️'},{en:'growth',ua:'зростання',img:'🌱'},{en:'memory',ua:'памʼять',img:'💭'}
   ]},
-  city:{icon:'🏙️',name:'Місто',words:[
-    {en:'street',ua:'вулиця',lvl:1},{en:'car',ua:'машина',lvl:1},{en:'bus',ua:'автобус',lvl:1},{en:'shop',ua:'магазин',lvl:1},{en:'bike',ua:'велосипед',lvl:1},{en:'building',ua:'будівля',lvl:2},{en:'bridge',ua:'міст',lvl:2},{en:'traffic',ua:'рух',lvl:2},{en:'pavement',ua:'тротуар',lvl:3},{en:'intersection',ua:'перехрестя',lvl:3},{en:'skyscraper',ua:'хмарочос',lvl:3}
+  {name:'Просунутий рівень',words:[
+    {en:'achievement',ua:'досягнення',img:'🎖️'},{en:'opportunity',ua:'можливість',img:'🚪'},{en:'responsibility',ua:'відповідальність',img:'📋'},{en:'environment',ua:'середовище',img:'🌍'},{en:'experience',ua:'досвід',img:'🧳'},{en:'imagination',ua:'уява',img:'🎨'},{en:'confidence',ua:'впевненість',img:'💪'},{en:'gratitude',ua:'вдячність',img:'🙏'}
   ]}
-};
+];
 
-let selThemes=new Set();
+// прогрес рівнів зберігаємо локально (на акаунт)
+function lvlKey(){return 'mv_levels_'+(window._currentUID||'guest');}
+function getLevelProgress(){try{return JSON.parse(localStorage.getItem(lvlKey())||'{"unlocked":1,"scores":{}}');}catch(e){return {unlocked:1,scores:{}};}}
+function saveLevelProgress(p){try{localStorage.setItem(lvlKey(),JSON.stringify(p));}catch(e){}}
+
+// розрахунок рівня англійської (A1-C1) на основі пройдених рівнів
+function getEnglishLevel(){
+  const p=getLevelProgress();
+  const done=Object.keys(p.scores).length;
+  if(done>=9)return{code:'C1',name:'Просунутий'};
+  if(done>=7)return{code:'B2',name:'Вище середнього'};
+  if(done>=5)return{code:'B1',name:'Середній'};
+  if(done>=3)return{code:'A2',name:'Базовий+'};
+  if(done>=1)return{code:'A1',name:'Початковий'};
+  return{code:'—',name:'Новачок'};
+}
+
 function openLibrary(){
-  selThemes.clear();
-  const grid=document.getElementById('theme-grid');
-  grid.innerHTML=Object.entries(LIBRARY).map(([k,t])=>
-    `<div class="theme-card" data-theme="${k}" onclick="toggleTheme('${k}')"><div class="tc-check">✓</div><div class="tc-icon">${t.icon}</div><div class="tc-name">${t.name}</div><div class="tc-count">${t.words.length} слів</div></div>`
-  ).join('');
-  document.getElementById('lib-start-btn').style.display='none';
+  const p=getLevelProgress();
+  const eng=getEnglishLevel();
+  const totalLevels=LEVELS.length;
+  const doneCount=Object.keys(p.scores).length;
+  let html='<div class="eng-level-card"><div class="elc-top"><div><div class="elc-label">Твій рівень англійської</div><div class="elc-code">'+eng.code+'</div><div class="elc-name">'+eng.name+'</div></div><div class="elc-ring">'+Math.round(doneCount/totalLevels*100)+'%</div></div><div class="elc-bar"><div class="elc-fill" style="width:'+(doneCount/totalLevels*100)+'%"></div></div><div class="elc-hint">Пройдено '+doneCount+' з '+totalLevels+' рівнів</div></div>';
+  html+='<div class="level-list">';
+  LEVELS.forEach((lv,i)=>{
+    const num=i+1;
+    const unlocked=num<=p.unlocked;
+    const score=p.scores[num];
+    const stars=score?(score>=90?'⭐⭐⭐':score>=70?'⭐⭐':'⭐'):'';
+    html+='<div class="level-item '+(unlocked?'':'locked')+'" '+(unlocked?'onclick="startLevel('+num+')"':'')+'>'+
+      '<div class="li-num">'+(unlocked?num:'🔒')+'</div>'+
+      '<div class="li-info"><div class="li-name">'+lv.name+'</div><div class="li-sub">'+lv.words.length+' слів'+(score!=null?' · '+score+'%':'')+'</div></div>'+
+      '<div class="li-stars">'+stars+'</div></div>';
+  });
+  html+='</div><div style="height:20px"></div>';
+  document.getElementById('library-content').innerHTML=html;
   showScreen('library');
 }
-function toggleTheme(k){
-  if(selThemes.has(k))selThemes.delete(k);else selThemes.add(k);
-  document.querySelector(`.theme-card[data-theme="${k}"]`).classList.toggle('sel');
-  document.getElementById('lib-start-btn').style.display=selThemes.size>0?'block':'none';
-}
 
-// ═══ АДАПТИВНИЙ ТЕСТ ═══
-let lqPool=[],lqIdx=0,lqCorrect=0,lqWrong=0,lqLevel=1,lqQStart=0,lqAnswered=false,lqStreak=0,lqTotal=12;
-function startLibQuiz(){
-  // збираємо всі слова з обраних тем
-  let all=[];
-  selThemes.forEach(k=>{LIBRARY[k].words.forEach(w=>all.push({...w,theme:k}));});
-  if(all.length<4){showToast('Замало слів — обери більше тем');return;}
-  lqPool=all; lqIdx=0; lqCorrect=0; lqWrong=0; lqLevel=1; lqStreak=0;
-  lqTotal=Math.min(12,all.length);
+// ═══ ТЕСТ РІВНЯ ═══
+let lvPool=[],lvIdx=0,lvCorrect=0,lvWrong=0,lvNum=1,lvAnswered=false;
+function startLevel(num){
+  lvNum=num;
+  const lv=LEVELS[num-1];
+  lvPool=shuffle([...lv.words]);
+  lvIdx=0;lvCorrect=0;lvWrong=0;
   showScreen('libquiz');
-  nextLibQ();
+  nextLevelQ();
 }
-function nextLibQ(){
-  if(lqIdx>=lqTotal){finishLibQuiz();return;}
-  // обираємо слово поточного рівня (або найближче)
-  let candidates=lqPool.filter(w=>w.lvl===lqLevel);
-  if(candidates.length===0)candidates=lqPool.filter(w=>Math.abs(w.lvl-lqLevel)<=1);
-  if(candidates.length===0)candidates=lqPool;
-  const word=candidates[Math.floor(Math.random()*candidates.length)];
-  // варіанти відповідей
-  const others=shuffle(lqPool.filter(w=>w.ua!==word.ua)).slice(0,3).map(w=>w.ua);
+function nextLevelQ(){
+  if(lvIdx>=lvPool.length){finishLevel();return;}
+  const word=lvPool[lvIdx];
+  // всі слова рівня для варіантів
+  const allUa=LEVELS[lvNum-1].words.map(w=>w.ua);
+  const others=shuffle(allUa.filter(u=>u!==word.ua)).slice(0,3);
   const options=shuffle([word.ua,...others]);
-  lqAnswered=false; lqQStart=Date.now();
-  const lvlName=lqLevel===1?'простий':lqLevel===2?'середній':'складний';
-  document.getElementById('libquiz-sub').textContent=`${lqIdx+1} / ${lqTotal}`;
-  document.getElementById('libquiz-content').innerHTML=`
-    <div class="card-progress" style="margin-bottom:14px"><div class="card-progress-fill" style="width:${(lqIdx/lqTotal)*100}%"></div></div>
-    <div class="diff-badge">Рівень: <b>${lvlName}</b></div>
-    <div class="quiz-q">
-      <div class="qq-type">Обери переклад</div>
-      <div class="qq-word">${word.en}</div>
-      <button onclick="pronounce('${word.en}')" style="margin-top:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:15px;cursor:pointer;color:var(--text)">🔊</button>
-    </div>
-    <div class="quiz-options">${options.map((opt,i)=>`<button class="qo-btn" id="lqo${i}" onclick="answerLibQ('${opt.replace(/'/g,"\\'")}','${word.ua.replace(/'/g,"\\'")}')">${opt}</button>`).join('')}</div>`;
+  lvAnswered=false;
+  document.getElementById('libquiz-sub').textContent=(lvIdx+1)+' / '+lvPool.length;
+  document.getElementById('libquiz-content').innerHTML=
+    '<div class="card-progress" style="margin-bottom:16px"><div class="card-progress-fill" style="width:'+(lvIdx/lvPool.length*100)+'%"></div></div>'+
+    '<div class="quiz-q"><div class="q-img">'+word.img+'</div><div class="qq-word">'+word.en+'</div>'+
+    '<button onclick="pronounce(\''+word.en+'\')" style="margin-top:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:15px;cursor:pointer;color:var(--text)">🔊</button></div>'+
+    '<div class="quiz-options">'+options.map((opt,i)=>'<button class="qo-btn" onclick="answerLevel(this,\''+opt.replace(/'/g,"\\'")+'\',\''+word.ua.replace(/'/g,"\\'")+'\')">'+opt+'</button>').join('')+'</div>';
 }
-function answerLibQ(chosen,correct){
-  if(lqAnswered)return; lqAnswered=true;
-  const responseTime=(Date.now()-lqQStart)/1000;
+function answerLevel(btn,chosen,correct){
+  if(lvAnswered)return;lvAnswered=true;
   const ok=chosen===correct;
-  if(ok){
-    lqCorrect++; lqStreak++;
-    // адаптація: швидко (<3с) і поспіль правильно → складніше
-    if(responseTime<3 && lqStreak>=2 && lqLevel<3){lqLevel++;lqStreak=0;}
-  }else{
-    lqWrong++; lqStreak=0;
-    if(lqLevel>1)lqLevel--; // помилка → легше
-  }
-  document.querySelectorAll('.qo-btn').forEach(btn=>{
-    btn.disabled=true;
-    if(btn.textContent===correct)btn.classList.add('correct');
-    else if(btn.textContent===chosen&&!ok)btn.classList.add('wrong');
-  });
-  setTimeout(()=>{lqIdx++;nextLibQ();},1100);
+  if(ok)lvCorrect++;else lvWrong++;
+  document.querySelectorAll('.qo-btn').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');else if(b.textContent===chosen&&!ok)b.classList.add('wrong');});
+  setTimeout(()=>{lvIdx++;nextLevelQ();},1000);
 }
-function finishLibQuiz(){
-  const total=lqCorrect+lqWrong;
-  const pct=total>0?Math.round(lqCorrect/total*100):0;
-  const emoji=pct>=80?'🏆':pct>=60?'🎉':'💪';
-  document.getElementById('libquiz-content').innerHTML=`
-    <div class="quiz-score">
-      <div class="qs-emoji">${emoji}</div>
-      <div class="qs-title">${pct>=80?'Відмінно!':pct>=60?'Добре!':'Тренуйся ще!'}</div>
-      <div class="qs-sub">Правильно: ${lqCorrect} з ${total} (${pct}%)<br>Досягнутий рівень: ${lqLevel===1?'простий':lqLevel===2?'середній':'складний'}</div>
-      <button class="btn-primary" onclick="openLibrary()" style="margin-bottom:10px">Обрати інші теми</button>
-      <button class="btn-secondary" onclick="showScreen('home')">На головну</button>
-    </div>`;
+function finishLevel(){
+  const total=lvCorrect+lvWrong;
+  const pct=total>0?Math.round(lvCorrect/total*100):0;
+  // зберігаємо прогрес
+  const p=getLevelProgress();
+  if(!p.scores[lvNum]||p.scores[lvNum]<pct)p.scores[lvNum]=pct;
+  // відкриваємо наступний рівень якщо склав на 60%+
+  if(pct>=60&&lvNum>=p.unlocked&&lvNum<LEVELS.length)p.unlocked=lvNum+1;
+  saveLevelProgress(p);
+  const emoji=pct>=90?'🏆':pct>=70?'🎉':pct>=60?'👍':'💪';
+  const passed=pct>=60;
+  const nextUnlocked=passed&&lvNum<LEVELS.length;
+  document.getElementById('libquiz-content').innerHTML=
+    '<div class="quiz-score"><div class="qs-emoji">'+emoji+'</div>'+
+    '<div class="qs-title">'+(pct>=70?'Чудово!':passed?'Рівень пройдено!':'Ще трохи!')+'</div>'+
+    '<div class="qs-sub">Правильно: '+lvCorrect+' з '+total+' ('+pct+'%)'+(nextUnlocked?'<br>🎉 Відкрито рівень '+(lvNum+1)+'!':passed?'':'<br>Потрібно 60% щоб пройти далі')+'</div>'+
+    (nextUnlocked?'<button class="btn-primary" onclick="startLevel('+(lvNum+1)+')" style="margin-bottom:10px">Наступний рівень →</button>':'<button class="btn-primary" onclick="startLevel('+lvNum+')" style="margin-bottom:10px">Спробувати ще раз</button>')+
+    '<button class="btn-secondary" onclick="openLibrary()">До рівнів</button></div>';
 }
 
 
@@ -1169,7 +1243,7 @@ function pronounce(word){
   window.speechSynthesis.cancel();
   const utt=new SpeechSynthesisUtterance(word);
   utt.lang='en-US'; utt.rate=0.85; utt.pitch=1.0; utt.volume=1.0;
-  function speak(){const voices=window.speechSynthesis.getVoices();const pref=voices.find(v=>v.name==='Google US English')||voices.find(v=>v.name==='Samantha')||voices.find(v=>v.name==='Karen')||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(pref)utt.voice=pref;window.speechSynthesis.speak(utt);}
+  function speak(){const voices=window.speechSynthesis.getVoices();const female=['Google US English','Samantha','Karen','Moira','Tessa','Victoria','Fiona','Susan','Allison','Ava','Zira','Microsoft Zira'];let pref=null;for(const n of female){pref=voices.find(v=>v.name===n);if(pref)break;}if(!pref)pref=voices.find(v=>/female|woman|zira|samantha|karen|victoria|ava/i.test(v.name)&&v.lang.startsWith('en'));if(!pref)pref=voices.find(v=>v.lang==='en-US'&&!v.localService);if(!pref)pref=voices.find(v=>v.lang.startsWith('en'));if(pref)utt.voice=pref;utt.pitch=1.15;window.speechSynthesis.speak(utt);}
   if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,300);}
 }
 </script>
