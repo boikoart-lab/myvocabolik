@@ -4,31 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MyVocabolik — Адмінка</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#0f0f13;--bg2:#17171e;--bg3:#1e1e28;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#f0f0f4;--text2:#8888a0;--text3:#55556a;--accent:#7c6af7;--accent2:#a097fa;--green:#3ecf8e;--red:#f06070;--yellow:#f0b429;--radius:14px}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
 /* LOGIN */
-.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
-.login-card{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:40px 32px;max-width:360px;width:100%;text-align:center}
-.login-card .icon{font-size:40px;margin-bottom:16px}
-.login-card h1{font-size:22px;font-weight:600;margin-bottom:8px}
-.login-card p{color:var(--text2);font-size:14px;margin-bottom:32px;line-height:1.6}
-.btn-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:14px;background:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#1f1f1f;cursor:pointer}
-.btn-google img{width:20px}
-.error-msg{color:var(--red);font-size:13px;margin-top:16px;display:none}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:40px 32px;text-align:center;max-width:380px;width:100%}
+.login-box .icon{font-size:40px;margin-bottom:16px}
+.login-box h1{font-size:22px;font-weight:600;margin-bottom:8px}
+.login-box p{color:var(--text2);font-size:14px;margin-bottom:32px;line-height:1.6}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:15px;background:#fff;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;color:#1f1f1f;cursor:pointer;box-shadow:0 2px 16px rgba(0,0,0,0.3)}
+.btn-google img{width:20px;height:20px}
 
-/* ADMIN */
-.admin-wrap{display:none;flex-direction:column;min-height:100vh}
+/* ACCESS DENIED */
+.denied{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.denied .icon{font-size:52px;margin-bottom:16px}
+.denied h2{font-size:22px;font-weight:600;margin-bottom:8px}
+.denied p{color:var(--text2);font-size:14px;margin-bottom:24px}
+.btn-out{padding:12px 24px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer}
+
+/* ADMIN PANEL */
+.admin{display:none;flex-direction:column;min-height:100vh}
 .topbar{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10}
-.topbar-left{display:flex;align-items:center;gap:12px}
 .topbar-left h1{font-size:17px;font-weight:600}
-.topbar-left .badge{background:var(--accent);color:#fff;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:500}
-.admin-user{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2)}
-.admin-user img{width:28px;height:28px;border-radius:50%;object-fit:cover}
-.btn-logout{background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:13px;padding:6px 12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.topbar-left p{font-size:12px;color:var(--text2);margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.admin-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--border2)}
+.admin-name{font-size:13px;color:var(--text2)}
+.btn-signout{padding:7px 14px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
 
 .content{padding:24px;max-width:900px;margin:0 auto;width:100%}
 
@@ -36,40 +42,29 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:28px}
 .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
 .stat-card .num{font-size:28px;font-weight:600;letter-spacing:-1px}
-.stat-card .lbl{font-size:12px;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.stat-card .lbl{font-size:11px;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
 
-/* FILTERS */
-.toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
-.search-input{flex:1;min-width:180px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none}
-.search-input:focus{border-color:var(--accent)}
-.filter-chip{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:7px 14px;font-size:13px;cursor:pointer;color:var(--text2);white-space:nowrap}
-.filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
-
-/* USER TABLE */
-.users-grid{display:flex;flex-direction:column;gap:10px}
-.user-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:16px;transition:border .15s}
-.user-card.blocked{border-color:rgba(240,96,112,.3);background:rgba(240,96,112,.05)}
-.user-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600}
-.user-avatar img{width:44px;height:44px;border-radius:50%;object-fit:cover}
-.user-info{flex:1;min-width:0}
-.user-name{font-size:15px;font-weight:500;display:flex;align-items:center;gap:8px}
-.user-email{font-size:13px;color:var(--text2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.user-meta{font-size:12px;color:var(--text3);margin-top:4px;display:flex;gap:12px;flex-wrap:wrap}
-.user-meta span{display:flex;align-items:center;gap:4px}
-.user-actions{display:flex;gap:8px;flex-shrink:0}
-.action-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+/* USERS TABLE */
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:14px}
+.users-list{display:flex;flex-direction:column;gap:10px}
+.user-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;display:flex;align-items:center;gap:14px;transition:border .15s}
+.user-card.blocked{opacity:.5;border-color:rgba(240,96,112,.3);background:rgba(240,96,112,.05)}
+.user-card.admin-user{border-color:rgba(124,106,247,.3);background:rgba(124,106,247,.05)}
+.uc-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600}
+.uc-info{flex:1;min-width:0}
+.uc-name{font-size:15px;font-weight:500;display:flex;align-items:center;gap:8px}
+.uc-email{font-size:12px;color:var(--text2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.uc-meta{font-size:11px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace}
+.uc-actions{display:flex;gap:8px;flex-shrink:0}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.badge-admin{background:rgba(124,106,247,.2);color:var(--accent2)}
+.badge-blocked{background:rgba(240,96,112,.15);color:var(--red)}
+.badge-new{background:rgba(62,207,142,.15);color:var(--green)}
+.action-btn{padding:6px 12px;border-radius:8px;border:1px solid var(--border2);background:transparent;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap}
 .action-btn:hover{background:var(--bg3)}
 .action-btn.danger{color:var(--red);border-color:rgba(240,96,112,.3)}
 .action-btn.danger:hover{background:rgba(240,96,112,.1)}
-.action-btn.warn{color:var(--yellow);border-color:rgba(240,180,41,.3)}
-.action-btn.warn:hover{background:rgba(240,180,41,.1)}
 .action-btn.success{color:var(--green);border-color:rgba(62,207,142,.3)}
-.action-btn.success:hover{background:rgba(62,207,142,.1)}
-
-/* BADGES */
-.badge-blocked{background:rgba(240,96,112,.15);color:var(--red);font-size:11px;padding:2px 8px;border-radius:20px}
-.badge-admin{background:rgba(124,106,247,.2);color:var(--accent2);font-size:11px;padding:2px 8px;border-radius:20px}
-.badge-new{background:rgba(62,207,142,.15);color:var(--green);font-size:11px;padding:2px 8px;border-radius:20px}
 
 /* MODAL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:flex-end;justify-content:center}
@@ -77,95 +72,106 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .modal{background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border2);padding:24px;width:100%;max-width:480px}
 .modal-handle{width:40px;height:4px;background:var(--border2);border-radius:4px;margin:0 auto 20px}
 .modal h3{font-size:17px;font-weight:600;margin-bottom:8px}
-.modal p{color:var(--text2);font-size:14px;margin-bottom:20px;line-height:1.5}
-.btn-primary{width:100%;padding:14px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:10px}
-.btn-secondary{width:100%;padding:12px;background:transparent;border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer}
+.modal p{font-size:14px;color:var(--text2);margin-bottom:20px;line-height:1.5}
+.btn-full{width:100%;padding:14px;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:10px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-secondary{background:transparent;border:1px solid var(--border2);color:var(--text)}
 
-.empty{text-align:center;padding:60px 20px;color:var(--text2)}
-.empty .ei{font-size:40px;margin-bottom:12px}
-.loader{display:flex;align-items:center;gap:10px;justify-content:center;padding:60px;color:var(--text2)}
+/* EMPTY */
+.empty{text-align:center;padding:60px 20px;color:var(--text2);font-size:14px}
+.empty .ei{font-size:36px;margin-bottom:12px}
+
+/* LOADER */
+.loader{display:flex;align-items:center;justify-content:center;gap:10px;padding:40px;color:var(--text2);font-size:14px}
 .spinner{width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* TOAST */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px 20px;font-size:14px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:999}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-@media(max-width:600px){
-  .user-actions{flex-direction:column}
-  .user-card{flex-wrap:wrap}
-}
+.refresh-btn{padding:7px 14px;background:var(--accent);border:none;border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
+.search-bar{position:relative;margin-bottom:16px}
+.search-bar input{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px 10px 36px;outline:none}
+.search-bar input:focus{border-color:var(--accent)}
+.search-bar .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;pointer-events:none}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div class="login-wrap" id="login-wrap">
-  <div class="login-card">
-    <div class="icon">🛡️</div>
-    <h1>Адмінка MyVocabolik</h1>
+  <div class="login-box">
+    <div class="icon">🔐</div>
+    <h1>Адмін панель</h1>
     <p>Тільки для адміністратора.<br>Увійди через свій Google акаунт.</p>
-    <button class="btn-google" onclick="adminLogin()">
+    <button class="btn-google" onclick="adminSignIn()">
       <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
       Увійти через Google
     </button>
-    <div class="error-msg" id="error-msg">⛔ Доступ заборонено. Тільки адмін може увійти.</div>
   </div>
 </div>
 
+<!-- ACCESS DENIED -->
+<div class="denied" id="denied-wrap" style="display:none">
+  <div class="icon">🚫</div>
+  <h2>Доступ заборонено</h2>
+  <p>Цей акаунт не має прав адміністратора.<br>Зверніться до власника програми.</p>
+  <button class="btn-out" onclick="adminSignOut()">Вийти</button>
+</div>
+
 <!-- ADMIN PANEL -->
-<div class="admin-wrap" id="admin-wrap">
+<div class="admin" id="admin-wrap">
   <div class="topbar">
     <div class="topbar-left">
-      <h1>👥 Користувачі</h1>
-      <span class="badge" id="users-count">0</span>
+      <h1>📖 MyVocabolik — Адмінка</h1>
+      <p id="admin-subtitle">Завантаження...</p>
     </div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <div class="admin-user">
-        <img id="admin-photo" src="" alt="" style="display:none">
-        <span id="admin-name"></span>
-      </div>
-      <button class="btn-logout" onclick="adminLogout()">Вийти</button>
+    <div class="topbar-right">
+      <span class="admin-name" id="admin-name"></span>
+      <img id="admin-avatar" class="admin-avatar" src="" alt="" style="display:none">
+      <button class="btn-signout" onclick="adminSignOut()">Вийти</button>
     </div>
   </div>
 
   <div class="content">
-    <!-- Stats -->
     <div class="stats-row">
-      <div class="stat-card"><div class="num" id="s-total">—</div><div class="lbl">Всього юзерів</div></div>
+      <div class="stat-card"><div class="num" id="s-total">—</div><div class="lbl">Юзерів</div></div>
       <div class="stat-card"><div class="num" id="s-active" style="color:var(--green)">—</div><div class="lbl">Активних</div></div>
-      <div class="stat-card"><div class="num" id="s-blocked" style="color:var(--red)">—</div><div class="lbl">Заблокованих</div></div>
-      <div class="stat-card"><div class="num" id="s-today" style="color:var(--accent2)">—</div><div class="lbl">Сьогодні</div></div>
+      <div class="stat-card"><div class="num" id="s-blocked" style="color:var(--red)">—</div><div class="lbl">Заблоковано</div></div>
+      <div class="stat-card"><div class="num" id="s-words" style="color:var(--accent2)">—</div><div class="lbl">Слів всього</div></div>
     </div>
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-      <input type="text" class="search-input" id="search-input" placeholder="🔍 Пошук по імені або email..." oninput="renderUsers()">
-      <div class="filter-chip active" data-filter="all" onclick="setFilter(this)">Всі</div>
-      <div class="filter-chip" data-filter="active" onclick="setFilter(this)">Активні</div>
-      <div class="filter-chip" data-filter="blocked" onclick="setFilter(this)">Заблоковані</div>
-      <div class="filter-chip" data-filter="today" onclick="setFilter(this)">Сьогодні</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div class="section-title" style="margin-bottom:0">Користувачі</div>
+      <button class="refresh-btn" onclick="loadUsers()">🔄 Оновити</button>
     </div>
-
-    <!-- Users list -->
-    <div class="users-grid" id="users-grid">
-      <div class="loader"><div class="spinner"></div> Завантаження...</div>
+    <div class="search-bar">
+      <span class="si">🔍</span>
+      <input type="text" id="user-search" placeholder="Пошук по імені або email..." oninput="filterUsers()">
+    </div>
+    <div class="users-list" id="users-list">
+      <div class="loader"><div class="spinner"></div> Завантаження юзерів...</div>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal"><div class="modal-handle"></div><div id="modal-body"></div></div>
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div id="modal-body"></div>
+  </div>
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { initializeApp }   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc, onSnapshot, updateDoc, deleteDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { initializeApp }    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, doc, getDocs, getDoc, setDoc, deleteDoc, onSnapshot, writeBatch } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
-const ADMIN_EMAIL = 'boikoart@gmail.com';
+const ADMIN_EMAIL = 'boikoart@gmail.com'; // тільки цей email має доступ
 
 const firebaseConfig = {
   apiKey: "AIzaSyDV2BZcuhT1K3uZMfzah0dYz77PFlt2A3A",
@@ -180,217 +186,254 @@ const fbApp = initializeApp(firebaseConfig);
 const db    = getFirestore(fbApp);
 const auth  = getAuth(fbApp);
 
-let allUsers = {};
-let activeFilter = 'all';
-let unsubUsers = null;
+let allUsersData = [];
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
-window.adminLogin = async () => {
+window.adminSignIn = async () => {
   try {
-    const result = await signInWithPopup(auth, new GoogleAuthProvider());
-    if (result.user.email !== ADMIN_EMAIL) {
-      await signOut(auth);
-      document.getElementById('error-msg').style.display = 'block';
-    }
+    const btn = document.querySelector('.btn-google');
+    btn.innerHTML = '<span>Завантаження...</span>';
+    btn.disabled = true;
+    await signInWithPopup(auth, new GoogleAuthProvider());
   } catch(e) {
-    showToast('Помилка входу');
+    const btn = document.querySelector('.btn-google');
+    btn.innerHTML = '<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:20px"> Увійти через Google';
+    btn.disabled = false;
+    showToast('Помилка: ' + e.message);
   }
 };
 
-window.adminLogout = async () => {
-  if (unsubUsers) unsubUsers();
+window.adminSignOut = async () => {
   await signOut(auth);
+  location.reload();
 };
 
-onAuthStateChanged(auth, user => {
-  if (user && user.email === ADMIN_EMAIL) {
-    document.getElementById('login-wrap').style.display = 'none';
-    document.getElementById('admin-wrap').style.display = 'flex';
-    // Show admin info
-    document.getElementById('admin-name').textContent = user.displayName || user.email;
-    const photo = document.getElementById('admin-photo');
-    if (user.photoURL) { photo.src = user.photoURL; photo.style.display = 'block'; }
-    loadUsers();
-  } else {
+onAuthStateChanged(auth, async user => {
+  document.getElementById('login-wrap').style.display = 'none';
+  document.getElementById('denied-wrap').style.display = 'none';
+  document.getElementById('admin-wrap').style.display = 'none';
+
+  if (!user) {
     document.getElementById('login-wrap').style.display = 'flex';
-    document.getElementById('admin-wrap').style.display = 'none';
-    if (unsubUsers) { unsubUsers(); unsubUsers = null; }
-  }
-});
-
-// ── LOAD USERS ────────────────────────────────────────────────────────────────
-function loadUsers() {
-  const col = collection(db, 'users');
-  unsubUsers = onSnapshot(col, async snap => {
-    allUsers = {};
-    const wordCountPromises = [];
-
-    snap.forEach(d => {
-      const u = d.data();
-      allUsers[u.uid] = u;
-      // Load word count for each user
-      wordCountPromises.push(
-        getDocs(collection(db, 'users', u.uid, 'words'))
-          .then(ws => { allUsers[u.uid].wordCount = ws.size; })
-          .catch(() => { allUsers[u.uid].wordCount = 0; })
-      );
-    });
-
-    await Promise.all(wordCountPromises);
-    updateStats();
-    renderUsers();
-  });
-}
-
-// ── STATS ─────────────────────────────────────────────────────────────────────
-function updateStats() {
-  const users = Object.values(allUsers);
-  const total   = users.length;
-  const blocked = users.filter(u => u.blocked).length;
-  const active  = total - blocked;
-  const today   = users.filter(u => {
-    if (!u.lastSeen) return false;
-    const d = new Date(u.lastSeen);
-    const now = new Date();
-    return d.toDateString() === now.toDateString();
-  }).length;
-
-  document.getElementById('s-total').textContent   = total;
-  document.getElementById('s-active').textContent  = active;
-  document.getElementById('s-blocked').textContent = blocked;
-  document.getElementById('s-today').textContent   = today;
-  document.getElementById('users-count').textContent = total;
-}
-
-// ── RENDER ────────────────────────────────────────────────────────────────────
-window.setFilter = (el) => {
-  activeFilter = el.dataset.filter;
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderUsers();
-};
-
-window.renderUsers = () => {
-  const q = document.getElementById('search-input').value.toLowerCase();
-  let users = Object.values(allUsers);
-
-  // Filter
-  if (activeFilter === 'active')  users = users.filter(u => !u.blocked);
-  if (activeFilter === 'blocked') users = users.filter(u => u.blocked);
-  if (activeFilter === 'today')   users = users.filter(u => {
-    if (!u.lastSeen) return false;
-    return new Date(u.lastSeen).toDateString() === new Date().toDateString();
-  });
-
-  // Search
-  if (q) users = users.filter(u =>
-    (u.name||'').toLowerCase().includes(q) ||
-    (u.email||'').toLowerCase().includes(q)
-  );
-
-  // Sort: blocked last, then by lastSeen
-  users.sort((a,b) => {
-    if (a.blocked && !b.blocked) return 1;
-    if (!a.blocked && b.blocked) return -1;
-    return new Date(b.lastSeen||0) - new Date(a.lastSeen||0);
-  });
-
-  const grid = document.getElementById('users-grid');
-  if (!users.length) {
-    grid.innerHTML = '<div class="empty"><div class="ei">👤</div><p>Нікого не знайдено</p></div>';
     return;
   }
 
-  grid.innerHTML = users.map(u => {
-    const isAdmin = u.email === ADMIN_EMAIL;
-    const lastSeen = u.lastSeen ? formatDate(u.lastSeen) : 'Невідомо';
-    const initials = (u.name || u.email || '?').charAt(0).toUpperCase();
-    const avatarHTML = u.photo
-      ? `<img src="${u.photo}" referrerpolicy="no-referrer">`
-      : initials;
+  if (user.email !== ADMIN_EMAIL) {
+    document.getElementById('denied-wrap').style.display = 'flex';
+    return;
+  }
 
-    return `<div class="user-card ${u.blocked ? 'blocked' : ''}" id="ucard-${u.uid}">
-      <div class="user-avatar">${avatarHTML}</div>
-      <div class="user-info">
-        <div class="user-name">
-          ${u.name || 'Без імені'}
-          ${isAdmin ? '<span class="badge-admin">👑 Адмін</span>' : ''}
-          ${u.blocked ? '<span class="badge-blocked">🚫 Заблокований</span>' : ''}
-        </div>
-        <div class="user-email">${u.email || '—'}</div>
-        <div class="user-meta">
-          <span>📚 ${u.wordCount || 0} слів</span>
-          <span>🕐 ${lastSeen}</span>
-          <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3)">${u.uid.slice(0,8)}...</span>
-        </div>
+  // Admin access granted!
+  document.getElementById('admin-wrap').style.display = 'flex';
+  document.getElementById('admin-name').textContent = user.displayName || user.email;
+  if (user.photoURL) {
+    const av = document.getElementById('admin-avatar');
+    av.src = user.photoURL;
+    av.style.display = 'block';
+  }
+
+  // Log admin login
+  await setDoc(doc(db, 'admin_log', user.uid), {
+    email: user.email,
+    name: user.displayName || '',
+    lastLogin: new Date().toISOString()
+  });
+
+  loadUsers();
+});
+
+// ── LOAD USERS ────────────────────────────────────────────────────────────────
+window.loadUsers = async () => {
+  document.getElementById('users-list').innerHTML =
+    '<div class="loader"><div class="spinner"></div> Завантаження...</div>';
+
+  try {
+    // Get all users from 'users' collection
+    const usersSnap = await getDocs(collection(db, 'users'));
+    const metaSnap  = await getDocs(collection(db, 'user_meta')).catch(() => ({ docs: [] }));
+
+    // Build meta map
+    const metaMap = {};
+    metaSnap.docs.forEach(d => { metaMap[d.id] = d.data(); });
+
+    allUsersData = [];
+    let totalWords = 0;
+
+    for (const userDoc of usersSnap.docs) {
+      const uid = userDoc.id;
+      const meta = metaMap[uid] || {};
+      // Count words
+      const wordsSnap = await getDocs(collection(db, 'users', uid, 'words'));
+      const wordCount = wordsSnap.size;
+      totalWords += wordCount;
+
+      allUsersData.push({
+        uid,
+        name:      meta.name      || userDoc.data().name      || 'Без імені',
+        email:     meta.email     || userDoc.data().email     || '',
+        photo:     meta.photo     || userDoc.data().photo     || '',
+        blocked:   meta.blocked   || false,
+        firstSeen: meta.firstSeen || userDoc.data().firstSeen || '',
+        lastSeen:  meta.lastSeen  || userDoc.data().lastSeen  || '',
+        wordCount,
+      });
+    }
+
+    // Sort: blocked last, then by lastSeen desc
+    allUsersData.sort((a,b) => {
+      if (a.blocked !== b.blocked) return a.blocked ? 1 : -1;
+      return new Date(b.lastSeen || 0) - new Date(a.lastSeen || 0);
+    });
+
+    // Update stats
+    const active  = allUsersData.filter(u => !u.blocked).length;
+    const blocked = allUsersData.filter(u => u.blocked).length;
+    document.getElementById('s-total').textContent   = allUsersData.length;
+    document.getElementById('s-active').textContent  = active;
+    document.getElementById('s-blocked').textContent = blocked;
+    document.getElementById('s-words').textContent   = totalWords;
+    document.getElementById('admin-subtitle').textContent =
+      `${allUsersData.length} юзерів · ${totalWords} слів`;
+
+    renderUsers(allUsersData);
+
+  } catch(e) {
+    console.error(e);
+    document.getElementById('users-list').innerHTML =
+      '<div class="empty"><div class="ei">⚠️</div><p>Помилка завантаження: ' + e.message + '</p></div>';
+  }
+};
+
+// ── RENDER USERS ──────────────────────────────────────────────────────────────
+function renderUsers(users) {
+  const list = document.getElementById('users-list');
+  if (!users.length) {
+    list.innerHTML = '<div class="empty"><div class="ei">👥</div><p>Юзерів ще немає</p></div>';
+    return;
+  }
+
+  list.innerHTML = users.map(u => {
+    const isAdmin   = u.email === ADMIN_EMAIL;
+    const initials  = (u.name || u.email || '?').charAt(0).toUpperCase();
+    const avatar    = u.photo
+      ? `<img src="${u.photo}" style="width:40px;height:40px;border-radius:50%;object-fit:cover" referrerpolicy="no-referrer">`
+      : `<div class="uc-avatar">${initials}</div>`;
+    const lastSeen  = u.lastSeen  ? fmtDate(u.lastSeen)  : 'не відомо';
+    const firstSeen = u.firstSeen ? fmtDate(u.firstSeen) : 'не відомо';
+    const badges = [
+      isAdmin    ? '<span class="badge badge-admin">👑 Адмін</span>' : '',
+      u.blocked  ? '<span class="badge badge-blocked">🚫 Заблоковано</span>' : '',
+      !u.lastSeen? '<span class="badge badge-new">🆕 Новий</span>' : '',
+    ].filter(Boolean).join('');
+
+    const blockBtn = u.blocked
+      ? `<button class="action-btn success" onclick="toggleBlock('${u.uid}', false)">✓ Розблокувати</button>`
+      : (isAdmin ? '' : `<button class="action-btn danger" onclick="toggleBlock('${u.uid}', true)">🚫 Заблокувати</button>`);
+    const deleteBtn = isAdmin ? '' :
+      `<button class="action-btn danger" onclick="confirmDelete('${u.uid}','${escHtml(u.name)}')">🗑 Видалити</button>`;
+
+    return `<div class="user-card ${u.blocked?'blocked':''} ${isAdmin?'admin-user':''}" id="uc-${u.uid}">
+      ${avatar}
+      <div class="uc-info">
+        <div class="uc-name">${escHtml(u.name)} ${badges}</div>
+        <div class="uc-email">${escHtml(u.email)}</div>
+        <div class="uc-meta">📚 ${u.wordCount} слів · 👁 ${lastSeen} · 🗓 з ${firstSeen}</div>
       </div>
-      ${!isAdmin ? `<div class="user-actions">
-        ${u.blocked
-          ? `<button class="action-btn success" onclick="unblockUser('${u.uid}','${(u.name||u.email).replace(/'/g,"\\'")}')">✓ Розблокувати</button>`
-          : `<button class="action-btn warn" onclick="blockUser('${u.uid}','${(u.name||u.email).replace(/'/g,"\\'")}')">🚫 Заблокувати</button>`
-        }
-        <button class="action-btn danger" onclick="deleteUser('${u.uid}','${(u.name||u.email).replace(/'/g,"\\'")}')">🗑 Видалити</button>
-      </div>` : ''}
+      <div class="uc-actions">
+        <button class="action-btn" onclick="viewWords('${u.uid}','${escHtml(u.name)}')">📚 Слова</button>
+        ${blockBtn}
+        ${deleteBtn}
+      </div>
     </div>`;
   }).join('');
+}
+
+window.filterUsers = () => {
+  const q = document.getElementById('user-search').value.toLowerCase();
+  const filtered = allUsersData.filter(u =>
+    u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)
+  );
+  renderUsers(filtered);
 };
 
 // ── ACTIONS ───────────────────────────────────────────────────────────────────
-window.blockUser = (uid, name) => {
-  showModal(
-    `<h3>Заблокувати "${name}"?</h3>
-     <p>Юзер більше не зможе увійти в додаток.</p>
-     <button class="btn-primary" style="background:var(--yellow)" onclick="doBlock('${uid}')">🚫 Заблокувати</button>
-     <button class="btn-secondary" onclick="closeModal()">Скасувати</button>`
-  );
+window.toggleBlock = async (uid, block) => {
+  try {
+    await setDoc(doc(db, 'user_meta', uid), { blocked: block }, { merge: true });
+    const u = allUsersData.find(x => x.uid === uid);
+    if (u) u.blocked = block;
+    showToast(block ? '🚫 Юзера заблоковано' : '✓ Юзера розблоковано');
+    renderUsers(allUsersData);
+  } catch(e) { showToast('Помилка: ' + e.message); }
 };
 
-window.doBlock = async (uid) => {
-  await updateDoc(doc(db, 'users', uid), { blocked: true });
+window.confirmDelete = (uid, name) => {
+  showModal(`<h3>Видалити юзера?</h3>
+    <p>Буде видалено акаунт і всі слова <strong>${name}</strong>. Незворотньо.</p>
+    <button class="btn-full btn-red" onclick="deleteUser('${uid}')">🗑 Видалити</button>
+    <button class="btn-full btn-secondary" onclick="closeModal()">Скасувати</button>`);
+};
+
+window.deleteUser = async (uid) => {
   closeModal();
-  showToast('Юзера заблоковано');
+  try {
+    // Delete all words
+    const wordsSnap = await getDocs(collection(db, 'users', uid, 'words'));
+    const batch = writeBatch(db);
+    wordsSnap.docs.forEach(d => batch.delete(d.ref));
+    batch.delete(doc(db, 'users', uid));
+    batch.delete(doc(db, 'user_meta', uid));
+    await batch.commit();
+    allUsersData = allUsersData.filter(u => u.uid !== uid);
+    renderUsers(allUsersData);
+    // Update stats
+    document.getElementById('s-total').textContent = allUsersData.length;
+    document.getElementById('s-active').textContent = allUsersData.filter(u=>!u.blocked).length;
+    showToast('✓ Юзера видалено');
+  } catch(e) { showToast('Помилка: ' + e.message); }
 };
 
-window.unblockUser = (uid, name) => {
-  showModal(
-    `<h3>Розблокувати "${name}"?</h3>
-     <p>Юзер знову зможе входити в додаток.</p>
-     <button class="btn-primary" style="background:var(--green)" onclick="doUnblock('${uid}')">✓ Розблокувати</button>
-     <button class="btn-secondary" onclick="closeModal()">Скасувати</button>`
-  );
-};
-
-window.doUnblock = async (uid) => {
-  await updateDoc(doc(db, 'users', uid), { blocked: false });
-  closeModal();
-  showToast('Юзера розблоковано');
-};
-
-window.deleteUser = (uid, name) => {
-  showModal(
-    `<h3>Видалити "${name}"?</h3>
-     <p>Буде видалено профіль юзера. Слова залишаться в базі.</p>
-     <button class="btn-primary" style="background:var(--red);margin-bottom:10px" onclick="doDelete('${uid}')">🗑 Видалити</button>
-     <button class="btn-secondary" onclick="closeModal()">Скасувати</button>`
-  );
-};
-
-window.doDelete = async (uid) => {
-  await deleteDoc(doc(db, 'users', uid));
-  closeModal();
-  showToast('Юзера видалено');
+window.viewWords = async (uid, name) => {
+  showModal(`<h3>📚 Слова — ${name}</h3><div class="loader"><div class="spinner"></div> Завантаження...</div>`);
+  try {
+    const snap = await getDocs(collection(db, 'users', uid, 'words'));
+    if (snap.empty) {
+      document.getElementById('modal-body').innerHTML =
+        `<h3>📚 Слова — ${name}</h3><p>Слів ще немає.</p><button class="btn-full btn-secondary" onclick="closeModal()">Закрити</button>`;
+      return;
+    }
+    const words = [];
+    snap.forEach(d => words.push(d.data()));
+    words.sort((a,b) => new Date(b.addedAt||0) - new Date(a.addedAt||0));
+    const list = words.map(w =>
+      `<div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-weight:500">${escHtml(w.word||'')}</div>
+          <div style="font-size:12px;color:var(--text2);font-family:'DM Mono',monospace">${escHtml(w.transcription||'')}</div>
+        </div>
+        <div style="font-size:13px;color:var(--accent2)">${escHtml(w.translation||'')}</div>
+      </div>`
+    ).join('');
+    document.getElementById('modal-body').innerHTML =
+      `<h3 style="margin-bottom:16px">📚 ${name} · ${words.length} слів</h3>
+       <div style="max-height:50vh;overflow-y:auto">${list}</div>
+       <button class="btn-full btn-secondary" style="margin-top:16px" onclick="closeModal()">Закрити</button>`;
+  } catch(e) {
+    document.getElementById('modal-body').innerHTML =
+      `<h3>Помилка</h3><p>${e.message}</p><button class="btn-full btn-secondary" onclick="closeModal()">Закрити</button>`;
+  }
 };
 
 // ── UTILS ─────────────────────────────────────────────────────────────────────
-function formatDate(iso) {
-  const d = new Date(iso);
-  const now = new Date();
-  const diff = Math.floor((now - d) / 60000);
-  if (diff < 1)   return 'Щойно';
-  if (diff < 60)  return `${diff} хв тому`;
-  if (diff < 1440) return `${Math.floor(diff/60)} год тому`;
-  if (diff < 2880) return 'Вчора';
-  return d.toLocaleDateString('uk-UA', { day:'numeric', month:'short' });
+function fmtDate(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('uk-UA', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+  } catch(e) { return iso; }
+}
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 window.showModal = (html) => {
