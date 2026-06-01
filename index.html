@@ -354,6 +354,23 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .eh-text{display:flex;flex-direction:column}
 .eh-text b{font-size:14px;font-weight:600}
 .eh-text span{font-size:12px;color:var(--text2);margin-top:2px}
+
+.word-item{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:8px;cursor:pointer;transition:transform .12s}
+.word-item:active{transform:scale(.99)}
+.wi-main{width:100%}
+.wi-top-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.wi-word{font-size:16px;font-weight:600;flex:1}
+.wi-lvl{font-size:10px;font-weight:700;color:var(--accent2);background:rgba(123,201,111,.15);padding:2px 7px;border-radius:8px}
+.wi-status-label{font-size:11px;font-weight:500;flex-shrink:0}
+.wi-trans{font-size:13px;color:var(--text2);margin-bottom:6px}
+.wi-progress-row{display:flex;align-items:center;gap:8px}
+.wi-pbar{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.wi-pfill{height:100%;border-radius:3px;transition:width .5s}
+.wi-pct{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;flex-shrink:0;min-width:30px;text-align:right}
+
+.star-row{display:flex;justify-content:center;gap:8px}
+.star-btn{font-size:32px;background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;transition:transform .1s}
+.star-btn:active{transform:scale(1.2)}
 </style>
 </head>
 <body>
@@ -541,7 +558,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div style="width:36px"></div>
   </div>
   <div class="scroll">
-    <div class="settings-item"><div class="si-text"><h4>Тема</h4><p>Світла або темна (для вечора)</p></div><select id="s-theme" onchange="setTheme(this.value)"><option value="light">☀️ Світла</option><option value="dark">🌙 Темна</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Режим карток</h4></div><select id="s-cardmode"><option value="en-ua">EN→UA</option><option value="ua-en">UA→EN</option><option value="mixed">Змішаний</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Карток за сесію</h4></div><select id="s-cardcount"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Питань у тесті</h4></div><select id="s-quizcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div>
@@ -593,6 +609,16 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div style="width:36px"></div>
   </div>
   <div class="scroll" id="cefr-content"></div>
+</div>
+
+<div class="screen" id="screen-onboard" style="display:none">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center">
+    <div style="font-size:64px;margin-bottom:20px">🎓</div>
+    <h1 style="font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:12px">Дізнайся свій рівень англійської</h1>
+    <p style="font-size:15px;color:var(--text2);line-height:1.6;margin-bottom:32px">Пройди короткий тест — 30 питань, ~5 хвилин.<br>Програма визначить твій рівень A1–C2 і підбере слова для вивчення.</p>
+    <button class="btn-primary" style="margin-bottom:14px;font-size:17px;padding:18px" onclick="startOnboard()">Пройти тест зараз</button>
+    <button class="btn-secondary" onclick="skipOnboard()" style="color:var(--text2);background:transparent;border:none;font-size:14px;padding:12px;cursor:pointer">Пропустити → увійти в додаток</button>
+  </div>
 </div>
 
 <nav class="bottom-nav">
@@ -798,6 +824,8 @@ function onWordInput(val) {
 
 async function lookupWord(word) {
   document.getElementById('add-loading').style.display='block';
+  // шукаємо спочатку в нашій бібліотеці
+  if(CEFR_DATA){for(const lvl of CEFR_ORDER){const found=(CEFR_DATA.levels[lvl]||[]).find(w=>w.en.toLowerCase()===word.toLowerCase());if(found){pendingWord={word:found.en,translation:found.ua,transcription:'',level:lvl};document.getElementById('add-loading').style.display='none';showPreview(pendingWord);return;}}}
   try {
     const r=await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|uk`);
     const d=await r.json();
@@ -955,7 +983,31 @@ function renderVocab(){
   document.getElementById('vocab-count').textContent=`${words.length} слів`;
   const list=document.getElementById('vocab-list');
   if(!words.length){list.innerHTML=`<div class="empty"><div class="ei">📭</div><p>${activeFilter==='all'?'Словник порожній.<br>Додай перше слово!':'Слів немає.'}</p></div>`;return;}
-  list.innerHTML=words.map(w=>`<div class="word-item" onclick="showDetail('${w.id}')"><div class="wi-left"><div class="wi-word">${w.word}</div><div class="wi-sub" style="font-family:'DM Mono',monospace">${w.transcription||''}</div></div><div class="wi-right"><div class="wi-trans">${w.translation||''}</div><div class="wi-status ${statusOf(w)}"></div></div></div>`).join('');
+  list.innerHTML=words.map(w=>{
+    const s=w.stats;
+    const total=s.seen||0;
+    const ok=s.correct||0;
+    const pct=total>0?Math.round(ok/total*100):0;
+    const status=statusOf(w);
+    const statusLabel=status==='mastered'?'✓ Вивчено':status==='learning'?'Вчу':'Нове';
+    const statusColor=status==='mastered'?'var(--green)':status==='learning'?'var(--accent2)':'var(--text3)';
+    const barColor=pct>=80?'var(--green)':pct>=50?'var(--accent2)':'var(--red)';
+    const lvlBadge=w.level?`<span class="wi-lvl">${w.level}</span>`:'';
+    return `<div class="word-item" onclick="showDetail('${w.id}')">
+      <div class="wi-main">
+        <div class="wi-top-row">
+          <span class="wi-word">${w.word}</span>
+          ${lvlBadge}
+          <span class="wi-status-label" style="color:${statusColor}">${statusLabel}</span>
+        </div>
+        <div class="wi-trans">${w.translation||''}</div>
+        ${total>0?`<div class="wi-progress-row">
+          <div class="wi-pbar"><div class="wi-pfill" style="width:${pct}%;background:${barColor}"></div></div>
+          <span class="wi-pct">${ok}/${total}</span>
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1323,7 +1375,7 @@ function pronounce(word){
   window.speechSynthesis.cancel();
   const utt=new SpeechSynthesisUtterance(word);
   utt.lang='en-US'; utt.rate=0.85; utt.pitch=1.0; utt.volume=1.0;
-  function speak(){const voices=window.speechSynthesis.getVoices();const female=['Google US English','Samantha','Karen','Moira','Tessa','Victoria','Fiona','Susan','Allison','Ava','Zira','Microsoft Zira'];let pref=null;for(const n of female){pref=voices.find(v=>v.name===n);if(pref)break;}if(!pref)pref=voices.find(v=>/female|woman|zira|samantha|karen|victoria|ava/i.test(v.name)&&v.lang.startsWith('en'));if(!pref)pref=voices.find(v=>v.lang==='en-US'&&!v.localService);if(!pref)pref=voices.find(v=>v.lang.startsWith('en'));if(pref)utt.voice=pref;utt.pitch=1.15;window.speechSynthesis.speak(utt);}
+  function speak(){const voices=window.speechSynthesis.getVoices();const female=['Samantha','Karen','Moira','Tessa','Victoria','Fiona','Susan','Allison','Ava','Google US English','Microsoft Zira','Zira'];let pref=null;for(const n of female){pref=voices.find(v=>v.name===n);if(pref)break;}if(!pref)pref=voices.find(v=>/samantha|karen|moira|tessa|victoria|ava|fiona|susan|allison|zira/i.test(v.name));if(!pref)pref=voices.find(v=>v.lang==='en-US'&&v.name.toLowerCase().includes('female'));if(!pref)pref=voices.filter(v=>v.lang.startsWith('en')).sort((a,b)=>a.name.localeCompare(b.name)).find(v=>!/daniel|alex|fred|bruce|tom|aaron|ralph|junior|albert|bad|hysterical|bubbles|cellos|bells/i.test(v.name));if(pref)utt.voice=pref;utt.pitch=1.15;window.speechSynthesis.speak(utt);}
   if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,300);}
 }
 
@@ -1438,6 +1490,7 @@ function finishCefr(){
     '<button class="btn-primary" style="margin-top:18px;margin-bottom:10px" onclick="startCefrTest()">🔄 Пройти ще раз</button>'+
     '<button class="btn-secondary" onclick="showScreen(\'home\')">На головну</button><div style="height:20px"></div>';
   refreshHome();
+  if(typeof checkShowReview==="function")checkShowReview();
 }
 function quitCefr(){showScreen('home');}
 
@@ -1525,6 +1578,74 @@ function finishStudyBatch(){
     (!allDone?'<button class="btn-primary" style="margin-bottom:10px" onclick="studyLevel(\''+studyLvl+'\')">Наступні '+STUDY_BATCH+' слів →</button>':'')+
     '<button class="btn-secondary" onclick="openStudy()">До рівнів</button></div>';
   refreshHome();
+}
+
+
+// ── ОНБОРДИНГ (першый вхід) ──
+function checkOnboard(){
+  const key='mv_onboarded_'+(window._currentUID||'guest');
+  if(!localStorage.getItem(key)){
+    // показуємо онбординг поверх головної
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('screen-onboard').style.display='flex';
+    document.getElementById('screen-onboard').classList.add('active');
+  }
+}
+function startOnboard(){
+  markOnboarded();
+  startCefrTest();
+}
+function skipOnboard(){
+  markOnboarded();
+  document.getElementById('screen-onboard').classList.remove('active');
+  document.getElementById('screen-onboard').style.display='none';
+  showScreen('home');
+}
+function markOnboarded(){
+  try{localStorage.setItem('mv_onboarded_'+(window._currentUID||'guest'),'1');}catch(e){}
+}
+
+
+// ── ВІДГУК ──
+function checkShowReview(){
+  const key='mv_review_'+(window._currentUID||'guest');
+  if(localStorage.getItem(key+'_done'))return;
+  const cnt=parseInt(localStorage.getItem(key+'_cnt')||'0')+1;
+  localStorage.setItem(key+'_cnt',cnt);
+  if(cnt===3)setTimeout(()=>showReviewModal(),1500);
+}
+function showReviewModal(){
+  const key='mv_review_'+(window._currentUID||'guest');
+  if(localStorage.getItem(key+'_done'))return;
+  showModal(`<div style="text-align:center">
+    <div style="font-size:40px;margin-bottom:8px">⭐</div>
+    <h3 style="margin-bottom:6px">Подобається додаток?</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Залиш короткий відгук — це дуже допомагає!</p>
+    <div class="star-row" id="star-row">
+      ${[1,2,3,4,5].map(i=>`<button class="star-btn" data-n="${i}" onclick="rateStar(${i})">☆</button>`).join('')}
+    </div>
+    <textarea id="review-text" placeholder="Що сподобалось або що покращити?" style="width:100%;margin-top:12px;min-height:80px;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 12px;outline:none;resize:none"></textarea>
+    <button class="btn-primary" style="margin-top:12px;margin-bottom:8px" onclick="submitReview()">Надіслати відгук</button>
+    <button class="btn-secondary" onclick="closeModal();localStorage.setItem('mv_review_${window._currentUID||'guest'}_done','skip')" style="font-size:13px">Пізніше</button>
+  </div>`);
+}
+let _reviewStars=0;
+function rateStar(n){
+  _reviewStars=n;
+  document.querySelectorAll('.star-btn').forEach((b,i)=>{b.textContent=i<n?'★':'☆';b.style.color=i<n?'#f0bb42':'var(--text3)';});
+}
+async function submitReview(){
+  const key='mv_review_'+(window._currentUID||'guest');
+  const text=(document.getElementById('review-text')?.value||'').trim();
+  if(!_reviewStars){showToast('Постав оцінку зірочками');return;}
+  // save to Firestore reviews collection
+  try{
+    const fb=await waitFb();
+    if(fb&&window._fbSaveReview)await window._fbSaveReview({uid:window._currentUID||'',email:window._uEmail||'',stars:_reviewStars,text,date:new Date().toISOString()});
+  }catch(e){}
+  localStorage.setItem(key+'_done','1');
+  closeModal();
+  showToast('Дякуємо за відгук! 💚');
 }
 
 </script>
