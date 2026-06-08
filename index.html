@@ -332,12 +332,12 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .bc-text h3{font-size:16px;font-weight:600}
 .bc-text p{font-size:12px;opacity:.85;margin-top:2px}
 .bc-arrow{margin-left:auto;font-size:24px;opacity:.7}
-.level-hero{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:18px 20px;margin-bottom:18px;display:flex;align-items:center;gap:16px}
-.lh-badge{width:60px;height:60px;border-radius:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex-shrink:0}
+.level-hero{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:14px}
+.lh-badge{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;flex-shrink:0}
 [data-theme="dark"] .lh-badge{color:#1a201a}
 .lh-info{flex:1;min-width:0}
 .lh-label{font-size:12px;color:var(--text2)}
-.lh-name{font-size:18px;font-weight:600;letter-spacing:-.3px}
+.lh-name{font-size:16px;font-weight:600;letter-spacing:-.3px}
 .lh-hint{font-size:12px;color:var(--text2);margin-top:2px}
 .lh-cta{font-size:13px;color:var(--accent2);font-weight:600;margin-top:4px}
 .lib-stats{display:flex;gap:10px;margin-bottom:4px}
@@ -386,9 +386,14 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .settings-link svg{flex-shrink:0;color:inherit}
 .set-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#fff;flex-shrink:0}
 [data-theme="dark"] .set-avatar{color:#1a201a}
-.review-fab{position:fixed;right:14px;bottom:100px;width:44px;height:44px;border-radius:14px;background:var(--bg2);border:1px solid var(--border2);box-shadow:0 4px 16px rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20;color:var(--accent2);transition:transform .15s}
+.review-fab{position:fixed;right:16px;bottom:110px;width:44px;height:44px;border-radius:14px;background:var(--bg2);border:1px solid var(--border2);box-shadow:0 4px 16px rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20;color:var(--accent2);transition:transform .15s}
 .review-fab:active{transform:scale(.9)}
 .teal-hero{background:linear-gradient(135deg,var(--accent),var(--accent2))!important;border-color:transparent!important;cursor:pointer}
+
+.home-tabs{display:flex;gap:8px;margin-top:10px}
+.home-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text);cursor:pointer;transition:all .12s}
+.home-tab:active{transform:scale(.97);background:var(--bg3)}
+.home-tab svg{color:var(--accent2);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -767,7 +772,13 @@ function showScreen(name) {
   if(name==='vocab') renderVocab();
   if(name==='progress') renderProgress();
   if(name==='add') resetAdd();
-  if(name==='settings'){const vs=document.getElementById('s-voice');if(vs)vs.value=getVoicePref();const rb=document.getElementById('review-btn');if(rb&&localStorage.getItem('mv_reviewed'))rb.textContent='💚 Дякуємо! Залишити ще відгук';const un=document.getElementById('set-username');const ue=document.getElementById('set-useremail');if(un)un.textContent=window._uName||'Акаунт';if(ue)ue.textContent=window._uEmail||'';}
+  if(name==='settings'){
+    const vs=document.getElementById('s-voice');if(vs)vs.value=getVoicePref();
+    const un=document.getElementById('set-username');const ue=document.getElementById('set-useremail');
+    if(un)un.textContent=window._uName||'Акаунт';if(ue)ue.textContent=window._uEmail||'';
+    const av=document.getElementById('set-avatar-icon');
+    if(av){if(window._uPhoto){av.innerHTML='<img src="'+window._uPhoto+'" style="width:40px;height:40px;border-radius:50%;object-fit:cover" referrerpolicy="no-referrer">';}else{av.textContent=(window._uName||'?').charAt(0).toUpperCase();}}
+  }
 }
 function goBack() { showScreen(prevScreen==='detail'?'vocab':prevScreen); }
 
@@ -1873,15 +1884,15 @@ onAuthStateChanged(auth, async user => {
     }
 
     window._fbSaveCefr = async (data) => {
-      try{await setDoc(doc(db,'users',user.uid,'meta','cefr'),data,{merge:true});}catch(e){}
+      try{await setDoc(doc(db,'users',user.uid),{cefr:data},{merge:true});}catch(e){}
     };
     window._fbLoadCefr = async () => {
-      try{const snap=await getDocs(collection(db,'users',user.uid,'meta'));
-        const d=snap.docs.find(x=>x.id==='cefr');
-        return d?d.data():null;}catch(e){return null;}
+      try{const snap=await getDocs(collection(db,'users'));
+        const d=snap.docs.find(x=>x.id===user.uid);
+        return d?d.data()?.cefr||null:null;}catch(e){return null;}
     };
     window._fbSaveReview = async (review) => {
-      try{await setDoc(doc(collection(db,'reviews'),Date.now().toString(36)+Math.random().toString(36).slice(2)),review);}catch(e){console.error('review save error',e);}
+      try{await setDoc(doc(db,'users',user.uid),{review:review},{merge:true});}catch(e){console.error('review save error',e);}
     };
     window._FB = {
       save: async w  => { await setDoc(doc(col, w.id), w); },
