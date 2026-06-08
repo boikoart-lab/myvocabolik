@@ -196,7 +196,7 @@ let allUsersData = [];
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 
 // ── ADMIN TABS ──
-function switchAdminTab(tab){
+window.switchAdminTab = function(tab){
   document.getElementById('users-section').style.display=tab==='users'?'block':'none';
   document.getElementById('reviews-section').style.display=tab==='reviews'?'block':'none';
   document.getElementById('user-search').style.display=tab==='users'?'':'none';
@@ -206,7 +206,7 @@ function switchAdminTab(tab){
   document.getElementById('tab-reviews').style.color=tab==='reviews'?'#fff':'var(--text)';
   if(tab==='reviews')loadAdminReviews();
 }
-async function loadAdminReviews(){
+window.loadAdminReviews = async function(){
   const list=document.getElementById('reviews-list');
   try{
     const snap=await getDocs(collection(db,'reviews'));
