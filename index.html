@@ -88,7 +88,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 
 /* VOCAB */
 .search-bar{position:relative;margin-bottom:14px}
-.search-bar input{padding-left:38px}
+.search-bar input{padding-left:38px;min-height:48px;font-size:15px}
 .search-bar .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px;pointer-events:none}
 .filter-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
 .filter-row::-webkit-scrollbar{display:none}
@@ -491,7 +491,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   </div>
   <div style="padding:12px 20px 0;flex-shrink:0">
     <div id="vocab-libstats" class="lib-stats" style="margin-bottom:12px"></div>
-    <div class="search-bar"><span class="si">🔍</span><input type="text" id="vocab-search" placeholder="Пошук..." oninput="renderVocab()"></div>
+    <div class="search-bar"><span class="si"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span><input type="text" id="vocab-search" placeholder="Пошук..." oninput="renderVocab()"></div>
     <div class="filter-row" id="filter-status-row">
       <div class="filter-chip active" data-filter="all" onclick="setFilter(this)">Всі</div>
       <div class="filter-chip" data-filter="new" onclick="setFilter(this)">Нові</div>
@@ -570,7 +570,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div class="settings-item" style="border:none;padding-top:18px"><div class="si-text"><h4 id="set-username">Акаунт</h4><p id="set-useremail"></p></div></div>
     <button class="btn-secondary" onclick="askSignOut()" style="width:100%;margin-bottom:10px">🚪 Вийти з акаунту</button>
     <div style="margin-top:14px"><button class="btn-secondary btn-danger" onclick="confirmClearAll()" style="width:100%">🗑 Видалити всі слова</button></div>
-    <div style="margin-top:18px"><button class="btn-secondary" onclick="openReview()" style="width:100%">⭐ Залишити відгук</button></div>
+    <div style="margin-top:18px"><button class="btn-secondary" id="review-btn" onclick="openReview()" style="width:100%">⭐ Залишити відгук</button></div>
     <div style="text-align:center;color:var(--text3);font-size:12px;margin-top:24px">MyVocabolik · Дані захищені</div>
     <div style="height:20px"></div>
   </div>
@@ -748,7 +748,7 @@ function showScreen(name) {
   if(name==='vocab') renderVocab();
   if(name==='progress') renderProgress();
   if(name==='add') resetAdd();
-  if(name==='settings'){const vs=document.getElementById('s-voice');if(vs)vs.value=getVoicePref();const un=document.getElementById('set-username');const ue=document.getElementById('set-useremail');if(un)un.textContent=window._uName||'Акаунт';if(ue)ue.textContent=window._uEmail||'';}
+  if(name==='settings'){const vs=document.getElementById('s-voice');if(vs)vs.value=getVoicePref();const rb=document.getElementById('review-btn');if(rb&&localStorage.getItem('mv_reviewed'))rb.textContent='💚 Дякуємо! Залишити ще відгук';const un=document.getElementById('set-username');const ue=document.getElementById('set-useremail');if(un)un.textContent=window._uName||'Акаунт';if(ue)ue.textContent=window._uEmail||'';}
 }
 function goBack() { showScreen(prevScreen==='detail'?'vocab':prevScreen); }
 
@@ -773,7 +773,7 @@ function refreshHome() {
   }
   document.getElementById('home-subtitle').textContent=words.length>0?`${words.length} слів у словнику`:'Почни додавати слова';
   const b=document.getElementById('review-banner-wrap');
-  b.innerHTML=due>0?`<div class="review-banner" onclick="startCards(true)"><div class="rb-icon">🔁</div><div class="rb-text"><h3>До повторення сьогодні</h3><p>${due} ${due===1?'слово':due<5?'слова':'слів'}</p></div><div class="rb-arrow">›</div></div>`:'';
+  b.innerHTML=due>0?`<div class="review-banner" onclick="startCards(true)"><div class="rb-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10"/><path d="M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg></div><div class="rb-text"><h3>До повторення сьогодні</h3><p>${due} ${due===1?'слово':due<5?'слова':'слів'}</p></div><div class="rb-arrow">›</div></div>`:'';
   // герой рівня англійської
   const hero=document.getElementById('home-level-hero');
   if(hero){
@@ -1056,6 +1056,30 @@ function showDetail(id){
 }
 function confirmDelete(id){const w=getWord(id);showModal(`<h3>Видалити "${w.word}"?</h3><p style="color:var(--text2);font-size:14px;margin-bottom:20px">Незворотна дія</p><button class="btn-primary" style="background:var(--red);margin-bottom:10px" onclick="doDelete('${id}')">Видалити</button><button class="btn-secondary" onclick="closeModal()">Скасувати</button>`);}
 function doDelete(id){dbDel(id);closeModal();goBack();showToast('Слово видалено');}
+function editWord(id){
+  const w=getWord(id);if(!w)return;
+  const tags=(w.tags||[]).join(', ');
+  showModal(`<h3>Редагувати слово</h3>
+    <div class="form-section" style="margin-top:12px"><label>Переклад</label><input type="text" id="edit-trans" value="${(w.translation||'').replace(/"/g,'&quot;')}" style="width:100%"></div>
+    <div class="form-section"><label>Тема (через кому)</label><input type="text" id="edit-tags" value="${tags.replace(/"/g,'&quot;')}" placeholder="напр: Business, Travel" style="width:100%"></div>
+    <div class="form-section"><label>Транскрипція</label><input type="text" id="edit-ipa" value="${(w.transcription||'').replace(/"/g,'&quot;')}" placeholder="/wɜːrd/" style="width:100%"></div>
+    <button class="btn-primary" style="margin-top:14px;margin-bottom:8px" onclick="saveEdit('${id}')">Зберегти</button>
+    <button class="btn-secondary" onclick="closeModal()">Скасувати</button>`);
+}
+function saveEdit(id){
+  const w=getWord(id);if(!w)return;
+  const trans=(document.getElementById('edit-trans')?.value||'').trim();
+  const tagsStr=(document.getElementById('edit-tags')?.value||'').trim();
+  const ipa=(document.getElementById('edit-ipa')?.value||'').trim();
+  if(trans)w.translation=trans;
+  w.tags=tagsStr?tagsStr.split(',').map(t=>t.trim()).filter(Boolean):[];
+  w.transcription=ipa;
+  dbSave(w);
+  closeModal();
+  showDetail(id);
+  showToast('✓ Збережено');
+}
+
 
 // ═══════════════════════════════════════════════════════════════
 // CARDS
@@ -1738,6 +1762,7 @@ async function sendReview(){
     const fb=await waitFb();
     if(fb&&window._fbSaveReview)await window._fbSaveReview({uid:window._currentUID||'',email:window._uEmail||'',name:window._uName||'',stars:_rvStars,text,date:new Date().toISOString()});
   }catch(e){}
+  try{localStorage.setItem('mv_reviewed','1');}catch(e){}
   showModal(`<div style="text-align:center;padding:20px 0">
     <div style="font-size:50px;margin-bottom:12px">💚</div>
     <h3>Дякуємо!</h3>
@@ -1825,6 +1850,9 @@ onAuthStateChanged(auth, async user => {
       } catch(e) {}
     }
 
+    window._fbSaveReview = async (review) => {
+      try{await setDoc(doc(collection(db,'reviews'),Date.now().toString(36)+Math.random().toString(36).slice(2)),review);}catch(e){console.error('review save error',e);}
+    };
     window._FB = {
       save: async w  => { await setDoc(doc(col, w.id), w); },
       del:  async id => { await deleteDoc(doc(col, id)); },
@@ -1838,6 +1866,7 @@ onAuthStateChanged(auth, async user => {
       }
     };
 
+    window._currentUID = user.uid;
     window.dispatchEvent(new Event('fb-ready'));
     window.initApp(user.uid);
 
