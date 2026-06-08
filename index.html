@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="theme-color" content="#fbeed3">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -373,6 +373,22 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .star-btn:active{transform:scale(1.2)}
 
 .wi-tag{font-size:10px;font-weight:500;color:var(--text2);background:var(--bg3);padding:2px 7px;border-radius:8px;margin-right:2px}
+
+.vocab-search-wrap{width:100%;position:relative}
+.vocab-search-input{width:100%;height:38px;background:var(--bg3);border:1.5px solid var(--border2);border-radius:60px;padding:0 14px 0 38px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+.vocab-search-input:focus{border-color:var(--accent)}
+.vocab-search-input::placeholder{color:var(--text3)}
+.vs-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+
+.settings-link{display:flex;align-items:center;gap:10px;width:100%;padding:12px 0;border:none;background:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);cursor:pointer;text-align:left}
+.settings-link:active{opacity:.7}
+.settings-link.danger{color:var(--red)}
+.settings-link svg{flex-shrink:0;color:inherit}
+.set-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#fff;flex-shrink:0}
+[data-theme="dark"] .set-avatar{color:#1a201a}
+.review-fab{position:fixed;right:14px;bottom:100px;width:44px;height:44px;border-radius:14px;background:var(--bg2);border:1px solid var(--border2);box-shadow:0 4px 16px rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:20;color:var(--accent2);transition:transform .15s}
+.review-fab:active{transform:scale(.9)}
+.teal-hero{background:linear-gradient(135deg,var(--accent),var(--accent2))!important;border-color:transparent!important;cursor:pointer}
 </style>
 </head>
 <body>
@@ -400,7 +416,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 
 <div class="screen active" id="screen-home">
   <div class="topbar">
-    <div><div style="font-size:18px;font-weight:600;letter-spacing:-.3px">MyVocabolik</div><div class="sub" id="home-subtitle">Завантаження...</div></div>
+    <div><div style="font-size:18px;font-weight:600;letter-spacing:-.3px">MyVocabolik <sup style="font-size:9px;font-weight:500;color:var(--accent2);vertical-align:super;letter-spacing:.5px">beta</sup></div></div>
     <div style="display:flex;align-items:center;gap:10px">
       <div class="theme-toggle" id="theme-toggle" onclick="flipTheme()" title="Тема"><div class="tt-thumb" id="tt-thumb"><span id="tt-icon">☀️</span></div></div>
       <button class="icon-btn" onclick="showScreen('settings')" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
@@ -409,14 +425,9 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   <div class="scroll">
     <div id="home-level-hero"></div>
     <div class="section-label">Навчання</div>
-    <div class="big-card teal" onclick="startCefrTest()">
-      <div class="bc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5"/></svg></div>
-      <div class="bc-text"><h3>Тест рівня</h3><p>Дізнайся свій рівень A1–C2</p></div>
-      <div class="bc-arrow">›</div>
-    </div>
     <div class="big-card" onclick="openStudy()">
       <div class="bc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-      <div class="bc-text"><h3>Вивчати слова</h3><p>Картки за рівнями</p></div>
+      <div class="bc-text"><h3>Вивчати слова</h3><p>За рівнями A1–C2</p></div>
       <div class="bc-arrow">›</div>
     </div>
     <div id="home-dict-block"></div>
@@ -482,16 +493,18 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 </div>
 
 <div class="screen" id="screen-vocab">
-  <div class="topbar">
-    <div><div style="font-size:17px;font-weight:600">Словник</div><div class="sub" id="vocab-count"></div></div>
-    <div style="display:flex;gap:8px">
-      <button class="icon-btn" onclick="shareWords()" title="Поділитися"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
-      <button class="icon-btn" onclick="showScreen('add')">＋</button>
+  <div class="topbar" style="flex-wrap:wrap;gap:8px;padding-bottom:8px">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
+      <div><div style="font-size:17px;font-weight:600">Словник</div><div class="sub" id="vocab-count"></div></div>
+      <div style="display:flex;gap:8px">
+        <button class="icon-btn" onclick="shareWords()" title="Поділитися"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+        <button class="icon-btn" onclick="showScreen('add')">＋</button>
+      </div>
     </div>
+    <div class="vocab-search-wrap"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук слова..." oninput="renderVocab()"></div>
   </div>
   <div style="padding:12px 20px 0;flex-shrink:0">
     <div id="vocab-libstats" class="lib-stats" style="margin-bottom:12px"></div>
-    <div class="search-bar"><span class="si"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span><input type="text" id="vocab-search" placeholder="Пошук..." oninput="renderVocab()"></div>
     <div class="filter-row" id="filter-status-row">
       <div class="filter-chip active" data-filter="all" onclick="setFilter(this)">Всі</div>
       <div class="filter-chip" data-filter="new" onclick="setFilter(this)">Нові</div>
@@ -567,10 +580,13 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div class="settings-item"><div class="si-text"><h4>Режим карток</h4></div><select id="s-cardmode"><option value="en-ua">EN→UA</option><option value="ua-en">UA→EN</option><option value="mixed">Змішаний</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Карток за сесію</h4></div><select id="s-cardcount"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Питань у тесті</h4></div><select id="s-quizcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div>
-    <div class="settings-item" style="border:none;padding-top:18px"><div class="si-text"><h4 id="set-username">Акаунт</h4><p id="set-useremail"></p></div></div>
-    <button class="btn-secondary" onclick="askSignOut()" style="width:100%;margin-bottom:10px">🚪 Вийти з акаунту</button>
-    <div style="margin-top:14px"><button class="btn-secondary btn-danger" onclick="confirmClearAll()" style="width:100%">🗑 Видалити всі слова</button></div>
-    <div style="margin-top:18px"><button class="btn-secondary" id="review-btn" onclick="openReview()" style="width:100%">⭐ Залишити відгук</button></div>
+    <div style="border-top:1px solid var(--border);margin-top:20px;padding-top:18px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><div class="set-avatar" id="set-avatar-icon"></div><div><div style="font-weight:600" id="set-username">Акаунт</div><div style="font-size:12px;color:var(--text2)" id="set-useremail"></div></div></div>
+      <button class="settings-link" onclick="askSignOut()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Вийти з акаунту</button>
+    </div>
+    <div style="border-top:1px solid var(--border);margin-top:16px;padding-top:16px">
+      <button class="settings-link danger" onclick="confirmClearAll()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Видалити всі слова</button>
+    </div>
     <div style="text-align:center;color:var(--text3);font-size:12px;margin-top:24px">MyVocabolik · Дані захищені</div>
     <div style="height:20px"></div>
   </div>
@@ -646,6 +662,9 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal"><div class="modal-handle"></div><div id="modal-body"></div></div>
 </div>
+<button class="review-fab" onclick="openReview()" id="review-fab" title="Залишити відгук">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+</button>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -771,7 +790,7 @@ function refreshHome() {
       db.innerHTML='<div class="section-label">Мій словник</div><div class="stats-row"><div class="stat-card"><div class="num">'+words.length+'</div><div class="lbl">Слів</div></div><div class="stat-card"><div class="num" style="color:var(--green)">'+mastered+'</div><div class="lbl">Вивчено</div></div><div class="stat-card"><div class="num" style="color:var(--accent2)">'+due+'</div><div class="lbl">Повторити</div></div></div>';
     }
   }
-  document.getElementById('home-subtitle').textContent=words.length>0?`${words.length} слів у словнику`:'Почни додавати слова';
+  // subtitle removed;
   const b=document.getElementById('review-banner-wrap');
   b.innerHTML=due>0?`<div class="review-banner" onclick="startCards(true)"><div class="rb-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10"/><path d="M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg></div><div class="rb-text"><h3>До повторення сьогодні</h3><p>${due} ${due===1?'слово':due<5?'слова':'слів'}</p></div><div class="rb-arrow">›</div></div>`:'';
   // герой рівня англійської
@@ -782,9 +801,9 @@ function refreshHome() {
     const name=lvl?CEFR_NAMES[lvl]:'Невідомий';
     const attempts=(st.attempts||[]).length;
     if(lvl){
-      hero.innerHTML=`<div class="level-hero"><div class="lh-badge">${lvl}</div><div class="lh-info"><div class="lh-label">Твій рівень англійської</div><div class="lh-name">${name}</div><div class="lh-hint">Проходжень тесту: ${attempts}</div></div></div>`;
+      hero.innerHTML=`<div class="level-hero"><div class="lh-badge">${lvl}</div><div class="lh-info"><div class="lh-label">Твій рівень англійської</div><div class="lh-name">${name}</div><div class="lh-hint">Тестів пройдено: ${attempts} · <a href="#" onclick="event.preventDefault();startCefrTest()" style="color:var(--accent2);text-decoration:none">пройти ще раз</a></div></div></div>`;
     }else{
-      hero.innerHTML=`<div class="level-hero" onclick="startCefrTest()" style="cursor:pointer"><div class="lh-badge">?</div><div class="lh-info"><div class="lh-label">Рівень ще не визначено</div><div class="lh-name">Пройди тест</div><div class="lh-cta">Дізнатися мій рівень →</div></div></div>`;
+      hero.innerHTML=`<div class="level-hero teal-hero" onclick="startCefrTest()"><div class="lh-badge" style="background:rgba(255,255,255,.25);color:#fff">?</div><div class="lh-info"><div class="lh-label" style="color:rgba(255,255,255,.8)">Рівень ще не визначено</div><div class="lh-name" style="color:#fff">Дізнайся свій рівень</div><div class="lh-cta" style="color:rgba(255,255,255,.9)">Пройти тест →</div></div></div>`;
     }
   }
 
@@ -1510,7 +1529,10 @@ function getCefrStats(){
   try{return JSON.parse(localStorage.getItem(cefrStatsKey())||'{"level":null,"attempts":[],"seenWords":[],"studied":[]}');}
   catch(e){return {level:null,attempts:[],seenWords:[],studied:[]};}
 }
-function saveCefrStats(s){try{localStorage.setItem(cefrStatsKey(),JSON.stringify(s));}catch(e){}}
+function saveCefrStats(s){
+  try{localStorage.setItem(cefrStatsKey(),JSON.stringify(s));}catch(e){}
+  if(window._fbSaveCefr)window._fbSaveCefr({level:s.level,attempts:s.attempts||[],seenCount:(s.seenWords||[]).length,studiedCount:(s.studied||[]).length,updatedAt:new Date().toISOString()}).catch(()=>{});
+}
 
 // загальна к-сть слів у бібліотеці
 function totalLibWords(){if(!CEFR_DATA)return 0;return CEFR_ORDER.reduce((s,l)=>s+CEFR_DATA.levels[l].length,0);}
@@ -1850,6 +1872,14 @@ onAuthStateChanged(auth, async user => {
       } catch(e) {}
     }
 
+    window._fbSaveCefr = async (data) => {
+      try{await setDoc(doc(db,'users',user.uid,'meta','cefr'),data,{merge:true});}catch(e){}
+    };
+    window._fbLoadCefr = async () => {
+      try{const snap=await getDocs(collection(db,'users',user.uid,'meta'));
+        const d=snap.docs.find(x=>x.id==='cefr');
+        return d?d.data():null;}catch(e){return null;}
+    };
     window._fbSaveReview = async (review) => {
       try{await setDoc(doc(collection(db,'reviews'),Date.now().toString(36)+Math.random().toString(36).slice(2)),review);}catch(e){console.error('review save error',e);}
     };
