@@ -1376,29 +1376,31 @@ function pronounce(word){
   utt.lang='en-US'; utt.rate=0.85; utt.volume=1.0;
   const pref=getVoicePref();
   function speak(){
-    const voices=window.speechSynthesis.getVoices().filter(v=>v.lang.startsWith('en'));
+    const all=window.speechSynthesis.getVoices();
+    const voices=all.filter(v=>v.lang.startsWith('en'));
     if(!voices.length){window.speechSynthesis.speak(utt);return;}
-    const female=['Samantha','Karen','Moira','Tessa','Victoria','Fiona','Susan','Allison','Ava','Google US English','Microsoft Zira','Zira'];
-    const male=['Daniel','Alex','Aaron','Fred','Google UK English Male','Microsoft David','David','Tom','Ralph','Albert'];
-    let voice=null;
-    if(pref==='female1'){
-      for(const n of female){voice=voices.find(v=>v.name===n);if(voice)break;}
-      utt.pitch=1.15;
-    }else if(pref==='female2'){
-      for(const n of [...female].reverse()){voice=voices.find(v=>v.name===n);if(voice)break;}
-      utt.pitch=1.1;
-    }else if(pref==='male1'){
-      for(const n of male){voice=voices.find(v=>v.name===n);if(voice)break;}
-      utt.pitch=1.0;
-    }else if(pref==='male2'){
-      for(const n of [...male].reverse()){voice=voices.find(v=>v.name===n);if(voice)break;}
-      utt.pitch=0.95;
+    // пріоритетні імена — iOS, macOS, Windows, Android
+    const F1=['Samantha','Karen','Google US English','Google UK English Female','Microsoft Zira','Zira','Allison','Ava'];
+    const F2=['Moira','Tessa','Victoria','Fiona','Susan','Catherine','Serena'];
+    const M1=['Daniel','Google UK English Male','Microsoft David','David','Alex','Aaron'];
+    const M2=['Fred','Tom','Lee','Oliver','Ralph','Albert','Google UK English Male'];
+    function findByNames(names){for(const n of names){const v=voices.find(x=>x.name===n);if(v)return v;}return null;}
+    // фільтр по ключовим словам для мобілі де імена нестандартні
+    function findByPattern(isFemale){
+      const kw=isFemale?/female|woman|girl|fiona|samantha|karen|moira|tessa|victoria|ava|zira|allison|susan|serena|catherine/i
+                        :/male(?!.*female)|\bman\b|daniel|david|alex|aaron|fred|tom|oliver|lee|ralph|albert/i;
+      return voices.find(v=>kw.test(v.name))||null;
     }
-    if(!voice) voice=voices[0];
+    let voice=null;
+    if(pref==='female1'){voice=findByNames(F1)||findByPattern(true);utt.pitch=1.15;}
+    else if(pref==='female2'){voice=findByNames(F2)||findByNames(F1)||findByPattern(true);utt.pitch=1.05;}
+    else if(pref==='male1'){voice=findByNames(M1)||findByPattern(false);utt.pitch=1.0;}
+    else if(pref==='male2'){voice=findByNames(M2)||findByNames(M1)||findByPattern(false);utt.pitch=0.9;}
+    if(!voice)voice=voices[0];
     utt.voice=voice;
     window.speechSynthesis.speak(utt);
   }
-  if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,300);}
+  if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,500);}
 }
 function getVoicePref(){try{return localStorage.getItem('mv_voice')||'female1';}catch(e){return'female1';}}
 function setVoicePref(v){try{localStorage.setItem('mv_voice',v);}catch(e){} pronounce('hello');}
