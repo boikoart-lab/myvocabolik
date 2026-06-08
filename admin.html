@@ -153,6 +153,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="users-list" id="users-list">
       <div class="loader"><div class="spinner"></div> Завантаження юзерів...</div>
     </div>
+    </div>
+    <div id="reviews-section" style="display:none">
+      <h2 style="font-size:18px;font-weight:600;margin-bottom:14px">⭐ Відгуки користувачів</h2>
+      <div id="reviews-list"><div class="loader"><div class="spinner"></div> Завантаження...</div></div>
+    </div>
   </div>
 </div>
 
@@ -189,6 +194,38 @@ const auth  = getAuth(fbApp);
 let allUsersData = [];
 
 // ── AUTH ──────────────────────────────────────────────────────────────────────
+
+// ── ADMIN TABS ──
+function switchAdminTab(tab){
+  document.getElementById('users-section').style.display=tab==='users'?'block':'none';
+  document.getElementById('reviews-section').style.display=tab==='reviews'?'block':'none';
+  document.getElementById('user-search').style.display=tab==='users'?'':'none';
+  document.getElementById('tab-users').style.background=tab==='users'?'var(--accent)':'var(--bg2)';
+  document.getElementById('tab-users').style.color=tab==='users'?'#fff':'var(--text)';
+  document.getElementById('tab-reviews').style.background=tab==='reviews'?'var(--accent)':'var(--bg2)';
+  document.getElementById('tab-reviews').style.color=tab==='reviews'?'#fff':'var(--text)';
+  if(tab==='reviews')loadAdminReviews();
+}
+async function loadAdminReviews(){
+  const list=document.getElementById('reviews-list');
+  try{
+    const snap=await getDocs(collection(db,'reviews'));
+    if(snap.empty){list.innerHTML='<p style="color:var(--text2)">Відгуків ще немає</p>';return;}
+    const items=[...snap.docs].map(d=>d.data()).sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+    list.innerHTML=items.map(r=>{
+      const stars='★'.repeat(r.stars||0)+'☆'.repeat(5-(r.stars||0));
+      return '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px">'+
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">'+
+          '<span style="color:#f0bb42;font-size:16px;letter-spacing:2px">'+stars+'</span>'+
+          '<span style="font-size:12px;color:var(--text2)">'+(r.name||r.email||'анонім')+'</span>'+
+          '<span style="font-size:11px;color:var(--text3);margin-left:auto">'+(r.date?new Date(r.date).toLocaleDateString('uk'):'')+'</span>'+
+        '</div>'+
+        (r.text?'<div style="font-size:14px;color:var(--text)">'+r.text+'</div>':'')+
+      '</div>';
+    }).join('');
+  }catch(e){list.innerHTML='<p style="color:var(--red)">Помилка: '+e.message+'</p>';}
+}
+
 window.adminSignIn = async () => {
   try {
     const btn = document.querySelector('.btn-google');
