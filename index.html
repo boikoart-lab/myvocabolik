@@ -558,7 +558,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div style="width:36px"></div>
   </div>
   <div class="scroll">
-    <div class="settings-item"><div class="si-text"><h4>Голос вимови</h4><p>Обери голос для озвучки</p></div><select id="s-voice" onchange="setVoicePref(this.value)"><option value="female1">👩 Жіночий 1</option><option value="female2">👩 Жіночий 2</option><option value="male1">👨 Чоловічий 1</option><option value="male2">👨 Чоловічий 2</option></select></div>
+    <div class="settings-item"><div class="si-text"><h4>Голос вимови</h4><p>Акцент і голос</p></div><select id="s-voice" onchange="setVoicePref(this.value)"><option value="us-f">🇺🇸 Жіночий</option><option value="us-m">🇺🇸 Чоловічий</option><option value="uk-f">🇬🇧 Жіночий</option><option value="uk-m">🇬🇧 Чоловічий</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Режим карток</h4></div><select id="s-cardmode"><option value="en-ua">EN→UA</option><option value="ua-en">UA→EN</option><option value="mixed">Змішаний</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Карток за сесію</h4></div><select id="s-cardcount"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Питань у тесті</h4></div><select id="s-quizcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div>
@@ -1373,36 +1373,42 @@ function pronounce(word){
   if(!word) return;
   window.speechSynthesis.cancel();
   const utt=new SpeechSynthesisUtterance(word);
-  utt.lang='en-US'; utt.rate=0.85; utt.volume=1.0;
+  utt.rate=0.85; utt.volume=1.0;
   const pref=getVoicePref();
+  // акцент
+  const isUK=pref.startsWith('uk');
+  utt.lang=isUK?'en-GB':'en-US';
   function speak(){
     const all=window.speechSynthesis.getVoices();
-    const voices=all.filter(v=>v.lang.startsWith('en'));
-    if(!voices.length){window.speechSynthesis.speak(utt);return;}
-    // пріоритетні імена — iOS, macOS, Windows, Android
-    const F1=['Samantha','Karen','Google US English','Google UK English Female','Microsoft Zira','Zira','Allison','Ava'];
-    const F2=['Moira','Tessa','Victoria','Fiona','Susan','Catherine','Serena'];
-    const M1=['Daniel','Google UK English Male','Microsoft David','David','Alex','Aaron'];
-    const M2=['Fred','Tom','Lee','Oliver','Ralph','Albert','Google UK English Male'];
-    function findByNames(names){for(const n of names){const v=voices.find(x=>x.name===n);if(v)return v;}return null;}
-    // фільтр по ключовим словам для мобілі де імена нестандартні
-    function findByPattern(isFemale){
-      const kw=isFemale?/female|woman|girl|fiona|samantha|karen|moira|tessa|victoria|ava|zira|allison|susan|serena|catherine/i
-                        :/male(?!.*female)|\bman\b|daniel|david|alex|aaron|fred|tom|oliver|lee|ralph|albert/i;
-      return voices.find(v=>kw.test(v.name))||null;
-    }
+    const lang=isUK?'en-GB':'en-US';
+    const voices=all.filter(v=>v.lang===lang||v.lang.replace('_','-')===lang);
+    const voicesEN=all.filter(v=>v.lang.startsWith('en'));
+    const pool=voices.length?voices:voicesEN;
+    if(!pool.length){window.speechSynthesis.speak(utt);return;}
+    const isFemale=pref.endsWith('-f');
+    // пріоритетні імена
+    const names=isUK
+      ?(isFemale?['Kate','Serena','Google UK English Female','Martha','Moira','Fiona','Tessa']
+                 :['Daniel','Oliver','Google UK English Male','George','Arthur'])
+      :(isFemale?['Samantha','Ava','Allison','Google US English','Microsoft Zira','Zira','Susan','Karen','Victoria']
+                 :['Alex','Aaron','Fred','Microsoft David','David','Tom','Albert','Ralph']);
     let voice=null;
-    if(pref==='female1'){voice=findByNames(F1)||findByPattern(true);utt.pitch=1.15;}
-    else if(pref==='female2'){voice=findByNames(F2)||findByNames(F1)||findByPattern(true);utt.pitch=1.05;}
-    else if(pref==='male1'){voice=findByNames(M1)||findByPattern(false);utt.pitch=1.0;}
-    else if(pref==='male2'){voice=findByNames(M2)||findByNames(M1)||findByPattern(false);utt.pitch=0.9;}
-    if(!voice)voice=voices[0];
+    for(const n of names){voice=pool.find(v=>v.name===n);if(voice)break;}
+    // fallback по ключових словах
+    if(!voice){
+      const kw=isFemale?/female|woman|samantha|karen|ava|kate|serena|zira|fiona|victoria|allison|susan/i
+                        :/male(?!.*fe)|\bman\b|daniel|david|alex|aaron|fred|tom|oliver|george|albert|ralph/i;
+      voice=pool.find(v=>kw.test(v.name));
+    }
+    // останній fallback — перший з потрібної мови
+    if(!voice)voice=pool[0];
     utt.voice=voice;
+    utt.pitch=isFemale?1.12:0.95;
     window.speechSynthesis.speak(utt);
   }
   if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,500);}
 }
-function getVoicePref(){try{return localStorage.getItem('mv_voice')||'female1';}catch(e){return'female1';}}
+function getVoicePref(){try{return localStorage.getItem('mv_voice')||'us-f';}catch(e){return'female1';}}
 function setVoicePref(v){try{localStorage.setItem('mv_voice',v);}catch(e){} pronounce('hello');}
 
 // ═══════════════════════════════════════════════════════════
