@@ -417,7 +417,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
       <div class="bc-text"><h3>Вивчати слова</h3><p>Картки за рівнями</p></div>
       <div class="bc-arrow">›</div>
     </div>
-    <div id="home-libstats" class="lib-stats"></div>
     <div id="home-dict-block"></div>
     <div id="review-banner-wrap"></div>
     <div class="menu-grid">
@@ -487,6 +486,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     </div>
   </div>
   <div style="padding:12px 20px 0;flex-shrink:0">
+    <div id="vocab-libstats" class="lib-stats" style="margin-bottom:12px"></div>
     <div class="search-bar"><span class="si">🔍</span><input type="text" id="vocab-search" placeholder="Пошук..." oninput="renderVocab()"></div>
     <div class="filter-row">
       <div class="filter-chip active" data-filter="all" onclick="setFilter(this)">Всі</div>
@@ -558,6 +558,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div style="width:36px"></div>
   </div>
   <div class="scroll">
+    <div class="settings-item"><div class="si-text"><h4>Голос вимови</h4><p>Обери голос для озвучки</p></div><select id="s-voice" onchange="setVoicePref(this.value)"><option value="female1">👩 Жіночий 1</option><option value="female2">👩 Жіночий 2</option><option value="male1">👨 Чоловічий 1</option><option value="male2">👨 Чоловічий 2</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Режим карток</h4></div><select id="s-cardmode"><option value="en-ua">EN→UA</option><option value="ua-en">UA→EN</option><option value="mixed">Змішаний</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Карток за сесію</h4></div><select id="s-cardcount"><option value="10">10</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></div>
     <div class="settings-item"><div class="si-text"><h4>Питань у тесті</h4></div><select id="s-quizcount"><option value="5">5</option><option value="10" selected>10</option><option value="15">15</option><option value="20">20</option></select></div>
@@ -741,6 +742,7 @@ function showScreen(name) {
   if(name==='vocab') renderVocab();
   if(name==='progress') renderProgress();
   if(name==='add') resetAdd();
+  if(name==='settings'){const vs=document.getElementById('s-voice');if(vs)vs.value=getVoicePref();const un=document.getElementById('set-username');const ue=document.getElementById('set-useremail');if(un)un.textContent=window._uName||'Акаунт';if(ue)ue.textContent=window._uEmail||'';}
 }
 function goBack() { showScreen(prevScreen==='detail'?'vocab':prevScreen); }
 
@@ -779,17 +781,7 @@ function refreshHome() {
       hero.innerHTML=`<div class="level-hero" onclick="startCefrTest()" style="cursor:pointer"><div class="lh-badge">?</div><div class="lh-info"><div class="lh-label">Рівень ще не визначено</div><div class="lh-name">Пройди тест</div><div class="lh-cta">Дізнатися мій рівень →</div></div></div>`;
     }
   }
-  // статистика бібліотеки
-  const ls=document.getElementById('home-libstats');
-  if(ls){
-    const st=getCefrStats();
-    const seen=(st.seenWords||[]).length;
-    const studied=(st.studied||[]).length;
-    const total=totalLibWords();
-    if(total>0){
-      ls.innerHTML=`<div class="lib-stat"><div class="n">${total}</div><div class="l">Слів у базі</div></div><div class="lib-stat"><div class="n">${seen}</div><div class="l">Опрацьовано</div></div><div class="lib-stat"><div class="n">${studied}</div><div class="l">Вивчено</div></div>`;
-    }
-  }
+
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -972,6 +964,13 @@ function doImport(){
 let activeFilter='all';
 function setFilter(el){activeFilter=el.dataset.filter;document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderVocab();}
 function renderVocab(){
+  // статистика бібліотеки у словнику
+  const vls=document.getElementById('vocab-libstats');
+  if(vls&&typeof getCefrStats==='function'){
+    const st=getCefrStats();const seen=(st.seenWords||[]).length;const studied=(st.studied||[]).length;const total=totalLibWords();
+    if(total>0){vls.innerHTML=`<div class="lib-stat"><div class="n">${total}</div><div class="l">Слів у базі</div></div><div class="lib-stat"><div class="n">${seen}</div><div class="l">Опрацьовано</div></div><div class="lib-stat"><div class="n">${studied}</div><div class="l">Вивчено</div></div>`;}
+    else{vls.innerHTML='';}
+  }
   const q=(document.getElementById('vocab-search').value||'').toLowerCase();
   let words=getWords();
   if(q) words=words.filter(w=>w.word.toLowerCase().includes(q)||(w.translation||'').toLowerCase().includes(q));
@@ -1374,10 +1373,35 @@ function pronounce(word){
   if(!word) return;
   window.speechSynthesis.cancel();
   const utt=new SpeechSynthesisUtterance(word);
-  utt.lang='en-US'; utt.rate=0.85; utt.pitch=1.0; utt.volume=1.0;
-  function speak(){const voices=window.speechSynthesis.getVoices();const female=['Samantha','Karen','Moira','Tessa','Victoria','Fiona','Susan','Allison','Ava','Google US English','Microsoft Zira','Zira'];let pref=null;for(const n of female){pref=voices.find(v=>v.name===n);if(pref)break;}if(!pref)pref=voices.find(v=>/samantha|karen|moira|tessa|victoria|ava|fiona|susan|allison|zira/i.test(v.name));if(!pref)pref=voices.find(v=>v.lang==='en-US'&&v.name.toLowerCase().includes('female'));if(!pref)pref=voices.filter(v=>v.lang.startsWith('en')).sort((a,b)=>a.name.localeCompare(b.name)).find(v=>!/daniel|alex|fred|bruce|tom|aaron|ralph|junior|albert|bad|hysterical|bubbles|cellos|bells/i.test(v.name));if(pref)utt.voice=pref;utt.pitch=1.15;window.speechSynthesis.speak(utt);}
+  utt.lang='en-US'; utt.rate=0.85; utt.volume=1.0;
+  const pref=getVoicePref();
+  function speak(){
+    const voices=window.speechSynthesis.getVoices().filter(v=>v.lang.startsWith('en'));
+    if(!voices.length){window.speechSynthesis.speak(utt);return;}
+    const female=['Samantha','Karen','Moira','Tessa','Victoria','Fiona','Susan','Allison','Ava','Google US English','Microsoft Zira','Zira'];
+    const male=['Daniel','Alex','Aaron','Fred','Google UK English Male','Microsoft David','David','Tom','Ralph','Albert'];
+    let voice=null;
+    if(pref==='female1'){
+      for(const n of female){voice=voices.find(v=>v.name===n);if(voice)break;}
+      utt.pitch=1.15;
+    }else if(pref==='female2'){
+      for(const n of [...female].reverse()){voice=voices.find(v=>v.name===n);if(voice)break;}
+      utt.pitch=1.1;
+    }else if(pref==='male1'){
+      for(const n of male){voice=voices.find(v=>v.name===n);if(voice)break;}
+      utt.pitch=1.0;
+    }else if(pref==='male2'){
+      for(const n of [...male].reverse()){voice=voices.find(v=>v.name===n);if(voice)break;}
+      utt.pitch=0.95;
+    }
+    if(!voice) voice=voices[0];
+    utt.voice=voice;
+    window.speechSynthesis.speak(utt);
+  }
   if(window.speechSynthesis.getVoices().length>0){speak();}else{window.speechSynthesis.onvoiceschanged=()=>{speak();};setTimeout(speak,300);}
 }
+function getVoicePref(){try{return localStorage.getItem('mv_voice')||'female1';}catch(e){return'female1';}}
+function setVoicePref(v){try{localStorage.setItem('mv_voice',v);}catch(e){} pronounce('hello');}
 
 // ═══════════════════════════════════════════════════════════
 // CEFR СИСТЕМА: тест рівня + вивчення за рівнями (words.json)
