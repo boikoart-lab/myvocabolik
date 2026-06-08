@@ -371,6 +371,8 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .star-row{display:flex;justify-content:center;gap:8px}
 .star-btn{font-size:32px;background:none;border:none;cursor:pointer;color:var(--text3);padding:4px;transition:transform .1s}
 .star-btn:active{transform:scale(1.2)}
+
+.wi-tag{font-size:10px;font-weight:500;color:var(--text2);background:var(--bg3);padding:2px 7px;border-radius:8px;margin-right:2px}
 </style>
 </head>
 <body>
@@ -421,9 +423,9 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div id="review-banner-wrap"></div>
     <div class="menu-grid">
       <div class="menu-card" onclick="showScreen('add')"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="mc-title">Додати слово</div><div class="mc-sub">Одне або списком</div></div>
-      <div class="menu-card" onclick="startGame()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></div><div class="mc-title">Пари на час</div><div class="mc-sub">Гра з твоїми словами</div></div>
-      <div class="menu-card" onclick="startCards()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="14" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2"/></svg></div><div class="mc-title">Картки</div><div class="mc-sub">Флеш-картки</div></div>
-      <div class="menu-card" onclick="startQuiz()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div><div class="mc-title">Тест</div><div class="mc-sub">Multiple choice</div></div>
+      <div class="menu-card" onclick="playGame()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></div><div class="mc-title">Пари на час</div><div class="mc-sub">Гра з твоїми словами</div></div>
+      <div class="menu-card" onclick="playCards()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="14" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2"/></svg></div><div class="mc-title">Картки</div><div class="mc-sub">Флеш-картки</div></div>
+      <div class="menu-card" onclick="playQuiz()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div><div class="mc-title">Тест</div><div class="mc-sub">Multiple choice</div></div>
     </div>
     <div class="menu-card" onclick="showScreen('vocab')" style="flex-direction:row;align-items:center;gap:14px;margin-top:10px"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/></svg></div><div><div class="mc-title">Словник</div><div class="mc-sub">Усі слова · додати списком · поділитися</div></div></div>
     <div class="menu-card" onclick="showScreen('progress')" style="flex-direction:row;align-items:center;gap:14px;margin-top:10px"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg></div><div><div class="mc-title">Прогрес</div><div class="mc-sub">Статистика</div></div></div>
@@ -443,6 +445,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
       <button class="add-tab" id="atab-list" onclick="switchAddTab('list')">Списком</button>
     </div>
     <div id="add-list-mode" style="display:none">
+      <div class="form-section"><label>Тема для всіх слів (необовʼязково)</label><input type="text" id="bulk-tag" placeholder="напр: Business, Travel" autocomplete="off"></div>
       <div class="form-section">
         <label>Вставте слова списком</label>
         <textarea id="bulk-input" placeholder="Кожне слово з нового рядка:&#10;cat - кіт&#10;dog - собака&#10;house — дім&#10;&#10;Розділювач: тире, кома або таб" style="width:100%;min-height:160px;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px 14px;outline:none;resize:vertical;line-height:1.6"></textarea>
@@ -470,6 +473,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
       <div class="form-section"><label>Переклад (українська)</label><input type="text" id="input-trans" placeholder="переклад"></div>
       <div class="form-section"><label>Транскрипція IPA</label><input type="text" id="input-ipa" placeholder="/wɜːrd/"></div>
     </div>
+    <div class="form-section" id="tag-field" style="display:none"><label>Тема (необовʼязково)</label><input type="text" id="input-tag" placeholder="напр: Business, Cheating, подорож" autocomplete="off"></div>
     <button class="btn-primary" id="add-btn" onclick="addWord()" style="margin-bottom:12px;display:none">Зберегти слово</button>
     <button class="btn-secondary" id="manual-btn" onclick="toggleManual()" style="display:none">✏️ Заповнити вручну</button>
     <div style="height:20px"></div>
@@ -488,13 +492,14 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   <div style="padding:12px 20px 0;flex-shrink:0">
     <div id="vocab-libstats" class="lib-stats" style="margin-bottom:12px"></div>
     <div class="search-bar"><span class="si">🔍</span><input type="text" id="vocab-search" placeholder="Пошук..." oninput="renderVocab()"></div>
-    <div class="filter-row">
+    <div class="filter-row" id="filter-status-row">
       <div class="filter-chip active" data-filter="all" onclick="setFilter(this)">Всі</div>
       <div class="filter-chip" data-filter="new" onclick="setFilter(this)">Нові</div>
       <div class="filter-chip" data-filter="learning" onclick="setFilter(this)">Вчу</div>
       <div class="filter-chip" data-filter="mastered" onclick="setFilter(this)">Вивчені</div>
       <div class="filter-chip" data-filter="review" onclick="setFilter(this)">Повторити</div>
     </div>
+    <div class="filter-row" id="filter-tag-row"></div>
   </div>
   <div class="scroll" id="vocab-list"></div>
 </div>
@@ -522,7 +527,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div id="cards-done" style="display:none" class="quiz-score">
       <div class="qs-emoji">🎉</div><div class="qs-title">Молодець!</div>
       <div class="qs-sub" id="cards-done-sub"></div>
-      <button class="btn-primary" onclick="startCards()" style="margin-bottom:10px">Ще раз</button>
+      <button class="btn-primary" onclick="playCards()" style="margin-bottom:10px">Ще раз</button>
       <button class="btn-secondary" onclick="showScreen('home')">На головну</button>
     </div>
   </div>
@@ -565,6 +570,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     <div class="settings-item" style="border:none;padding-top:18px"><div class="si-text"><h4 id="set-username">Акаунт</h4><p id="set-useremail"></p></div></div>
     <button class="btn-secondary" onclick="askSignOut()" style="width:100%;margin-bottom:10px">🚪 Вийти з акаунту</button>
     <div style="margin-top:14px"><button class="btn-secondary btn-danger" onclick="confirmClearAll()" style="width:100%">🗑 Видалити всі слова</button></div>
+    <div style="margin-top:18px"><button class="btn-secondary" onclick="openReview()" style="width:100%">⭐ Залишити відгук</button></div>
     <div style="text-align:center;color:var(--text3);font-size:12px;margin-top:24px">MyVocabolik · Дані захищені</div>
     <div style="height:20px"></div>
   </div>
@@ -844,6 +850,7 @@ function showPreview(w) {
   p.classList.add('show');
   document.getElementById('add-btn').style.display='block';
   document.getElementById('manual-btn').style.display='block';
+  document.getElementById('tag-field').style.display='block';
 }
 
 function toggleManual() {
@@ -862,7 +869,8 @@ function addWord() {
   if(!translation){showToast('Потрібен переклад');return;}
   const existing=getWords().find(x=>x&&x.word&&x.word.toLowerCase()===wordInput.toLowerCase());
   if(existing){showToast('Слово вже є в словнику');showDetail(existing.id);return;}
-  const w={id:genId(),word:wordInput,translation,transcription,addedAt:new Date().toISOString(),stats:{seen:0,correct:0,incorrect:0,lastSeen:null,mastered:false}};
+  const tag=(document.getElementById('input-tag')?.value||'').trim();
+  const w={id:genId(),word:wordInput,translation,transcription,addedAt:new Date().toISOString(),tags:tag?[tag]:[],stats:{seen:0,correct:0,incorrect:0,lastSeen:null,mastered:false}};
   dbSave(w); showToast('✓ Слово збережено'); resetAdd();
 }
 
@@ -888,7 +896,8 @@ async function addBulkWords(){
     const exists=getWords().find(x=>x.word&&x.word.toLowerCase()===en.toLowerCase());
     if(exists){skipped++;continue;}
     if(!ua){needTrans.push(en);ua='';}
-    const w={id:genId(),word:en,translation:ua,transcription:'',addedAt:new Date().toISOString(),stats:{seen:0,correct:0,incorrect:0,lastSeen:null,mastered:false}};
+    const bulkTag=(document.getElementById('bulk-tag')?.value||'').trim();
+    const w={id:genId(),word:en,translation:ua,transcription:'',addedAt:new Date().toISOString(),tags:bulkTag?[bulkTag]:[],stats:{seen:0,correct:0,incorrect:0,lastSeen:null,mastered:false}};
     dbSave(w);added++;
   }
   res.innerHTML='✓ Додано: '+added+(skipped?' · пропущено (вже є): '+skipped:'');
@@ -963,7 +972,30 @@ function doImport(){
 // ═══════════════════════════════════════════════════════════════
 let activeFilter='all';
 function setFilter(el){activeFilter=el.dataset.filter;document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderVocab();}
+let activeTag='';
+function setTag(el){
+  activeTag=el.dataset.tag||'';
+  document.querySelectorAll('#filter-tag-row .filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderVocab();
+}
+function getAllTags(){
+  const tags=new Set();
+  getWords().forEach(w=>{(w.tags||[]).forEach(t=>{if(t)tags.add(t);});});
+  return [...tags].sort();
+}
 function renderVocab(){
+  // теги-фільтри
+  const tagRow=document.getElementById('filter-tag-row');
+  if(tagRow){
+    const tags=getAllTags();
+    if(tags.length>0){
+      const noTag=getWords().filter(w=>!w.tags||w.tags.length===0).length;
+      tagRow.innerHTML='<div class="filter-chip'+(activeTag===''?' active':'')+'" data-tag="" onclick="setTag(this)">📁 Всі теми</div>'+
+        tags.map(t=>{const cnt=getWords().filter(w=>(w.tags||[]).includes(t)).length;return '<div class="filter-chip'+(activeTag===t?' active':'')+'" data-tag="'+t+'" onclick="setTag(this)">'+t+' ('+cnt+')</div>';}).join('')+
+        (noTag?'<div class="filter-chip'+(activeTag==='__none'?' active':'')+'" data-tag="__none" onclick="setTag(this)">Без теми ('+noTag+')</div>':'');
+    }else{tagRow.innerHTML='';}
+  }
   // статистика бібліотеки у словнику
   const vls=document.getElementById('vocab-libstats');
   if(vls&&typeof getCefrStats==='function'){
@@ -978,6 +1010,9 @@ function renderVocab(){
   else if(activeFilter==='learning') words=words.filter(w=>w.stats.seen>0&&!w.stats.mastered);
   else if(activeFilter==='mastered') words=words.filter(w=>w.stats.mastered);
   else if(activeFilter==='review') words=words.filter(w=>isDue(w));
+  // фільтр по тегу
+  if(activeTag==='__none') words=words.filter(w=>!w.tags||w.tags.length===0);
+  else if(activeTag) words=words.filter(w=>(w.tags||[]).includes(activeTag));
   words.sort((a,b)=>new Date(b.addedAt)-new Date(a.addedAt));
   document.getElementById('vocab-count').textContent=`${words.length} слів`;
   const list=document.getElementById('vocab-list');
@@ -992,11 +1027,12 @@ function renderVocab(){
     const statusColor=status==='mastered'?'var(--green)':status==='learning'?'var(--accent2)':'var(--text3)';
     const barColor=pct>=80?'var(--green)':pct>=50?'var(--accent2)':'var(--red)';
     const lvlBadge=w.level?`<span class="wi-lvl">${w.level}</span>`:'';
+    const tagBadge=(w.tags&&w.tags.length)?w.tags.map(t=>`<span class="wi-tag">${t}</span>`).join(''):'';
     return `<div class="word-item" onclick="showDetail('${w.id}')">
       <div class="wi-main">
         <div class="wi-top-row">
           <span class="wi-word">${w.word}</span>
-          ${lvlBadge}
+          ${lvlBadge}${tagBadge}
           <span class="wi-status-label" style="color:${statusColor}">${statusLabel}</span>
         </div>
         <div class="wi-trans">${w.translation||''}</div>
@@ -1025,11 +1061,14 @@ function doDelete(id){dbDel(id);closeModal();goBack();showToast('Слово ви
 // CARDS
 // ═══════════════════════════════════════════════════════════════
 let cardQ=[],cardIdx=0,cardFlipped=false,cardCorrect=0;
-function startCards(reviewOnly=false,forceId=null){
-  let words=getWords();
+function playCards(){pickTagAndPlay(startCards);}
+function startCards(tagOrReview,forceId){
+  const isReview=tagOrReview===true;
+  const tag=typeof tagOrReview==='string'?tagOrReview:'';
+  let words=tag?filterByTag(getWords(),tag):getWords();
   if(!words.length){offerLevels('Щоб грати в картки, додай свої слова — або почни з готових рівнів!');return;}
   if(forceId){words=[getWord(forceId)].filter(Boolean);}
-  else if(reviewOnly===true){words=words.filter(w=>isDue(w));}
+  else if(isReview){words=words.filter(w=>isDue(w));}
   if(!words.length){showToast('Немає слів для повторення');return;}
   const count=parseInt(document.getElementById('s-cardcount')?.value||'20');
   cardQ=shuffle(words).slice(0,count); cardIdx=0; cardCorrect=0; cardFlipped=false;
@@ -1084,8 +1123,9 @@ function showCardsDone(){
 // QUIZ
 // ═══════════════════════════════════════════════════════════════
 let quizQs=[],quizIdx=0,quizScore=0,quizAnswered=false;
-function startQuiz(){
-  const words=getWords();
+function playQuiz(){pickTagAndPlay(startQuiz);}
+function startQuiz(tag){
+  let words=tag?filterByTag(getWords(),tag):getWords();
   if(words.length<4){offerLevels('Для тесту потрібно 4+ своїх слів. Або спробуй готові рівні прямо зараз!');return;}
   const count=parseInt(document.getElementById('s-quizcount')?.value||'10');
   const pool=shuffle(words).slice(0,Math.min(count,words.length));
@@ -1112,7 +1152,7 @@ function answerQ(idx,chosen){
 }
 function renderQDone(){
   const pct=Math.round((quizScore/quizQs.length)*100);
-  document.getElementById('quiz-content').innerHTML=`<div class="quiz-score"><div class="qs-emoji">${pct>=80?'🏆':pct>=60?'👍':'💪'}</div><div class="qs-title">${pct>=80?'Відмінно!':pct>=60?'Непогано!':'Продовжуй!'}</div><div class="qs-sub">Правильно: ${quizScore} з ${quizQs.length} (${pct}%)</div><button class="btn-primary" onclick="startQuiz()" style="margin-bottom:10px">Ще раз</button><button class="btn-secondary" onclick="showScreen('home')">На головну</button></div>`;
+  document.getElementById('quiz-content').innerHTML=`<div class="quiz-score"><div class="qs-emoji">${pct>=80?'🏆':pct>=60?'👍':'💪'}</div><div class="qs-title">${pct>=80?'Відмінно!':pct>=60?'Непогано!':'Продовжуй!'}</div><div class="qs-sub">Правильно: ${quizScore} з ${quizQs.length} (${pct}%)</div><button class="btn-primary" onclick="playQuiz()" style="margin-bottom:10px">Ще раз</button><button class="btn-secondary" onclick="showScreen('home')">На головну</button></div>`;
   refreshHome();
 }
 
@@ -1129,7 +1169,7 @@ function renderProgress(){
   const ta=words.reduce((s,w)=>s+w.stats.correct+w.stats.incorrect,0);
   const acc=ta>0?Math.round(tc/ta*100):0;
   const hard=words.filter(w=>w.stats.incorrect>0).sort((a,b)=>b.stats.incorrect-a.stats.incorrect).slice(0,5);
-  document.getElementById('progress-content').innerHTML=`<div class="stats-row" style="margin-top:16px"><div class="stat-card"><div class="num">${total}</div><div class="lbl">Всього</div></div><div class="stat-card"><div class="num" style="color:var(--green)">${mastered}</div><div class="lbl">Вивчено</div></div><div class="stat-card"><div class="num" style="color:var(--accent)">${acc}%</div><div class="lbl">Точність</div></div></div><div class="prog-section"><h3>Статус слів</h3><div class="prog-bar-item"><div class="pbi-header"><span>Вивчені</span><span>${mastered}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?mastered/total*100:0}%;background:var(--green)"></div></div></div><div class="prog-bar-item"><div class="pbi-header"><span>Вивчаю</span><span>${learning}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?learning/total*100:0}%;background:var(--accent)"></div></div></div><div class="prog-bar-item"><div class="pbi-header"><span>Нові</span><span>${unseen}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?unseen/total*100:0}%;background:var(--text3)"></div></div></div></div>${hard.length?`<div class="prog-section"><h3>Складні слова</h3>${hard.map(w=>`<div class="hw-item"><div class="hw-word">${w.word}<div style="font-size:12px;color:var(--text2)">${w.translation||''}</div></div><div class="hw-stat">✗ ${w.stats.incorrect}</div></div>`).join('')}</div>`:''}<button class="btn-secondary" onclick="startQuiz()" style="margin-bottom:10px">✏️ Тест</button><button class="btn-secondary" onclick="startCards()">🃏 Картки</button><div style="height:20px"></div>`;
+  document.getElementById('progress-content').innerHTML=`<div class="stats-row" style="margin-top:16px"><div class="stat-card"><div class="num">${total}</div><div class="lbl">Всього</div></div><div class="stat-card"><div class="num" style="color:var(--green)">${mastered}</div><div class="lbl">Вивчено</div></div><div class="stat-card"><div class="num" style="color:var(--accent)">${acc}%</div><div class="lbl">Точність</div></div></div><div class="prog-section"><h3>Статус слів</h3><div class="prog-bar-item"><div class="pbi-header"><span>Вивчені</span><span>${mastered}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?mastered/total*100:0}%;background:var(--green)"></div></div></div><div class="prog-bar-item"><div class="pbi-header"><span>Вивчаю</span><span>${learning}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?learning/total*100:0}%;background:var(--accent)"></div></div></div><div class="prog-bar-item"><div class="pbi-header"><span>Нові</span><span>${unseen}</span></div><div class="pbi-track"><div class="pbi-fill" style="width:${total?unseen/total*100:0}%;background:var(--text3)"></div></div></div></div>${hard.length?`<div class="prog-section"><h3>Складні слова</h3>${hard.map(w=>`<div class="hw-item"><div class="hw-word">${w.word}<div style="font-size:12px;color:var(--text2)">${w.translation||''}</div></div><div class="hw-stat">✗ ${w.stats.incorrect}</div></div>`).join('')}</div>`:''}<button class="btn-secondary" onclick="playQuiz()" style="margin-bottom:10px">✏️ Тест</button><button class="btn-secondary" onclick="playCards()">🃏 Картки</button><div style="height:20px"></div>`;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1172,8 +1212,25 @@ function setSyncStatus(s){const el=document.getElementById('home-subtitle');if(e
 let gameTiles=[],gameSel=null,gameCorrect=0,gameWrong=0,gameStart=0,gameTimerInt=null,gameTotal=0;
 let audioCtx=null,musicOn=true,musicInt=null,beatStep=0;
 
-function startGame(){
-  const words=getWords();
+
+// ── ВИБІР ТЕМИ ПЕРЕД ГРОЮ ──
+function pickTagAndPlay(gameFn){
+  const tags=getAllTags();
+  if(tags.length===0){gameFn('');return;} // нема тегів — грай з усіма
+  let opts='<button class="btn-primary" style="margin-bottom:8px" onclick="closeModal();'+gameFn.name+'(\'\')">Всі слова</button>';
+  tags.forEach(t=>{
+    const cnt=getWords().filter(w=>(w.tags||[]).includes(t)).length;
+    opts+=`<button class="btn-secondary" style="margin-bottom:6px" onclick="closeModal();${gameFn.name}('${t.replace(/'/g,"\\'")}')">${t} (${cnt})</button>`;
+  });
+  showModal('<div style="text-align:center;margin-bottom:12px"><div style="font-size:32px">📁</div><h3>З яких слів грати?</h3></div>'+opts);
+}
+function filterByTag(words,tag){
+  if(!tag)return words;
+  return words.filter(w=>(w.tags||[]).includes(tag));
+}
+function playGame(){pickTagAndPlay(startGame);}
+function startGame(tag){
+  let words=filterByTag(getWords(),tag);
   if(words.length<3){offerLevels('Для гри потрібно 3+ своїх слів. Або зіграй готові рівні!');return;}
   // беремо до 8 пар
   const pool=shuffle(words).slice(0,Math.min(8,words.length));
@@ -1273,7 +1330,7 @@ function finishGame(){
       <div class="gr-stat"><div class="n" style="color:var(--red)">${gameWrong}</div><div class="l">Помилок</div></div>
       <div class="gr-stat"><div class="n" style="color:var(--accent2)">${timeStr}</div><div class="l">Час</div></div>
     </div>
-    <button class="btn-primary" onclick="startGame()" style="margin-bottom:10px">🎮 Ще раз</button>
+    <button class="btn-primary" onclick="playGame()" style="margin-bottom:10px">🎮 Ще раз</button>
     <button class="btn-secondary" onclick="quitGame()">На головну</button>`;
   refreshHome();
 }
@@ -1638,46 +1695,55 @@ function markOnboarded(){
 }
 
 
-// ── ВІДГУК ──
-function checkShowReview(){
-  const key='mv_review_'+(window._currentUID||'guest');
-  if(localStorage.getItem(key+'_done'))return;
-  const cnt=parseInt(localStorage.getItem(key+'_cnt')||'0')+1;
-  localStorage.setItem(key+'_cnt',cnt);
-  if(cnt===3)setTimeout(()=>showReviewModal(),1500);
-}
-function showReviewModal(){
-  const key='mv_review_'+(window._currentUID||'guest');
-  if(localStorage.getItem(key+'_done'))return;
+// ── ВІДГУК (3 кроки: зірочки → текст → дякуємо) ──
+let _rvStars=0;
+function openReview(){
+  _rvStars=0;
   showModal(`<div style="text-align:center">
     <div style="font-size:40px;margin-bottom:8px">⭐</div>
-    <h3 style="margin-bottom:6px">Подобається додаток?</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Залиш короткий відгук — це дуже допомагає!</p>
+    <h3>Оціни додаток</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Як тобі MyVocabolik?</p>
     <div class="star-row" id="star-row">
-      ${[1,2,3,4,5].map(i=>`<button class="star-btn" data-n="${i}" onclick="rateStar(${i})">☆</button>`).join('')}
+      <button class="star-btn" onclick="tapStar(1)">☆</button>
+      <button class="star-btn" onclick="tapStar(2)">☆</button>
+      <button class="star-btn" onclick="tapStar(3)">☆</button>
+      <button class="star-btn" onclick="tapStar(4)">☆</button>
+      <button class="star-btn" onclick="tapStar(5)">☆</button>
     </div>
-    <textarea id="review-text" placeholder="Що сподобалось або що покращити?" style="width:100%;margin-top:12px;min-height:80px;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 12px;outline:none;resize:none"></textarea>
-    <button class="btn-primary" style="margin-top:12px;margin-bottom:8px" onclick="submitReview()">Надіслати відгук</button>
-    <button class="btn-secondary" onclick="closeModal();localStorage.setItem('mv_review_${window._currentUID||'guest'}_done','skip')" style="font-size:13px">Пізніше</button>
+    <button class="btn-primary" style="margin-top:16px" onclick="reviewStep2()" id="rv-next" disabled>Далі →</button>
+    <button class="btn-secondary" style="margin-top:8px;font-size:13px" onclick="closeModal()">Пізніше</button>
   </div>`);
 }
-let _reviewStars=0;
-function rateStar(n){
-  _reviewStars=n;
-  document.querySelectorAll('.star-btn').forEach((b,i)=>{b.textContent=i<n?'★':'☆';b.style.color=i<n?'#f0bb42':'var(--text3)';});
+function tapStar(n){
+  _rvStars=n;
+  document.querySelectorAll('.star-btn').forEach((b,i)=>{
+    b.textContent=i<n?'★':'☆';
+    b.style.color=i<n?'#f0bb42':'var(--text3)';
+  });
+  document.getElementById('rv-next').disabled=false;
 }
-async function submitReview(){
-  const key='mv_review_'+(window._currentUID||'guest');
-  const text=(document.getElementById('review-text')?.value||'').trim();
-  if(!_reviewStars){showToast('Постав оцінку зірочками');return;}
-  // save to Firestore reviews collection
+function reviewStep2(){
+  showModal(`<div style="text-align:center">
+    <div style="font-size:40px;margin-bottom:8px">💬</div>
+    <h3>Напиши пару слів</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Що сподобалось? Що покращити?</p>
+    <textarea id="rv-text" placeholder="Твій відгук тут..." style="width:100%;min-height:100px;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px;outline:none;resize:none"></textarea>
+    <button class="btn-primary" style="margin-top:14px" onclick="sendReview()">Надіслати</button>
+    <button class="btn-secondary" style="margin-top:8px;font-size:13px" onclick="sendReview()">Пропустити текст</button>
+  </div>`);
+}
+async function sendReview(){
+  const text=(document.getElementById('rv-text')?.value||'').trim();
   try{
     const fb=await waitFb();
-    if(fb&&window._fbSaveReview)await window._fbSaveReview({uid:window._currentUID||'',email:window._uEmail||'',stars:_reviewStars,text,date:new Date().toISOString()});
+    if(fb&&window._fbSaveReview)await window._fbSaveReview({uid:window._currentUID||'',email:window._uEmail||'',name:window._uName||'',stars:_rvStars,text,date:new Date().toISOString()});
   }catch(e){}
-  localStorage.setItem(key+'_done','1');
-  closeModal();
-  showToast('Дякуємо за відгук! 💚');
+  showModal(`<div style="text-align:center;padding:20px 0">
+    <div style="font-size:50px;margin-bottom:12px">💚</div>
+    <h3>Дякуємо!</h3>
+    <p style="font-size:14px;color:var(--text2);margin:10px 0 20px">Твій відгук допомагає нам ставати кращими</p>
+    <button class="btn-primary" onclick="closeModal()">Закрити</button>
+  </div>`);
 }
 
 </script>
