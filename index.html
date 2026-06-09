@@ -92,7 +92,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .search-bar .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:16px;pointer-events:none}
 .filter-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
 .filter-row::-webkit-scrollbar{display:none}
-.filter-chip{white-space:nowrap;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;color:var(--text2)}
+.filter-chip{white-space:nowrap;background:var(--bg2);border:none;border-radius:20px;padding:8px 16px;font-size:13px;cursor:pointer;color:var(--text2);font-weight:500;transition:all .15s}
 .filter-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .word-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer}
 .wi-left{flex:1;min-width:0}
@@ -396,11 +396,16 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .home-tab.active-tab{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .home-tab svg{color:inherit;flex-shrink:0}
 
-.level-strip{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(123,201,111,.15),rgba(90,168,79,.08));border:1px solid rgba(123,201,111,.3);border-radius:12px;padding:9px 14px;cursor:pointer;margin-bottom:12px;transition:opacity .15s}
-.level-strip:active{opacity:.8}
-.ls-badge{font-size:13px;font-weight:700;color:var(--accent2);background:rgba(123,201,111,.2);padding:3px 9px;border-radius:8px;flex-shrink:0}
-.ls-text{font-size:13px;color:var(--text2);flex:1}
-.ls-retry{font-size:12px;color:var(--accent2);flex-shrink:0;font-weight:500}
+.level-strip{display:flex;align-items:center;gap:12px;background:var(--accent);border-radius:0;padding:11px 20px;cursor:pointer;margin:0 -20px 14px;transition:opacity .15s}
+.level-strip:active{opacity:.85}
+.ls-badge{font-size:13px;font-weight:700;color:var(--accent2);background:rgba(255,255,255,.9);padding:4px 10px;border-radius:8px;flex-shrink:0}
+[data-theme="dark"] .ls-badge{color:#1a201a}
+.ls-text{font-size:14px;color:#fff;font-weight:500;flex:1}
+.ls-retry{font-size:13px;color:rgba(255,255,255,.9);flex-shrink:0;font-weight:500}
+
+.vocab-actions{display:flex;gap:8px;padding:8px 20px 12px;flex-shrink:0}
+.va-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border2);border-radius:20px;background:var(--bg2);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s}
+.va-btn:hover{color:var(--text);border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -506,15 +511,10 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 
 <div class="screen" id="screen-vocab">
   <div class="topbar" style="gap:10px">
-    <div style="font-size:17px;font-weight:600;white-space:nowrap">MyVocabolik <sup style="font-size:9px;font-weight:500;color:var(--accent2);vertical-align:super;letter-spacing:.5px">beta</sup></div>
-    <div class="vocab-search-wrap" style="flex:1"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук..." oninput="renderVocab()"></div>
-    <div style="display:flex;gap:8px;flex-shrink:0">
-      <div class="theme-toggle" onclick="flipTheme()" title="Тема"><div class="tt-thumb"><span id="tt-icon-vocab">☀️</span></div></div>
-      <button class="icon-btn" onclick="shareWords()" title="Поділитися"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
-      <button class="icon-btn" onclick="showScreen('add')">＋</button>
-    </div>
+    <div style="font-size:17px;font-weight:600;white-space:nowrap">MyVocabolik</div>
+    <div class="vocab-search-wrap" style="flex:1"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук" oninput="renderVocab()"></div>
+    <div class="theme-toggle" onclick="flipTheme()" title="Тема"><div class="tt-thumb"><span id="tt-icon-vocab">☀️</span></div></div>
   </div>
-  <div style="padding:6px 20px 0;flex-shrink:0"><div class="sub" id="vocab-count"></div></div>
   <div style="padding:12px 20px 0;flex-shrink:0">
     <div id="vocab-libstats" class="lib-stats" style="margin-bottom:12px"></div>
     <div class="filter-row" id="filter-status-row">
@@ -526,7 +526,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     </div>
     <div class="filter-row" id="filter-tag-row"></div>
   </div>
-  <div class="scroll" id="vocab-list"></div>
+  <div class="scroll" id="vocab-list" style="padding-top:8px"></div>
 </div>
 
 <div class="screen" id="screen-cards">
@@ -824,7 +824,7 @@ function refreshHome() {
     const name=lvl?CEFR_NAMES[lvl]:'Невідомий';
     const attempts=(st.attempts||[]).length;
     if(lvl){
-      hero.innerHTML=`<div class="level-strip" onclick="startCefrTest()"><span class="ls-badge">${lvl}</span><span class="ls-text">Твій рівень англійської · ${name}</span><span class="ls-retry">Пройти ще раз →</span></div>`;
+      hero.innerHTML=`<div class="level-strip" onclick="startCefrTest()"><span class="ls-badge">${lvl}</span><span class="ls-text">${name}</span><span class="ls-retry">Пройти ще раз</span></div>`;
     }else{
       hero.innerHTML=`<div class="level-hero teal-hero" onclick="startCefrTest()"><div class="lh-badge" style="background:rgba(255,255,255,.25);color:#fff">?</div><div class="lh-info"><div class="lh-label" style="color:rgba(255,255,255,.8)">Рівень ще не визначено</div><div class="lh-name" style="color:#fff">Дізнайся свій рівень</div><div class="lh-cta" style="color:rgba(255,255,255,.9)">Пройти тест →</div></div></div>`;
     }
@@ -965,10 +965,13 @@ async function addBulkWords(){
 function shareWords(){
   const words=getWords();
   if(!words.length){showToast('Словник порожній');return;}
-  const data=words.map(w=>({e:w.word,u:w.translation,t:w.transcription||''}));
+  // Компактне кодування: word|translation кожне через новий рядок, base64
+  const maxWords=100; // обмеження на 100 слів для короткого посилання
+  const slice=words.slice(0,maxWords);
+  const compact=slice.map(w=>(w.word||'').replace(/[|~]/g,'')+'|'+(w.translation||'').replace(/[|~]/g,'')).join('~');
   let encoded;
-  try{encoded=btoa(encodeURIComponent(JSON.stringify(data)));}catch(e){showToast('Помилка кодування');return;}
-  const url=location.origin+location.pathname+'#import='+encoded;
+  try{encoded=btoa(unescape(encodeURIComponent(compact)));}catch(e){showToast('Помилка кодування');return;}
+  const url=location.origin+location.pathname+'#s='+encoded;
   // Завжди показуємо модалку з посиланням + спроба скопіювати
   if(navigator.clipboard){
     navigator.clipboard.writeText(url).then(()=>{
@@ -981,15 +984,21 @@ function fallbackCopy(url){
 }
 // перевірка import при завантаженні
 function checkImport(){
-  if(location.hash.startsWith('#import=')){
-    const enc=location.hash.slice(8);
-    try{
-      const data=JSON.parse(decodeURIComponent(atob(enc)));
-      if(Array.isArray(data)&&data.length){
-        showModal('<div style="text-align:center;font-size:36px;margin-bottom:8px">📥</div><h3 style="text-align:center">Імпорт слів</h3><p style="color:var(--text2);font-size:14px;margin:10px 0 20px;text-align:center">Хтось поділився списком з <b>'+data.length+'</b> слів. Додати їх у твій словник?</p><button class="btn-primary" style="margin-bottom:10px" onclick="doImport()">Додати '+data.length+' слів</button><button class="btn-secondary" onclick="closeModal();history.replaceState(null,\'\',location.pathname)">Скасувати</button>');
-        window._importData=data;
-      }
-    }catch(e){}
+  const hash=location.hash;
+  let data=null;
+  try{
+    if(hash.startsWith('#s=')){
+      // новий компактний формат
+      const dec=decodeURIComponent(escape(atob(hash.slice(3))));
+      data=dec.split('~').filter(Boolean).map(pair=>{const[e,u]=pair.split('|');return{e,u};});
+    }else if(hash.startsWith('#import=')){
+      // старий JSON формат (зворотна сумісність)
+      data=JSON.parse(decodeURIComponent(atob(hash.slice(8))));
+    }
+  }catch(e){}
+  if(data&&data.length){
+    window._importData=data;
+    showModal('<div style="text-align:center;font-size:36px;margin-bottom:8px">📥</div><h3 style="text-align:center">Імпорт слів</h3><p style="color:var(--text2);font-size:14px;margin:10px 0 20px;text-align:center">Хтось поділився списком з <b>'+data.length+'</b> слів. Додати їх у твій словник?</p><button class="btn-primary" style="margin-bottom:10px" onclick="doImport()">Додати '+data.length+' слів</button><button class="btn-secondary" onclick="closeModal();history.replaceState(null,\'\',location.pathname)">Скасувати</button>');
   }
 }
 function doImport(){
@@ -1058,7 +1067,7 @@ function renderVocab(){
   document.getElementById('vocab-count').textContent=`${words.length} слів`;
   const list=document.getElementById('vocab-list');
   if(!words.length){list.innerHTML=`<div class="empty"><div class="ei">📭</div><p>${activeFilter==='all'?'Словник порожній.<br>Додай перше слово!':'Слів немає.'}</p></div>`;return;}
-  list.innerHTML=words.map(w=>{
+  list.innerHTML=(words.length?'<div class="vocab-actions"><button class="va-btn" onclick="showScreen(\'add\')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Додати</button><button class="va-btn" onclick="shareWords()"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Поділитися</button></div>':'')+words.map(w=>{
     const s=w.stats;
     const total=s.seen||0;
     const ok=s.correct||0;
@@ -1908,14 +1917,23 @@ onAuthStateChanged(auth, async user => {
     }
 
     window._fbSaveCefr = async (data) => {
-      try{await setDoc(doc(db,'users',user.uid),{cefr:data},{merge:true});}catch(e){}
+      const cu=auth.currentUser;
+      if(!cu)return;
+      try{await setDoc(doc(db,'users',cu.uid),{cefr:data},{merge:true});}catch(e){console.error('CEFR save:',e.message);}
     };
     window._fbLoadCefr = async () => {
-      try{const snap=await getDoc(doc(db,'users',user.uid));
+      const cu=auth.currentUser;
+      if(!cu)return null;
+      try{const snap=await getDoc(doc(db,'users',cu.uid));
         return snap.exists()?snap.data()?.cefr||null:null;}catch(e){return null;}
     };
     window._fbSaveReview = async (review) => {
-      try{await setDoc(doc(db,'users',user.uid),{review:review},{merge:true});}catch(e){console.error('review save error',e);}
+      const cu=auth.currentUser;
+      if(!cu){console.error('No user for review save');return;}
+      try{
+        await setDoc(doc(db,'users',cu.uid),{review:{...review,uid:cu.uid,email:cu.email||'',name:cu.displayName||''}},{merge:true});
+        console.log('✓ Review saved for',cu.email);
+      }catch(e){console.error('Review save error:',e.code,e.message);}
     };
     window._FB = {
       save: async w  => { await setDoc(doc(col, w.id), w); },
