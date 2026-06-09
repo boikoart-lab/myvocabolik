@@ -396,7 +396,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .home-tab.active-tab{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .home-tab svg{color:inherit;flex-shrink:0}
 
-.level-strip{display:flex;align-items:center;gap:12px;background:var(--accent);border-radius:0;padding:11px 20px;cursor:pointer;margin:0 -20px 14px;transition:opacity .15s}
+.level-strip{display:flex;align-items:center;gap:10px;background:var(--accent);border-radius:0;padding:10px 20px;cursor:pointer;margin:0 -20px 10px;transition:opacity .15s}
 .level-strip:active{opacity:.85}
 .ls-badge{font-size:13px;font-weight:700;color:var(--accent2);background:rgba(255,255,255,.9);padding:4px 10px;border-radius:8px;flex-shrink:0}
 [data-theme="dark"] .ls-badge{color:#1a201a}
@@ -406,6 +406,8 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .vocab-actions{display:flex;gap:8px;padding:8px 20px 12px;flex-shrink:0}
 .va-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border2);border-radius:20px;background:var(--bg2);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s}
 .va-btn:hover{color:var(--text);border-color:var(--accent)}
+
+.app-topbar{height:60px;padding:0 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid var(--border);background:var(--bg)}
 </style>
 </head>
 <body>
@@ -441,7 +443,6 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   </div>
   <div class="scroll">
     <div id="home-level-hero"></div>
-    <div class="section-label">Навчання</div>
     <div class="big-card" onclick="openStudy()">
       <div class="bc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
       <div class="bc-text"><h3>Вивчати слова</h3><p>За рівнями A1–C2</p></div>
@@ -518,10 +519,10 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 </div>
 
 <div class="screen" id="screen-vocab">
-  <div class="topbar" style="gap:10px">
-    <div style="font-size:17px;font-weight:600;white-space:nowrap">MyVocabolik</div>
-    <div class="vocab-search-wrap" style="flex:1"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук" oninput="renderVocab()"></div>
-    <div class="theme-toggle" onclick="flipTheme()" title="Тема"><div class="tt-thumb"><span id="tt-icon-vocab">☀️</span></div></div>
+  <div class="topbar app-topbar">
+    <div style="font-size:18px;font-weight:600;letter-spacing:-.3px;white-space:nowrap">MyVocabolik</div>
+    <div class="vocab-search-wrap" style="flex:1;margin:0 10px"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук" oninput="renderVocab()"></div>
+    <div class="theme-toggle" onclick="flipTheme()"><div class="tt-thumb"><span id="tt-icon-vocab">☀️</span></div></div>
   </div>
   <div style="padding:12px 20px 0;flex-shrink:0">
     <div id="vocab-libstats" class="lib-stats" style="margin-bottom:12px"></div>
@@ -534,7 +535,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
     </div>
     <div class="filter-row" id="filter-tag-row"></div>
   </div>
-  <div class="scroll" id="vocab-list" style="padding-top:8px"></div>
+  <div class="scroll" id="vocab-list"></div>
 </div>
 
 <div class="screen" id="screen-cards">
@@ -816,9 +817,9 @@ function refreshHome() {
     const studied=(st.studied||[]).length;
     if(words.length===0&&studied===0){
       // новачок — заохочення замість нулів
-      db.innerHTML='<div class="section-label">Мій словник</div><div class="empty-hint" onclick="openStudy()"><div class="eh-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="eh-text"><b>Словник поки порожній</b><span>Почни вчити слова за рівнями — вони зʼявляться тут</span></div></div>';
+      db.innerHTML='<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin:14px 0 8px">Мій словник</div><div class="empty-hint" onclick="openStudy()"><div class="eh-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="eh-text"><b>Словник поки порожній</b><span>Почни вчити слова за рівнями — вони зʼявляться тут</span></div></div>';
     } else {
-      db.innerHTML='<div class="section-label">Мій словник</div><div class="stats-row"><div class="stat-card"><div class="num">'+words.length+'</div><div class="lbl">Слів</div></div><div class="stat-card"><div class="num" style="color:var(--green)">'+mastered+'</div><div class="lbl">Вивчено</div></div><div class="stat-card"><div class="num" style="color:var(--accent2)">'+due+'</div><div class="lbl">Повторити</div></div></div>';
+      db.innerHTML='<div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin:14px 0 8px">Мій словник</div><div class="stats-row"><div class="stat-card"><div class="num">'+words.length+'</div><div class="lbl">Слів</div></div><div class="stat-card"><div class="num" style="color:var(--green)">'+mastered+'</div><div class="lbl">Вивчено</div></div><div class="stat-card"><div class="num" style="color:var(--accent2)">'+due+'</div><div class="lbl">Повторити</div></div></div>';
     }
   }
   // subtitle removed;
@@ -1072,7 +1073,7 @@ function renderVocab(){
   if(activeTag==='__none') words=words.filter(w=>!w.tags||w.tags.length===0);
   else if(activeTag) words=words.filter(w=>(w.tags||[]).includes(activeTag));
   words.sort((a,b)=>new Date(b.addedAt)-new Date(a.addedAt));
-  document.getElementById('vocab-count').textContent=`${words.length} слів`;
+  const vc=document.getElementById('vocab-count');if(vc)vc.textContent=`${words.length} слів`;
   const list=document.getElementById('vocab-list');
   if(!words.length){list.innerHTML=`<div class="empty"><div class="ei">📭</div><p>${activeFilter==='all'?'Словник порожній.<br>Додай перше слово!':'Слів немає.'}</p></div>`;return;}
   list.innerHTML=(words.length?'<div class="vocab-actions"><button class="va-btn" onclick="showScreen(\'add\')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Додати</button><button class="va-btn" onclick="shareWords()"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Поділитися</button></div>':'')+words.map(w=>{
