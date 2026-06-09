@@ -455,8 +455,16 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
       <div class="menu-card" onclick="playCards()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="14" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2"/></svg></div><div class="mc-title">Картки</div><div class="mc-sub">Флеш-картки</div></div>
       <div class="menu-card" onclick="playQuiz()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div><div class="mc-title">Тест</div><div class="mc-sub">Multiple choice</div></div>
     </div>
-    <div class="menu-card" onclick="showScreen('vocab')" style="flex-direction:row;align-items:center;gap:14px;margin-top:10px"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7"/></svg></div><div><div class="mc-title">Словник</div><div class="mc-sub">Усі слова · додати списком · поділитися</div></div></div>
-    <div class="menu-card" onclick="showScreen('progress')" style="flex-direction:row;align-items:center;gap:14px;margin-top:10px"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg></div><div><div class="mc-title">Прогрес</div><div class="mc-sub">Статистика</div></div></div>
+    <div class="home-tabs" style="margin-top:12px">
+      <button class="home-tab" id="htab-vocab" onclick="goTab('vocab')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Словник
+      </button>
+      <button class="home-tab" id="htab-progress" onclick="goTab('progress')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg>
+        Прогрес
+      </button>
+    </div>
     <div style="height:20px"></div>
   </div>
 </div>
@@ -826,7 +834,7 @@ function refreshHome() {
     if(lvl){
       hero.innerHTML=`<div class="level-strip" onclick="startCefrTest()"><span class="ls-badge">${lvl}</span><span class="ls-text">${name}</span><span class="ls-retry">Пройти ще раз</span></div>`;
     }else{
-      hero.innerHTML=`<div class="level-hero teal-hero" onclick="startCefrTest()"><div class="lh-badge" style="background:rgba(255,255,255,.25);color:#fff">?</div><div class="lh-info"><div class="lh-label" style="color:rgba(255,255,255,.8)">Рівень ще не визначено</div><div class="lh-name" style="color:#fff">Дізнайся свій рівень</div><div class="lh-cta" style="color:rgba(255,255,255,.9)">Пройти тест →</div></div></div>`;
+      hero.innerHTML=`<div class="level-strip teal-hero" onclick="startCefrTest()"><span class="ls-badge" style="background:rgba(255,255,255,.9);color:#2d7a1a">?</span><span class="ls-text">Пройти тест, щоб дізнатися свій рівень</span><span class="ls-retry">Почати →</span></div>`;
     }
   }
 
@@ -1785,206 +1793,11 @@ function markOnboarded(){
 // ── ВІДГУК через Google Forms ──
 let _rvStars=0;
 function openReview(){
-  window.open('https://docs.google.com/forms/d/e/1FAIpQLSdO66a7wO0Kj_4QtA9NPMy_wteghmeDcM3xT8jxzpuk2iowpA/viewform','_blank');
-}
-function getAutoSpeak(){try{return localStorage.getItem('mv_autospeak')!=='0';}catch(e){return true;}}
-function toggleAutoSpeak(){
-  const on=!getAutoSpeak();
-  try{localStorage.setItem('mv_autospeak',on?'1':'0');}catch(e){}
-  document.getElementById('autospeak-btn').style.opacity=on?'1':'0.4';
-  showToast(on?'Автоозвучка увімкнена':'Автоозвучка вимкнена');
-}
-function maybePronounce(word){if(getAutoSpeak())pronounce(word);}
-function nextCefrQ(){
-  if(cefrIdx>=cefrQs.length){finishCefr();return;}
-  const q=cefrQs[cefrIdx];
-  let allWords=[];CEFR_ORDER.forEach(l=>{CEFR_DATA.levels[l].forEach(w=>allWords.push(w.ua));});
-  const wrong=shuffle(allWords.filter(u=>u!==q.ua)).slice(0,3);
-  const options=shuffle([q.ua,...wrong]);
-  cefrAnswered=false;
-  document.getElementById('cefr-sub').textContent=(cefrIdx+1)+' / '+cefrQs.length;
-  const _ab=document.getElementById('autospeak-btn');if(_ab)_ab.style.opacity=getAutoSpeak()?'1':'0.4';
-  document.getElementById('cefr-content').innerHTML=
-    '<div class="card-progress" style="margin-bottom:14px"><div class="card-progress-fill" style="width:'+(cefrIdx/cefrQs.length*100)+'%"></div></div>'+
-    '<div class="diff-badge">Рівень слова: <b>'+q.level+'</b></div>'+
-    '<div class="quiz-q"><div class="qq-type">Що означає це слово?</div><div class="qq-word">'+q.en+'</div>'+
-    '<button onclick="pronounce(\''+q.en.replace(/'/g,"\\'")+'\')" style="margin-top:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:15px;cursor:pointer;color:var(--text)">🔊</button></div>'+
-    '<div class="quiz-options">'+options.map(opt=>'<button class="qo-btn" onclick="answerCefr(\''+opt.replace(/'/g,"\\'")+'\',\''+q.ua.replace(/'/g,"\\'")+'\')">'+opt+'</button>').join('')+'</div>'+
-    '<button class="btn-secondary" style="margin-top:14px" onclick="answerCefr(\'\',\''+q.ua.replace(/'/g,"\\'")+'\')">Не знаю</button>';
-}
-
-function answerCefr(chosen,correct){
-  if(cefrAnswered)return;cefrAnswered=true;
-  const q=cefrQs[cefrIdx];
-  const ok=chosen===correct&&chosen!=='';
-  cefrResults.push({level:q.level,ok,en:q.en});
-  document.querySelectorAll('.qo-btn').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');else if(b.textContent===chosen&&!ok)b.classList.add('wrong');});
-  setTimeout(()=>{cefrIdx++;nextCefrQ();},850);
-}
-
-function finishCefr(){
-  const byLevel={};CEFR_ORDER.forEach(l=>byLevel[l]={ok:0,total:0});
-  cefrResults.forEach(r=>{byLevel[r.level].total++;if(r.ok)byLevel[r.level].ok++;});
-  let achieved=null;
-  for(const l of CEFR_ORDER){const b=byLevel[l];const pct=b.total>0?b.ok/b.total:0;if(pct>=0.6)achieved=l;else break;}
-  // зберігаємо статистику
-  const stats=getCefrStats();
-  const prevLevel=stats.level;
-  stats.level=achieved;
-  stats.attempts=stats.attempts||[];
-  stats.attempts.push({date:new Date().toISOString(),level:achieved,score:cefrResults.filter(r=>r.ok).length,total:cefrResults.length});
-  // додаємо побачені слова
-  const seen=new Set(stats.seenWords||[]);
-  cefrResults.forEach(r=>seen.add(r.level+':'+r.en));
-  stats.seenWords=[...seen];
-  saveCefrStats(stats);
-  // порівняння з минулим
-  let trend='';
-  if(prevLevel&&achieved){
-    const pi=CEFR_ORDER.indexOf(prevLevel),ai=CEFR_ORDER.indexOf(achieved);
-    if(ai>pi)trend='<div class="cefr-trend up">↑ Рівень підвищився! Було '+prevLevel+'</div>';
-    else if(ai<pi)trend='<div class="cefr-trend down">↓ Рівень знизився. Було '+prevLevel+'</div>';
-    else trend='<div class="cefr-trend same">→ Рівень підтверджено</div>';
-  }
-  let rows='';
-  CEFR_ORDER.forEach(l=>{const b=byLevel[l];const pct=b.total>0?Math.round(b.ok/b.total*100):0;rows+='<div class="cefr-row"><span class="cr-lvl">'+l+'</span><div class="cr-bar"><div class="cr-fill" style="width:'+pct+'%"></div></div><span class="cr-pct">'+b.ok+'/'+b.total+'</span></div>';});
-  const lvlText=achieved||'—';
-  const lvlName=achieved?CEFR_NAMES[achieved]:'Новачок';
-  const emoji=achieved==='C2'?'🏆':(achieved==='C1'||achieved==='B2')?'🎉':achieved?'👍':'🌱';
-  document.getElementById('cefr-content').innerHTML=
-    '<div style="text-align:center;padding:16px 0 6px"><div style="font-size:50px">'+emoji+'</div>'+
-    '<div style="font-size:13px;color:var(--text2);margin-top:6px">Твій рівень англійської</div>'+
-    '<div style="font-size:46px;font-weight:700;letter-spacing:-1px;color:var(--accent2);line-height:1.1">'+lvlText+'</div>'+
-    '<div style="font-size:15px;color:var(--text)">'+lvlName+'</div></div>'+
-    trend+
-    '<div class="cefr-detail">'+rows+'</div>'+
-    '<button class="btn-primary" style="margin-top:18px;margin-bottom:10px" onclick="startCefrTest()">🔄 Пройти ще раз</button>'+
-    '<button class="btn-secondary" onclick="showScreen(\'home\')">На головну</button><div style="height:20px"></div>';
-  refreshHome();
-  if(typeof checkShowReview==="function")checkShowReview();
-}
-function quitCefr(){showScreen('home');}
-
-// ═══ ВИВЧЕННЯ ЗА РІВНЯМИ ═══
-async function openStudy(){
-  showScreen('study');
-  document.getElementById('study-content').innerHTML='<div class="loader"><div class="spinner"></div> Завантаження...</div>';
-  const data=await loadCefrData();
-  if(!data){document.getElementById('study-content').innerHTML='<div class="empty"><div class="ei">⚠️</div><p>Не вдалося завантажити слова.</p></div>';return;}
-  const stats=getCefrStats();
-  const studied=new Set(stats.studied||[]);
-  let html='<p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.5">Обери рівень. Вчиш по 10 слів за раз — обираєш правильний переклад. Вивчені слова йдуть у словник 📚</p>';
-  CEFR_ORDER.forEach(lvl=>{
-    const words=data.levels[lvl];
-    const done=words.filter(w=>studied.has(lvl+':'+w.en)).length;
-    html+='<div class="study-card" onclick="studyLevel(\''+lvl+'\')"><div class="sc-badge">'+lvl+'</div><div class="sc-info"><div class="sc-name">'+CEFR_NAMES[lvl]+'</div><div class="sc-sub">'+words.length+' слів · вивчено '+done+'</div><div class="sc-bar"><div class="sc-fill" style="width:'+(done/words.length*100)+'%"></div></div></div><div class="sc-arrow">›</div></div>';
-  });
-  html+='<div style="height:20px"></div>';
-  document.getElementById('study-content').innerHTML=html;
-}
-
-let studyLvl='',studyBatch=[],studyBIdx=0,studyAnswered=false,studyKnown=0;
-const STUDY_BATCH=10; // вчимо по 10 слів за раз
-
-function studyLevel(lvl){
-  studyLvl=lvl;
-  const stats=getCefrStats();
-  const studied=new Set(stats.studied||[]);
-  // беремо слова що ще НЕ вивчені цього рівня; якщо всі вивчені — беремо всі для повторення
-  let pool=CEFR_DATA.levels[lvl].filter(w=>!studied.has(lvl+':'+w.en));
-  if(pool.length===0)pool=[...CEFR_DATA.levels[lvl]];
-  studyBatch=shuffle(pool).slice(0,STUDY_BATCH);
-  studyBIdx=0;studyKnown=0;studyAnswered=false;
-  showScreen('studycard');
-  nextStudyQ();
-}
-
-function nextStudyQ(){
-  if(studyBIdx>=studyBatch.length){finishStudyBatch();return;}
-  const w=studyBatch[studyBIdx];
-  // 3 неправильні варіанти з того ж рівня
-  const others=shuffle(CEFR_DATA.levels[studyLvl].filter(x=>x.ua!==w.ua)).slice(0,3).map(x=>x.ua);
-  const options=shuffle([w.ua,...others]);
-  studyAnswered=false;
-  document.getElementById('studycard-sub').textContent=(studyBIdx+1)+' / '+studyBatch.length;
-  document.getElementById('studycard-content').innerHTML=
-    '<div class="card-progress" style="margin-bottom:16px"><div class="card-progress-fill" style="width:'+(studyBIdx/studyBatch.length*100)+'%"></div></div>'+
-    '<div class="quiz-q"><div class="qq-type">Що означає це слово?</div><div class="qq-word">'+w.en+'</div>'+
-    '<button onclick="pronounce(\''+w.en.replace(/'/g,"\\'")+'\')" style="margin-top:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 12px;font-size:15px;cursor:pointer;color:var(--text)">🔊</button></div>'+
-    '<div class="quiz-options">'+options.map(opt=>'<button class="qo-btn" onclick="answerStudy(\''+opt.replace(/'/g,"\\'")+'\',\''+w.ua.replace(/'/g,"\\'")+'\')">'+opt+'</button>').join('')+'</div>';
-}
-
-function answerStudy(chosen,correct){
-  if(studyAnswered)return;studyAnswered=true;
-  const w=studyBatch[studyBIdx];
-  const ok=chosen===correct;
-  if(ok){
-    studyKnown++;
-    // позначаємо вивченим + у словник
-    const stats=getCefrStats();
-    const studied=new Set(stats.studied||[]);
-    studied.add(studyLvl+':'+w.en);
-    stats.studied=[...studied];
-    saveCefrStats(stats);
-    const exists=getWords().find(x=>x.word&&x.word.toLowerCase()===w.en.toLowerCase());
-    if(!exists){
-      dbSave({id:genId(),word:w.en,translation:w.ua,transcription:'',addedAt:new Date().toISOString(),level:studyLvl,stats:{seen:3,correct:3,incorrect:0,lastSeen:new Date().toISOString(),mastered:true}});
-    }
-  }
-  document.querySelectorAll('.qo-btn').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');else if(b.textContent===chosen&&!ok)b.classList.add('wrong');});
-  setTimeout(()=>{studyBIdx++;nextStudyQ();},850);
-}
-
-function finishStudyBatch(){
-  const stats=getCefrStats();
-  const studied=new Set(stats.studied||[]);
-  const totalLvl=CEFR_DATA.levels[studyLvl].length;
-  const doneLvl=CEFR_DATA.levels[studyLvl].filter(w=>studied.has(studyLvl+':'+w.en)).length;
-  const allDone=doneLvl>=totalLvl;
-  document.getElementById('studycard-content').innerHTML=
-    '<div class="quiz-score"><div class="qs-emoji">'+(studyKnown===studyBatch.length?'🎉':'👍')+'</div>'+
-    '<div class="qs-title">Порцію пройдено!</div>'+
-    '<div class="qs-sub">Правильно: '+studyKnown+' з '+studyBatch.length+'<br>Рівень '+studyLvl+': вивчено '+doneLvl+' з '+totalLvl+'</div>'+
-    (allDone?'<div class="cefr-trend up" style="margin-bottom:14px">🏆 Рівень '+studyLvl+' повністю вивчено!</div>':'')+
-    (!allDone?'<button class="btn-primary" style="margin-bottom:10px" onclick="studyLevel(\''+studyLvl+'\')">Наступні '+STUDY_BATCH+' слів →</button>':'')+
-    '<button class="btn-secondary" onclick="openStudy()">До рівнів</button></div>';
-  refreshHome();
-}
-
-
-// ── ОНБОРДИНГ (першый вхід) ──
-function checkOnboard(){
-  const key='mv_onboarded_'+(window._currentUID||'guest');
-  if(!localStorage.getItem(key)){
-    // показуємо онбординг поверх головної
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.getElementById('screen-onboard').style.display='flex';
-    document.getElementById('screen-onboard').classList.add('active');
-  }
-}
-function startOnboard(){
-  markOnboarded();
-  startCefrTest();
-}
-function skipOnboard(){
-  markOnboarded();
-  document.getElementById('screen-onboard').classList.remove('active');
-  document.getElementById('screen-onboard').style.display='none';
-  showScreen('home');
-}
-function markOnboarded(){
-  try{localStorage.setItem('mv_onboarded_'+(window._currentUID||'guest'),'1');}catch(e){}
-}
-
-
-// ── ВІДГУК (3 кроки: зірочки → текст → дякуємо) ──
-let _rvStars=0;
-function openReview(){
   _rvStars=0;
   showModal(`<div style="text-align:center">
-    <div style="font-size:40px;margin-bottom:8px">⭐</div>
-    <h3>Оціни додаток</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Як тобі MyVocabolik?</p>
+    <div style="font-size:40px;margin-bottom:6px">⭐</div>
+    <h3>Як тобі MyVocabolik?</h3>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Твій відгук дуже важливий</p>
     <div class="star-row" id="star-row">
       <button class="star-btn" onclick="tapStar(1)">☆</button>
       <button class="star-btn" onclick="tapStar(2)">☆</button>
@@ -1992,42 +1805,32 @@ function openReview(){
       <button class="star-btn" onclick="tapStar(4)">☆</button>
       <button class="star-btn" onclick="tapStar(5)">☆</button>
     </div>
-    <button class="btn-primary" style="margin-top:16px" onclick="reviewStep2()" id="rv-next" disabled>Далі →</button>
+    <button class="btn-primary" style="margin-top:14px" onclick="reviewStep2()" id="rv-next" disabled>Далі →</button>
     <button class="btn-secondary" style="margin-top:8px;font-size:13px" onclick="closeModal()">Пізніше</button>
   </div>`);
 }
 function tapStar(n){
   _rvStars=n;
-  document.querySelectorAll('.star-btn').forEach((b,i)=>{
-    b.textContent=i<n?'★':'☆';
-    b.style.color=i<n?'#f0bb42':'var(--text3)';
-  });
+  document.querySelectorAll('.star-btn').forEach((b,i)=>{b.textContent=i<n?'★':'☆';b.style.color=i<n?'#f0bb42':'var(--text3)';});
   document.getElementById('rv-next').disabled=false;
 }
 function reviewStep2(){
   showModal(`<div style="text-align:center">
-    <div style="font-size:40px;margin-bottom:8px">💬</div>
+    <div style="font-size:36px;margin-bottom:6px">💬</div>
     <h3>Напиши пару слів</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Що сподобалось? Що покращити?</p>
-    <textarea id="rv-text" placeholder="Твій відгук тут..." style="width:100%;min-height:100px;background:var(--bg2);border:1px solid var(--border2);border-radius:14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:12px;outline:none;resize:none"></textarea>
-    <button class="btn-primary" style="margin-top:14px" onclick="sendReview()">Надіслати</button>
-    <button class="btn-secondary" style="margin-top:8px;font-size:13px" onclick="sendReview()">Пропустити текст</button>
+    <textarea id="rv-text" placeholder="Що сподобалось? Що покращити?" style="width:100%;margin-top:12px;min-height:90px;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 12px;outline:none;resize:none"></textarea>
+    <button class="btn-primary" style="margin-top:12px;margin-bottom:8px" onclick="sendReview()">Надіслати</button>
+    <button class="btn-secondary" style="font-size:13px" onclick="sendReview()">Без коментаря</button>
   </div>`);
 }
 async function sendReview(){
   const text=(document.getElementById('rv-text')?.value||'').trim();
-  try{
-    const fb=await waitFb();
-    if(window._fbSaveReview){
-      await window._fbSaveReview({uid:window._currentUID||'',email:window._uEmail||'',name:window._uName||'',stars:_rvStars,text,date:new Date().toISOString()});
-      console.log('Review saved to Firestore');
-    }else{console.warn('_fbSaveReview not ready');}
-  }catch(e){console.error('Review save failed:',e);}
+  try{if(window._fbSaveReview)await window._fbSaveReview({stars:_rvStars,text,date:new Date().toISOString()});}catch(e){}
   try{localStorage.setItem('mv_reviewed','1');}catch(e){}
-  showModal(`<div style="text-align:center;padding:20px 0">
-    <div style="font-size:50px;margin-bottom:12px">💚</div>
+  showModal(`<div style="text-align:center;padding:16px 0">
+    <div style="font-size:50px;margin-bottom:10px">💚</div>
     <h3>Дякуємо!</h3>
-    <p style="font-size:14px;color:var(--text2);margin:10px 0 20px">Твій відгук допомагає нам ставати кращими</p>
+    <p style="font-size:14px;color:var(--text2);margin:10px 0 20px;line-height:1.5">Твій відгук допомагає розвивати MyVocabolik</p>
     <button class="btn-primary" onclick="closeModal()">Закрити</button>
   </div>`);
 }
