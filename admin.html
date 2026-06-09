@@ -216,12 +216,13 @@ window.loadAdminReviews = async function(){
     const items=[];
     snap.forEach(d=>{
       const u=d.data();
+      // Log every user doc for debugging
+      console.log('User doc:', d.id, '| has review:', !!u.review, '| review data:', u.review||'none');
       if(u.review&&u.review.stars){
-        items.push({...u.review,name:u.name||'',email:u.email||'',photo:u.photo||''});
+        items.push({...u.review,name:u.name||u.review.name||'',email:u.email||u.review.email||'',photo:u.photo||''});
       }
     });
-    // Debug: show total users checked
-    console.log('Checked',snap.size,'users for reviews. Found:',items.length);
+    console.log('Total users:',snap.size,'| Reviews found:',items.length);
     if(!items.length){
       list.innerHTML='<p style="color:var(--text2)">Відгуків ще немає</p>'+
         '<p style="color:var(--text3);font-size:12px;margin-top:8px">Перевірено '+snap.size+' юзерів. Переконайся що ти відправила відгук після оновлення правил Firebase.</p>';
