@@ -407,7 +407,8 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .va-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--border2);border-radius:20px;background:var(--bg2);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s}
 .va-btn:hover{color:var(--text);border-color:var(--accent)}
 
-.app-topbar{height:60px;padding:0 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid var(--border);background:var(--bg)}
+.app-topbar{height:60px;padding:0 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg)}
+.app-topbar-border{border-bottom:1px solid var(--border)}
 </style>
 </head>
 <body>
@@ -519,10 +520,17 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 </div>
 
 <div class="screen" id="screen-vocab">
-  <div class="topbar app-topbar">
-    <div style="font-size:18px;font-weight:600;letter-spacing:-.3px;white-space:nowrap">MyVocabolik</div>
-    <div class="vocab-search-wrap" style="flex:1;margin:0 10px"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук" oninput="renderVocab()"></div>
-    <div class="theme-toggle" onclick="flipTheme()"><div class="tt-thumb"><span id="tt-icon-vocab">☀️</span></div></div>
+  <div class="topbar app-topbar app-topbar-border">
+    <div style="font-size:18px;font-weight:600;letter-spacing:-.3px;white-space:nowrap">MyVocabolik <sup style="font-size:9px;font-weight:500;color:var(--accent2);vertical-align:super;letter-spacing:.5px">beta</sup></div>
+    <div style="flex:1"></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <button class="icon-btn" id="vocab-search-btn" onclick="toggleVocabSearch()" style="width:36px;height:36px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></button>
+      <div class="theme-toggle" onclick="flipTheme()"><div class="tt-thumb"><span id="tt-icon-vocab">☀️</span></div></div>
+      <button class="icon-btn" onclick="showScreen('settings')"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
+  </div>
+  <div id="vocab-search-bar" style="display:none;padding:8px 16px;border-bottom:1px solid var(--border);background:var(--bg)">
+    <div class="vocab-search-wrap"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук слова..." oninput="renderVocab()" autofocus></div>
   </div>
   <div style="padding:12px 20px 0;flex-shrink:0">
     <div id="vocab-libstats" class="lib-stats" style="margin-bottom:12px"></div>
@@ -974,12 +982,16 @@ async function addBulkWords(){
 function shareWords(){
   const words=getWords();
   if(!words.length){showToast('Словник порожній');return;}
-  // Компактне кодування: word|translation кожне через новий рядок, base64
-  const maxWords=100; // обмеження на 100 слів для короткого посилання
+  // Компактне кодування: тільки англійські слова через кому (без перекладів)
+  // переклади підтягнуться з бібліотеки або вручну
+  const maxWords=50;
   const slice=words.slice(0,maxWords);
-  const compact=slice.map(w=>(w.word||'').replace(/[|~]/g,'')+'|'+(w.translation||'').replace(/[|~]/g,'')).join('~');
+  const compact=slice.map(w=>(w.word||'').trim().toLowerCase()).join(',');
   let encoded;
-  try{encoded=btoa(unescape(encodeURIComponent(compact)));}catch(e){showToast('Помилка кодування');return;}
+  try{encoded=btoa(compact);}catch(e){
+    // fallback для слів з UTF символами
+    encoded=btoa(unescape(encodeURIComponent(compact)));
+  }
   const url=location.origin+location.pathname+'#s='+encoded;
   // Завжди показуємо модалку з посиланням + спроба скопіювати
   if(navigator.clipboard){
@@ -997,9 +1009,16 @@ function checkImport(){
   let data=null;
   try{
     if(hash.startsWith('#s=')){
-      // новий компактний формат
-      const dec=decodeURIComponent(escape(atob(hash.slice(3))));
-      data=dec.split('~').filter(Boolean).map(pair=>{const[e,u]=pair.split('|');return{e,u};});
+      // компактний формат: просто слова через кому
+      let dec;
+      try{dec=atob(hash.slice(3));}catch(e){dec=decodeURIComponent(escape(atob(hash.slice(3))));}
+      const words=dec.split(',').map(w=>w.trim()).filter(Boolean);
+      // шукаємо переклади в бібліотеці
+      data=words.map(en=>{
+        let ua='';
+        if(CEFR_DATA){for(const l of CEFR_ORDER){const f=(CEFR_DATA.levels[l]||[]).find(x=>x.en.toLowerCase()===en.toLowerCase());if(f){ua=f.ua;break;}}}
+        return{e:en,u:ua};
+      });
     }else if(hash.startsWith('#import=')){
       // старий JSON формат (зворотна сумісність)
       data=JSON.parse(decodeURIComponent(atob(hash.slice(8))));
@@ -1043,6 +1062,15 @@ function getAllTags(){
   getWords().forEach(w=>{(w.tags||[]).forEach(t=>{if(t)tags.add(t);});});
   return [...tags].sort();
 }
+function toggleVocabSearch(){
+  const bar=document.getElementById('vocab-search-bar');
+  const btn=document.getElementById('vocab-search-btn');
+  const open=bar.style.display==='none';
+  bar.style.display=open?'block':'none';
+  btn.style.color=open?'var(--accent2)':'';
+  if(open){document.getElementById('vocab-search').focus();}
+  else{document.getElementById('vocab-search').value='';renderVocab();}
+}
 function renderVocab(){
   // теги-фільтри
   const tagRow=document.getElementById('filter-tag-row');
@@ -1075,7 +1103,15 @@ function renderVocab(){
   words.sort((a,b)=>new Date(b.addedAt)-new Date(a.addedAt));
   const vc=document.getElementById('vocab-count');if(vc)vc.textContent=`${words.length} слів`;
   const list=document.getElementById('vocab-list');
-  if(!words.length){list.innerHTML=`<div class="empty"><div class="ei">📭</div><p>${activeFilter==='all'?'Словник порожній.<br>Додай перше слово!':'Слів немає.'}</p></div>`;return;}
+  if(!words.length){
+    const q2=(document.getElementById('vocab-search').value||'').trim();
+    if(q2){
+      list.innerHTML='<div class="empty"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--text3)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg><p>Не знайшли таке слово 🔍</p></div>';
+    }else{
+      list.innerHTML=`<div class="empty"><svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--text3)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><p>${activeFilter==='all'?'Словник порожній.<br>Додай перше слово!':'Слів немає.'}</p></div>`;
+    }
+    return;
+  }
   list.innerHTML=(words.length?'<div class="vocab-actions"><button class="va-btn" onclick="showScreen(\'add\')"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> Додати</button><button class="va-btn" onclick="shareWords()"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg> Поділитися</button></div>':'')+words.map(w=>{
     const s=w.stats;
     const total=s.seen||0;
@@ -1612,8 +1648,12 @@ function maybePronounce(word){if(getAutoSpeak())pronounce(word);}
 function nextCefrQ(){
   if(cefrIdx>=cefrQs.length){finishCefr();return;}
   const q=cefrQs[cefrIdx];
-  let allWords=[];CEFR_ORDER.forEach(l=>{CEFR_DATA.levels[l].forEach(w=>allWords.push(w.ua));});
-  const wrong=shuffle(allWords.filter(u=>u!==q.ua)).slice(0,3);
+  // Вибираємо невірні варіанти з ТОГО САМОГО рівня — важче вгадати
+  const sameLevel=CEFR_DATA.levels[q.level].map(w=>w.ua).filter(u=>u!==q.ua);
+  const diffLevel=CEFR_ORDER.flatMap(l=>l!==q.level?CEFR_DATA.levels[l].map(w=>w.ua):[]).filter(u=>u!==q.ua);
+  // Беремо 2 з того самого рівня + 1 з іншого (або всі з того самого якщо достатньо)
+  const fromSame=shuffle(sameLevel).slice(0,3);
+  const wrong=fromSame.length>=3?fromSame:[...fromSame,...shuffle(diffLevel)].slice(0,3);
   const options=shuffle([q.ua,...wrong]);
   cefrAnswered=false;
   document.getElementById('cefr-sub').textContent=(cefrIdx+1)+' / '+cefrQs.length;
@@ -1717,7 +1757,8 @@ function nextStudyQ(){
   if(studyBIdx>=studyBatch.length){finishStudyBatch();return;}
   const w=studyBatch[studyBIdx];
   // 3 неправильні варіанти з того ж рівня
-  const others=shuffle(CEFR_DATA.levels[studyLvl].filter(x=>x.ua!==w.ua)).slice(0,3).map(x=>x.ua);
+  // Усі варіанти з того ж рівня для більшої складності
+  const others=shuffle(CEFR_DATA.levels[studyLvl].filter(x=>x.ua!==w.ua)).map(x=>x.ua).slice(0,3);
   const options=shuffle([w.ua,...others]);
   studyAnswered=false;
   document.getElementById('studycard-sub').textContent=(studyBIdx+1)+' / '+studyBatch.length;
