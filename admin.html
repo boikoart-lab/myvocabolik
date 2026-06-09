@@ -155,7 +155,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     </div>
     <div id="reviews-section" style="display:none">
-      <h2 style="font-size:18px;font-weight:600;margin-bottom:14px">⭐ Відгуки користувачів</h2>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h2 style="font-size:18px;font-weight:600">⭐ Відгуки</h2>
+        <button onclick="loadAdminReviews()" style="padding:8px 16px;border-radius:10px;border:1px solid var(--border2);background:var(--bg2);cursor:pointer;font-size:13px;color:var(--text)">↻ Оновити</button>
+      </div>
       <div id="reviews-list"><div class="loader"><div class="spinner"></div> Завантаження...</div></div>
     </div>
   </div>
@@ -217,7 +220,13 @@ window.loadAdminReviews = async function(){
         items.push({...u.review,name:u.name||'',email:u.email||'',photo:u.photo||''});
       }
     });
-    if(!items.length){list.innerHTML='<p style="color:var(--text2)">Відгуків ще немає</p>';return;}
+    // Debug: show total users checked
+    console.log('Checked',snap.size,'users for reviews. Found:',items.length);
+    if(!items.length){
+      list.innerHTML='<p style="color:var(--text2)">Відгуків ще немає</p>'+
+        '<p style="color:var(--text3);font-size:12px;margin-top:8px">Перевірено '+snap.size+' юзерів. Переконайся що ти відправила відгук після оновлення правил Firebase.</p>';
+      return;
+    }
     items.sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
     list.innerHTML=items.map(r=>{
       const stars='★'.repeat(r.stars||0)+'☆'.repeat(5-(r.stars||0));
