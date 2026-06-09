@@ -390,10 +390,17 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .review-fab:active{transform:scale(.9)}
 .teal-hero{background:linear-gradient(135deg,var(--accent),var(--accent2))!important;border-color:transparent!important;cursor:pointer}
 
-.home-tabs{display:flex;gap:8px;margin-top:10px}
-.home-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text);cursor:pointer;transition:all .12s}
-.home-tab:active{transform:scale(.97);background:var(--bg3)}
-.home-tab svg{color:var(--accent2);flex-shrink:0}
+.home-tabs{display:flex;gap:0;margin-top:12px;background:var(--bg3);border-radius:14px;padding:4px}
+.home-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;background:transparent;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s}
+.home-tab:active{opacity:.8}
+.home-tab.active-tab{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.home-tab svg{color:inherit;flex-shrink:0}
+
+.level-strip{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(123,201,111,.15),rgba(90,168,79,.08));border:1px solid rgba(123,201,111,.3);border-radius:12px;padding:9px 14px;cursor:pointer;margin-bottom:12px;transition:opacity .15s}
+.level-strip:active{opacity:.8}
+.ls-badge{font-size:13px;font-weight:700;color:var(--accent2);background:rgba(123,201,111,.2);padding:3px 9px;border-radius:8px;flex-shrink:0}
+.ls-text{font-size:13px;color:var(--text2);flex:1}
+.ls-retry{font-size:12px;color:var(--accent2);flex-shrink:0;font-weight:500}
 </style>
 </head>
 <body>
@@ -498,16 +505,16 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 </div>
 
 <div class="screen" id="screen-vocab">
-  <div class="topbar" style="flex-wrap:wrap;gap:8px;padding-bottom:8px">
-    <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
-      <div><div style="font-size:17px;font-weight:600">Словник</div><div class="sub" id="vocab-count"></div></div>
-      <div style="display:flex;gap:8px">
-        <button class="icon-btn" onclick="shareWords()" title="Поділитися"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
-        <button class="icon-btn" onclick="showScreen('add')">＋</button>
-      </div>
+  <div class="topbar" style="gap:10px">
+    <div style="font-size:17px;font-weight:600;white-space:nowrap">MyVocabolik <sup style="font-size:9px;font-weight:500;color:var(--accent2);vertical-align:super;letter-spacing:.5px">beta</sup></div>
+    <div class="vocab-search-wrap" style="flex:1"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук..." oninput="renderVocab()"></div>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+      <div class="theme-toggle" onclick="flipTheme()" title="Тема"><div class="tt-thumb"><span id="tt-icon-vocab">☀️</span></div></div>
+      <button class="icon-btn" onclick="shareWords()" title="Поділитися"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+      <button class="icon-btn" onclick="showScreen('add')">＋</button>
     </div>
-    <div class="vocab-search-wrap"><svg class="vs-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg><input type="text" id="vocab-search" class="vocab-search-input" placeholder="Пошук слова..." oninput="renderVocab()"></div>
   </div>
+  <div style="padding:6px 20px 0;flex-shrink:0"><div class="sub" id="vocab-count"></div></div>
   <div style="padding:12px 20px 0;flex-shrink:0">
     <div id="vocab-libstats" class="lib-stats" style="margin-bottom:12px"></div>
     <div class="filter-row" id="filter-status-row">
@@ -634,7 +641,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
   <div class="topbar">
     <button class="icon-btn" onclick="quitCefr()">←</button>
     <div><div style="font-size:17px;font-weight:600">Тест рівня</div><div class="sub" id="cefr-sub"></div></div>
-    <div style="width:36px"></div>
+    <button class="icon-btn" id="autospeak-btn" onclick="toggleAutoSpeak()" title="Автоозвучка" style="font-size:18px">🔊</button>
   </div>
   <div class="scroll" id="cefr-content"></div>
 </div>
@@ -762,6 +769,11 @@ function statusOf(w) { return w.stats.mastered?'mastered':w.stats.seen===0?'new'
 // SCREENS
 // ═══════════════════════════════════════════════════════════════
 let curScreen='home', prevScreen='home';
+function goTab(name){
+  document.querySelectorAll('.home-tab').forEach(b=>b.classList.remove('active-tab'));
+  const tb=document.getElementById('htab-'+name);if(tb)tb.classList.add('active-tab');
+  showScreen(name);
+}
 function showScreen(name) {
   prevScreen=curScreen; curScreen=name;
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -812,7 +824,7 @@ function refreshHome() {
     const name=lvl?CEFR_NAMES[lvl]:'Невідомий';
     const attempts=(st.attempts||[]).length;
     if(lvl){
-      hero.innerHTML=`<div class="level-hero"><div class="lh-badge">${lvl}</div><div class="lh-info"><div class="lh-label">Твій рівень англійської</div><div class="lh-name">${name}</div><div class="lh-hint">Тестів пройдено: ${attempts} · <a href="#" onclick="event.preventDefault();startCefrTest()" style="color:var(--accent2);text-decoration:none">пройти ще раз</a></div></div></div>`;
+      hero.innerHTML=`<div class="level-strip" onclick="startCefrTest()"><span class="ls-badge">${lvl}</span><span class="ls-text">Твій рівень англійської · ${name}</span><span class="ls-retry">Пройти ще раз →</span></div>`;
     }else{
       hero.innerHTML=`<div class="level-hero teal-hero" onclick="startCefrTest()"><div class="lh-badge" style="background:rgba(255,255,255,.25);color:#fff">?</div><div class="lh-info"><div class="lh-label" style="color:rgba(255,255,255,.8)">Рівень ще не визначено</div><div class="lh-name" style="color:#fff">Дізнайся свій рівень</div><div class="lh-cta" style="color:rgba(255,255,255,.9)">Пройти тест →</div></div></div>`;
     }
@@ -953,17 +965,16 @@ async function addBulkWords(){
 function shareWords(){
   const words=getWords();
   if(!words.length){showToast('Словник порожній');return;}
-  // кодуємо слова в URL
   const data=words.map(w=>({e:w.word,u:w.translation,t:w.transcription||''}));
   let encoded;
   try{encoded=btoa(encodeURIComponent(JSON.stringify(data)));}catch(e){showToast('Помилка кодування');return;}
   const url=location.origin+location.pathname+'#import='+encoded;
-  // копіюємо
-  if(navigator.share){
-    navigator.share({title:'Мій список слів — MyVocabolik',url}).catch(()=>{});
-  }else if(navigator.clipboard){
-    navigator.clipboard.writeText(url).then(()=>showToast('🔗 Посилання скопійовано!')).catch(()=>fallbackCopy(url));
-  }else fallbackCopy(url);
+  // Завжди показуємо модалку з посиланням + спроба скопіювати
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>{
+      showModal('<div style="text-align:center"><div style="font-size:36px;margin-bottom:8px">🔗</div><h3>Посилання скопійовано!</h3><p style="font-size:13px;color:var(--text2);margin:10px 0 16px">Надішли другу — він зможе додати твої '+words.length+' слів у свій словник</p><button class="btn-secondary" onclick="closeModal()">Закрити</button></div>');
+    }).catch(()=>fallbackCopy(url));
+  }else{fallbackCopy(url);}
 }
 function fallbackCopy(url){
   showModal('<h3>Поділитися списком</h3><p style="color:var(--text2);font-size:13px;margin-bottom:12px">Скопіюй це посилання:</p><textarea readonly onclick="this.select()" style="width:100%;min-height:90px;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;color:var(--text);font-size:12px;padding:10px;font-family:monospace">'+url+'</textarea><button class="btn-secondary" style="margin-top:12px" onclick="closeModal()">Закрити</button>');
@@ -1257,8 +1268,8 @@ let toastTimer;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
 function setTheme(t){document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('myvocabolik_theme',t);}catch(e){}}
 function flipTheme(){const cur=document.documentElement.getAttribute('data-theme')||'light';const next=cur==='dark'?'light':'dark';setTheme(next);updateThemeIcon(next);}
-function updateThemeIcon(t){const ic=document.getElementById('tt-icon');if(ic)ic.textContent=t==='dark'?'🌙':'☀️';}
-function loadTheme(){let t='light';try{t=localStorage.getItem('myvocabolik_theme')||'light';}catch(e){}document.documentElement.setAttribute('data-theme',t);const sel=document.getElementById('s-theme');if(sel)sel.value=t;updateThemeIcon(t);}
+function updateThemeIcon(t){const ic=document.getElementById('tt-icon');if(ic)ic.textContent=t==='dark'?'🌙':'☀️';const iv=document.getElementById('tt-icon-vocab');if(iv)iv.textContent=t==='dark'?'🌙':'☀️';}
+function loadTheme(){let t='light';try{t=localStorage.getItem('myvocabolik_theme')||'light';}catch(e){}document.documentElement.setAttribute('data-theme',t);const sel=document.getElementById('s-theme');if(sel)sel.value=t;updateThemeIcon(t);const v=document.getElementById('tt-icon-vocab');if(v)v.textContent=t==='dark'?'🌙':'☀️';}
 
 function setSyncStatus(s){const el=document.getElementById('home-subtitle');if(el&&!getWords().length)el.textContent='Почни додавати слова';}
 
@@ -1571,6 +1582,15 @@ async function startCefrTest(){
   nextCefrQ();
 }
 
+
+function getAutoSpeak(){try{return localStorage.getItem('mv_autospeak')!=='0';}catch(e){return true;}}
+function toggleAutoSpeak(){
+  const on=!getAutoSpeak();
+  try{localStorage.setItem('mv_autospeak',on?'1':'0');}catch(e){}
+  document.getElementById('autospeak-btn').style.opacity=on?'1':'0.4';
+  showToast(on?'Автоозвучка увімкнена':'Автоозвучка вимкнена');
+}
+function maybePronounce(word){if(getAutoSpeak())pronounce(word);}
 function nextCefrQ(){
   if(cefrIdx>=cefrQs.length){finishCefr();return;}
   const q=cefrQs[cefrIdx];
@@ -1579,6 +1599,7 @@ function nextCefrQ(){
   const options=shuffle([q.ua,...wrong]);
   cefrAnswered=false;
   document.getElementById('cefr-sub').textContent=(cefrIdx+1)+' / '+cefrQs.length;
+  const _ab=document.getElementById('autospeak-btn');if(_ab)_ab.style.opacity=getAutoSpeak()?'1':'0.4';
   document.getElementById('cefr-content').innerHTML=
     '<div class="card-progress" style="margin-bottom:14px"><div class="card-progress-fill" style="width:'+(cefrIdx/cefrQs.length*100)+'%"></div></div>'+
     '<div class="diff-badge">Рівень слова: <b>'+q.level+'</b></div>'+
@@ -1793,8 +1814,11 @@ async function sendReview(){
   const text=(document.getElementById('rv-text')?.value||'').trim();
   try{
     const fb=await waitFb();
-    if(fb&&window._fbSaveReview)await window._fbSaveReview({uid:window._currentUID||'',email:window._uEmail||'',name:window._uName||'',stars:_rvStars,text,date:new Date().toISOString()});
-  }catch(e){}
+    if(window._fbSaveReview){
+      await window._fbSaveReview({uid:window._currentUID||'',email:window._uEmail||'',name:window._uName||'',stars:_rvStars,text,date:new Date().toISOString()});
+      console.log('Review saved to Firestore');
+    }else{console.warn('_fbSaveReview not ready');}
+  }catch(e){console.error('Review save failed:',e);}
   try{localStorage.setItem('mv_reviewed','1');}catch(e){}
   showModal(`<div style="text-align:center;padding:20px 0">
     <div style="font-size:50px;margin-bottom:12px">💚</div>
@@ -1809,7 +1833,7 @@ async function sendReview(){
 <!-- FIREBASE with Google Auth -->
 <script type="module">
 import { initializeApp }     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, doc, getDoc, setDoc, deleteDoc, onSnapshot, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const firebaseConfig = {
@@ -1887,9 +1911,8 @@ onAuthStateChanged(auth, async user => {
       try{await setDoc(doc(db,'users',user.uid),{cefr:data},{merge:true});}catch(e){}
     };
     window._fbLoadCefr = async () => {
-      try{const snap=await getDocs(collection(db,'users'));
-        const d=snap.docs.find(x=>x.id===user.uid);
-        return d?d.data()?.cefr||null:null;}catch(e){return null;}
+      try{const snap=await getDoc(doc(db,'users',user.uid));
+        return snap.exists()?snap.data()?.cefr||null:null;}catch(e){return null;}
     };
     window._fbSaveReview = async (review) => {
       try{await setDoc(doc(db,'users',user.uid),{review:review},{merge:true});}catch(e){console.error('review save error',e);}
