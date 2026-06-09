@@ -1825,14 +1825,36 @@ function reviewStep2(){
 }
 async function sendReview(){
   const text=(document.getElementById('rv-text')?.value||'').trim();
-  try{if(window._fbSaveReview)await window._fbSaveReview({stars:_rvStars,text,date:new Date().toISOString()});}catch(e){}
+  showModal('<div style="text-align:center;padding:20px">⏳ Зберігаємо відгук...</div>');
+  let saved=false;
+  try{
+    // Чекаємо Firebase якщо ще не готовий
+    await waitFb(5000);
+    if(window._fbSaveReview){
+      await window._fbSaveReview({stars:_rvStars,text,date:new Date().toISOString()});
+      saved=true;
+      console.log('Review saved! Stars:',_rvStars);
+    }else{
+      console.warn('_fbSaveReview not defined');
+    }
+  }catch(e){console.error('sendReview error:',e.message||e);}
   try{localStorage.setItem('mv_reviewed','1');}catch(e){}
-  showModal(`<div style="text-align:center;padding:16px 0">
-    <div style="font-size:50px;margin-bottom:10px">💚</div>
-    <h3>Дякуємо!</h3>
-    <p style="font-size:14px;color:var(--text2);margin:10px 0 20px;line-height:1.5">Твій відгук допомагає розвивати MyVocabolik</p>
-    <button class="btn-primary" onclick="closeModal()">Закрити</button>
-  </div>`);
+  if(saved){
+    showModal(`<div style="text-align:center;padding:16px 0">
+      <div style="font-size:50px;margin-bottom:10px">💚</div>
+      <h3>Дякуємо!</h3>
+      <p style="font-size:14px;color:var(--text2);margin:10px 0 20px;line-height:1.5">Твій відгук збережено і видно в адмінці</p>
+      <button class="btn-primary" onclick="closeModal()">Закрити</button>
+    </div>`);
+  }else{
+    showModal(`<div style="text-align:center;padding:16px 0">
+      <div style="font-size:40px;margin-bottom:10px">📝</div>
+      <h3>Відкриємо форму</h3>
+      <p style="font-size:14px;color:var(--text2);margin:10px 0 20px;line-height:1.5">Firestore недоступний — відкриваємо Google Forms</p>
+      <button class="btn-primary" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSdO66a7wO0Kj_4QtA9NPMy_wteghmeDcM3xT8jxzpuk2iowpA/viewform','_blank');closeModal()">Відкрити форму</button>
+      <button class="btn-secondary" style="margin-top:8px" onclick="closeModal()">Закрити</button>
+    </div>`);
+  }
 }
 
 </script>
