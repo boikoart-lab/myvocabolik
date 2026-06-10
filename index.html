@@ -396,7 +396,7 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 .home-tab.active-tab{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .home-tab svg{color:inherit;flex-shrink:0}
 
-.level-strip{display:flex;align-items:center;gap:10px;background:var(--accent);border-radius:0;padding:10px 20px;cursor:pointer;margin:0 -20px 10px;transition:opacity .15s}
+.level-strip{display:flex;align-items:center;gap:10px;background:var(--accent);border-radius:0;padding:10px 20px;cursor:pointer;transition:opacity .15s}
 .level-strip:active{opacity:.85}
 .ls-badge{font-size:13px;font-weight:700;color:var(--accent2);background:rgba(255,255,255,.9);padding:4px 10px;border-radius:8px;flex-shrink:0}
 [data-theme="dark"] .ls-badge{color:#1a201a}
@@ -409,6 +409,62 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 
 .app-topbar{height:60px;padding:0 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg)}
 .app-topbar-border{border-bottom:1px solid var(--border)}
+
+/* ── HOME REDESIGN ── */
+.app-logo{font-size:18px;font-weight:700;letter-spacing:-.3px;white-space:nowrap}
+.beta-badge{display:inline-block;background:#F5A623;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;margin-left:6px;letter-spacing:.3px;vertical-align:middle;line-height:1.6}
+[data-theme="dark"] .beta-badge{background:#e0952a}
+
+/* Study card */
+.home-study-card{display:flex;align-items:center;gap:14px;background:var(--bg2);border-radius:16px;padding:16px 18px;margin-bottom:12px;cursor:pointer;border:1px solid var(--border);transition:transform .12s}
+.home-study-card:active{transform:scale(.98)}
+.hsc-icon{width:42px;height:42px;border-radius:12px;background:rgba(123,201,111,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hsc-text{flex:1}
+.hsc-title{font-size:15px;font-weight:600}
+.hsc-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.hsc-arrow{font-size:20px;color:var(--text3)}
+
+/* Menu cards — clean */
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
+.menu-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:18px 16px;cursor:pointer;transition:transform .12s;display:flex;flex-direction:column;gap:6px}
+.menu-card:active{transform:scale(.97)}
+.mc-icon{display:flex;margin-bottom:2px}
+.mc-title{font-size:15px;font-weight:600;color:var(--text)}
+.mc-sub{font-size:12px;color:var(--text2)}
+
+/* Stats */
+.stats-row{display:flex;gap:8px;margin-bottom:12px}
+.stat-card{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 8px;text-align:center}
+.stat-card .num{font-size:24px;font-weight:700;line-height:1.1}
+.stat-card .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-top:3px;font-weight:600}
+
+/* Review banner — YELLOW like screenshot */
+.review-banner{background:linear-gradient(135deg,#f6d97a,#f0bb42);border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:12px;border:none}
+.review-banner:active{transform:scale(.98)}
+.rb-icon{color:#8a6a00;flex-shrink:0}
+.rb-icon svg{stroke:#8a6a00}
+.rb-text h3{font-size:14px;font-weight:600;color:#6b4e00}
+.rb-text p{font-size:12px;color:#8a6a00;margin-top:2px}
+.rb-arrow{margin-left:auto;font-size:20px;color:#8a6a00;font-weight:600}
+[data-theme="dark"] .review-banner{background:linear-gradient(135deg,#5a4a1a,#7a6220)}
+[data-theme="dark"] .rb-text h3{color:#f0e0a0}
+[data-theme="dark"] .rb-text p{color:#c4a860}
+[data-theme="dark"] .rb-arrow{color:#f0e0a0}
+
+/* Bottom nav */
+.bottom-nav{display:flex;align-items:center;justify-content:space-around;background:var(--bg2);flex-shrink:0;padding:10px 24px calc(10px + env(safe-area-inset-bottom,0px));margin:0 12px 12px;border-radius:28px;box-shadow:0 4px 24px rgba(45,58,40,0.10);position:relative}
+.nav-btn{border:none;background:transparent;color:var(--text3);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:'DM Sans',sans-serif;transition:color .15s;padding:6px 16px}
+.nav-btn.active .nb-svg path{fill:var(--accent2)}
+.nav-btn.active .nb-label{color:var(--accent2)}
+.nb-svg path{fill:var(--text3);transition:fill .15s}
+.nb-label{font-size:10px;letter-spacing:.3px;color:var(--text3)}
+.nav-play{width:60px;height:60px;border-radius:50%;border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:-28px;transition:transform .15s;padding:0}
+.nav-play:active{transform:scale(.92)}
+
+/* Topbar — no bottom border on home (strip follows) */
+.app-topbar{height:60px;padding:0 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg)}
+.app-topbar-border{border-bottom:1px solid var(--border)}
+
 </style>
 </head>
 <body>
@@ -435,39 +491,66 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 <div class="app" id="main-app" style="display:none">
 
 <div class="screen active" id="screen-home">
-  <div class="topbar">
-    <div><div style="font-size:18px;font-weight:600;letter-spacing:-.3px">MyVocabolik <sup style="font-size:9px;font-weight:500;color:var(--accent2);vertical-align:super;letter-spacing:.5px">beta</sup></div></div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <div class="theme-toggle" id="theme-toggle" onclick="flipTheme()" title="Тема"><div class="tt-thumb" id="tt-thumb"><span id="tt-icon">☀️</span></div></div>
-      <button class="icon-btn" onclick="showScreen('settings')" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
-    </div>
+  <div class="topbar app-topbar">
+    <div class="app-logo">MyVocabolik <span class="beta-badge">BETA</span></div>
+    <div style="flex:1"></div>
+    <div class="theme-toggle" id="theme-toggle" onclick="flipTheme()"><div class="tt-thumb"><span id="tt-icon">☀️</span></div></div>
+    <button class="icon-btn" onclick="showScreen('settings')"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
   </div>
+  <div id="home-level-hero"></div>
   <div class="scroll">
-    <div id="home-level-hero"></div>
-    <div class="big-card" onclick="openStudy()">
-      <div class="bc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-      <div class="bc-text"><h3>Вивчати слова</h3><p>За рівнями A1–C2</p></div>
-      <div class="bc-arrow">›</div>
+    <div class="home-study-card" onclick="openStudy()">
+      <div class="hsc-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.5 16H16C17.886 16 18.828 16 19.414 15.414C20 14.828 20 13.886 20 12V7C20 5.114 20 4.172 19.414 3.586C18.828 3 17.886 3 16 3H8C6.114 3 5.172 3 4.586 3.586C4 4.172 4 5.114 4 7V18.5C4 17.837 4.26339 17.2011 4.73223 16.7322C5.20107 16.2634 5.83696 16 6.5 16ZM9 6C8.46957 6 7.96086 6.21071 7.58579 6.58579C7.21071 6.96086 7 7.46957 7 8C7 8.53043 7.21071 9.03914 7.58579 9.41421C7.96086 9.78929 8.46957 10 9 10H15C15.5304 10 16.0391 9.78929 16.4142 9.41421C16.7893 9.03914 17 8.53043 17 8C17 7.46957 16.7893 6.96086 16.4142 6.58579C16.0391 6.21071 15.5304 6 15 6H9Z" fill="#7BC96F"/>
+<path d="M16 15H6.5V17H16V15ZM18.707 14.707C18.631 14.783 18.495 14.877 18.061 14.936C17.599 14.998 16.971 15 16 15V17C16.915 17 17.701 17.002 18.328 16.918C18.983 16.83 19.612 16.631 20.121 16.121L18.707 14.707ZM19 12C19 12.971 18.998 13.599 18.936 14.061C18.877 14.495 18.783 14.631 18.707 14.707L20.121 16.121C20.631 15.611 20.83 14.983 20.918 14.328C21.002 13.7 21 12.915 21 12H19ZM19 7V12H21V7H19ZM18.707 4.293C18.783 4.369 18.877 4.505 18.936 4.939C18.998 5.4 19 6.029 19 7H21C21 6.085 21.002 5.299 20.918 4.672C20.83 4.017 20.631 3.388 20.121 2.879L18.707 4.293ZM16 4C16.971 4 17.599 4.002 18.061 4.064C18.495 4.123 18.631 4.217 18.707 4.293L20.121 2.879C19.611 2.369 18.983 2.17 18.328 2.082C17.7 1.998 16.915 2 16 2V4ZM8 4H16V2H8V4ZM5.293 4.293C5.369 4.217 5.505 4.123 5.939 4.064C6.4 4.002 7.029 4 8 4V2C7.085 2 6.299 1.998 5.672 2.082C5.017 2.17 4.388 2.369 3.879 2.879L5.293 4.293ZM5 7C5 6.029 5.002 5.401 5.064 4.939C5.123 4.505 5.217 4.369 5.293 4.293L3.879 2.879C3.369 3.389 3.17 4.017 3.082 4.672C2.998 5.3 3 6.085 3 7H5ZM5 18.5V7H3V18.5H5ZM6.5 15C5.57175 15 4.68151 15.3688 4.02513 16.0251C3.36875 16.6815 3 17.5717 3 18.5H5C5 18.1022 5.15804 17.7206 5.43934 17.4393C5.72065 17.158 6.10218 17 6.5 17V15ZM8 8C8 7.73479 8.10536 7.48043 8.2929 7.2929C8.48043 7.10536 8.73479 7 9 7V5C8.20435 5 7.44129 5.31607 6.87868 5.87868C6.31607 6.44129 6 7.20435 6 8H8ZM9 9C8.73479 9 8.48043 8.89465 8.2929 8.70711C8.10536 8.51957 8 8.26522 8 8H6C6 8.79565 6.31607 9.55872 6.87868 10.1213C7.44129 10.6839 8.20435 11 9 11V9ZM15 9H9V11H15V9ZM16 8C16 8.26522 15.8946 8.51957 15.7071 8.70711C15.5196 8.89465 15.2652 9 15 9V11C15.7957 11 16.5587 10.6839 17.1213 10.1213C17.6839 9.55872 18 8.79565 18 8H16ZM15 7C15.2652 7 15.5196 7.10536 15.7071 7.2929C15.8946 7.48043 16 7.73479 16 8H18C18 7.20435 17.6839 6.44129 17.1213 5.87868C16.5587 5.31607 15.7957 5 15 5V7ZM9 7H15V5H9V7ZM11 20H6.5V22H11V20ZM3 18.5C3 19.4283 3.36875 20.3185 4.02513 20.9749C4.68151 21.6313 5.57175 22 6.5 22V20C6.10218 20 5.72065 19.842 5.43934 19.5607C5.15804 19.2794 5 18.8978 5 18.5H3Z" fill="#7BC96F"/>
+<path d="M20 21H10" stroke="#7BC96F" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <div class="hsc-text">
+        <div class="hsc-title">Вивчати слова</div>
+        <div class="hsc-sub">За рівнями A1 - C2</div>
+      </div>
+      <div class="hsc-arrow">›</div>
     </div>
     <div id="home-dict-block"></div>
     <div id="review-banner-wrap"></div>
     <div class="menu-grid">
-      <div class="menu-card" onclick="showScreen('add')"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="mc-title">Додати слово</div><div class="mc-sub">Одне або списком</div></div>
-      <div class="menu-card" onclick="playGame()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg></div><div class="mc-title">Пари на час</div><div class="mc-sub">Гра з твоїми словами</div></div>
-      <div class="menu-card" onclick="playCards()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="14" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-2"/></svg></div><div class="mc-title">Картки</div><div class="mc-sub">Флеш-картки</div></div>
-      <div class="menu-card" onclick="playQuiz()"><div class="mc-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div><div class="mc-title">Тест</div><div class="mc-sub">Multiple choice</div></div>
+      <div class="menu-card" onclick="showScreen('add')">
+        <div class="mc-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 12.998H13V17.998C13 18.2633 12.8946 18.5176 12.7071 18.7052C12.5196 18.8927 12.2652 18.998 12 18.998C11.7348 18.998 11.4804 18.8927 11.2929 18.7052C11.1054 18.5176 11 18.2633 11 17.998V12.998H6C5.73478 12.998 5.48043 12.8927 5.29289 12.7052C5.10536 12.5176 5 12.2633 5 11.998C5 11.7328 5.10536 11.4785 5.29289 11.2909C5.48043 11.1034 5.73478 10.998 6 10.998H11V5.99805C11 5.73283 11.1054 5.47848 11.2929 5.29094C11.4804 5.1034 11.7348 4.99805 12 4.99805C12.2652 4.99805 12.5196 5.1034 12.7071 5.29094C12.8946 5.47848 13 5.73283 13 5.99805V10.998H18C18.2652 10.998 18.5196 11.1034 18.7071 11.2909C18.8946 11.4785 19 11.7328 19 11.998C19 12.2633 18.8946 12.5176 18.7071 12.7052C18.5196 12.8927 18.2652 12.998 18 12.998Z" fill="#7BC96F" stroke="#7BC96F" stroke-width="1.3"/></svg></div>
+        <div class="mc-title">Додати слово</div>
+        <div class="mc-sub">Одне або списком</div>
+      </div>
+      <div class="menu-card" onclick="playGame()">
+        <div class="mc-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.0002 2.40039C12.1593 2.40039 12.3119 2.4636 12.4245 2.57613C12.537 2.68865 12.6002 2.84126 12.6002 3.00039V21.0004L12.5882 21.1204C12.5607 21.256 12.4871 21.378 12.3799 21.4656C12.2727 21.5531 12.1386 21.601 12.0002 21.601C11.8618 21.601 11.7276 21.5531 11.6205 21.4656C11.5133 21.378 11.4397 21.256 11.4122 21.1204L11.4002 21.0004V3.00039C11.4002 2.84126 11.4634 2.68865 11.5759 2.57613C11.6885 2.4636 11.8411 2.40039 12.0002 2.40039ZM7.2002 7.80039C7.83672 7.80039 8.44716 8.05325 8.89725 8.50333C9.34734 8.95342 9.6002 9.56387 9.6002 10.2004V13.8004C9.6002 14.4369 9.34734 15.0474 8.89725 15.4974C8.44716 15.9475 7.83672 16.2004 7.2002 16.2004H3.6002C2.96368 16.2004 2.35323 15.9475 1.90314 15.4974C1.45305 15.0474 1.2002 14.4369 1.2002 13.8004V10.2004C1.2002 9.56387 1.45305 8.95342 1.90314 8.50333C2.35323 8.05325 2.96368 7.80039 3.6002 7.80039H7.2002ZM20.4002 7.80039C21.0367 7.80039 21.6472 8.05325 22.0973 8.50333C22.5473 8.95342 22.8002 9.56387 22.8002 10.2004V13.8004C22.8002 14.4369 22.5473 15.0474 22.0973 15.4974C21.6472 15.9475 21.0367 16.2004 20.4002 16.2004H16.8002C16.1637 16.2004 15.5532 15.9475 15.1031 15.4974C14.6531 15.0474 14.4002 14.4369 14.4002 13.8004V10.2004C14.4002 9.56387 14.6531 8.95342 15.1031 8.50333C15.5532 8.05325 16.1637 7.80039 16.8002 7.80039H20.4002Z" fill="#7BC96F"/></svg></div>
+        <div class="mc-title">Пари на час</div>
+        <div class="mc-sub">Гра за твоїми словами</div>
+      </div>
+      <div class="menu-card" onclick="playCards()">
+        <div class="mc-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_1694_28933)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2.2048 4.77334L11.7997 2.20363L15.5419 16.1648L5.94709 18.7345L2.2048 4.77334ZM13.8002 1.3842C13.7366 1.1471 13.6269 0.924864 13.4773 0.730191C13.3277 0.535518 13.1413 0.372223 12.9286 0.249639C12.7159 0.127054 12.4811 0.0475811 12.2377 0.0157622C11.9943 -0.0160566 11.747 0.000402031 11.5099 0.0641975L1.3888 2.77105C1.15121 2.83431 0.928435 2.94384 0.73325 3.09335C0.538065 3.24287 0.374306 3.42944 0.251361 3.64236C0.128416 3.85529 0.0487009 4.09038 0.0167856 4.33417C-0.0151297 4.57796 0.00138212 4.82566 0.0653745 5.06305L3.94995 19.5505C4.0134 19.7877 4.123 20.0102 4.27248 20.205C4.42196 20.3999 4.60839 20.5634 4.8211 20.6861C5.03381 20.8089 5.26863 20.8885 5.51214 20.9204C5.75565 20.9524 6.00306 20.936 6.24023 20.8722L6.82652 20.7162C6.89402 20.7562 6.9667 20.7868 7.04252 20.8071L17.8219 23.7265C18.2461 23.8401 18.6981 23.7806 19.0784 23.561C19.4587 23.3414 19.7362 22.9798 19.8499 22.5556L23.7311 8.06648C23.8442 7.64253 23.7844 7.19101 23.5649 6.8111C23.3454 6.43118 22.984 6.15392 22.5602 6.0402L14.4654 3.87163L13.8002 1.3842Z" fill="#7BC96F"/>
+</g>
+<defs>
+<clipPath id="clip0_1694_28933">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs></svg></div>
+        <div class="mc-title">Картки</div>
+        <div class="mc-sub">Флеш-картки</div>
+      </div>
+      <div class="menu-card" onclick="playQuiz()">
+        <div class="mc-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.243 18.9962H21V20.9962H3V16.7532L12.9 6.85318L17.142 11.0962L9.243 18.9962ZM14.313 5.43918L16.435 3.31818C16.6225 3.13071 16.8768 3.02539 17.142 3.02539C17.4072 3.02539 17.6615 3.13071 17.849 3.31818L20.678 6.14618C20.771 6.23905 20.8447 6.34934 20.8951 6.47074C20.9454 6.59213 20.9713 6.72226 20.9713 6.85368C20.9713 6.98509 20.9454 7.11522 20.8951 7.23662C20.8447 7.35802 20.771 7.4683 20.678 7.56118L18.556 9.68218L14.313 5.43918Z" fill="#7BC96F"/></svg></div>
+        <div class="mc-title">Тест</div>
+        <div class="mc-sub">Multiple choice</div>
+      </div>
     </div>
     <div class="home-tabs" style="margin-top:12px">
       <button class="home-tab" id="htab-vocab" onclick="goTab('vocab')">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         Словник
       </button>
       <button class="home-tab" id="htab-progress" onclick="goTab('progress')">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="6"/><rect x="12" y="7" width="3" height="10"/><rect x="17" y="13" width="3" height="4"/></svg>
         Прогрес
       </button>
     </div>
-    <div style="height:20px"></div>
+    <div style="height:24px"></div>
   </div>
 </div>
 
@@ -675,14 +758,14 @@ select{background:var(--bg3);border:1px solid var(--border2);color:var(--text);p
 
 <nav class="bottom-nav">
   <button class="nav-btn active" id="nav-home" onclick="showScreen('home')">
-    <svg class="nb-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M9.5 21v-6h5v6"/></svg>
+    <svg class="nb-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.1826 2.72297C11.6439 2.29547 12.3564 2.29547 12.8139 2.72297L16.2001 5.86172V5.40047C16.2001 4.73672 16.7363 4.20047 17.4001 4.20047H18.6001C19.2638 4.20047 19.8001 4.73672 19.8001 5.40047V9.20672L21.2176 10.523C21.5776 10.8605 21.6976 11.3817 21.5176 11.8392C21.3376 12.2967 20.8951 12.6005 20.4001 12.6005H19.8001V19.2005C19.8001 20.5242 18.7238 21.6005 17.4001 21.6005H6.6001C5.27635 21.6005 4.2001 20.5242 4.2001 19.2005V12.6005H3.6001C3.1051 12.6005 2.6626 12.2967 2.4826 11.8392C2.3026 11.3817 2.4226 10.8567 2.7826 10.523L11.1826 2.72297ZM11.4001 14.4005C10.4063 14.4005 9.6001 15.2067 9.6001 16.2005V19.8005H14.4001V16.2005C14.4001 15.2067 13.5938 14.4005 12.6001 14.4005H11.4001Z" fill="#969696"/></svg>
     <span class="nb-label">Головна</span>
   </button>
   <button class="nav-play" id="nav-play" onclick="startCefrTest()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 5l12 7-12 7V5z"/></svg>
+    <svg width="52" height="52" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M40 72C48.4869 72 56.6263 68.6286 62.6274 62.6274C68.6286 56.6263 72 48.4869 72 40C72 31.5131 68.6286 23.3737 62.6274 17.3726C56.6263 11.3714 48.4869 8 40 8C31.5131 8 23.3737 11.3714 17.3726 17.3726C11.3714 23.3737 8 31.5131 8 40C8 48.4869 11.3714 56.6263 17.3726 62.6274C23.3737 68.6286 31.5131 72 40 72ZM38.22 28.672C37.6176 28.2701 36.9174 28.0392 36.1941 28.0041C35.4707 27.969 34.7515 28.1309 34.1129 28.4725C33.4744 28.8141 32.9406 29.3227 32.5685 29.944C32.1964 30.5652 31.9999 31.2758 32 32V48C31.9999 48.7242 32.1964 49.4348 32.5685 50.056C32.9406 50.6773 33.4744 51.1859 34.1129 51.5275C34.7515 51.8691 35.4707 52.031 36.1941 51.9959C36.9174 51.9608 37.6176 51.7299 38.22 51.328L50.22 43.328C50.7678 42.9627 51.217 42.4678 51.5277 41.8873C51.8384 41.3067 52.0009 40.6585 52.0009 40C52.0009 39.3415 51.8384 38.6933 51.5277 38.1127C51.217 37.5322 50.7678 37.0373 50.22 36.672L38.22 28.672Z" fill="#7BC96F"/></svg>
   </button>
   <button class="nav-btn" id="nav-add" onclick="showScreen('add')">
-    <svg class="nb-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+    <svg class="nb-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 12.998H13V17.998C13 18.2633 12.8946 18.5176 12.7071 18.7052C12.5196 18.8927 12.2652 18.998 12 18.998C11.7348 18.998 11.4804 18.8927 11.2929 18.7052C11.1054 18.5176 11 18.2633 11 17.998V12.998H6C5.73478 12.998 5.48043 12.8927 5.29289 12.7052C5.10536 12.5176 5 12.2633 5 11.998C5 11.7328 5.10536 11.4785 5.29289 11.2909C5.48043 11.1034 5.73478 10.998 6 10.998H11V5.99805C11 5.73283 11.1054 5.47848 11.2929 5.29094C11.4804 5.1034 11.7348 4.99805 12 4.99805C12.2652 4.99805 12.5196 5.1034 12.7071 5.29094C12.8946 5.47848 13 5.73283 13 5.99805V10.998H18C18.2652 10.998 18.5196 11.1034 18.7071 11.2909C18.8946 11.4785 19 11.7328 19 11.998C19 12.2633 18.8946 12.5176 18.7071 12.7052C18.5196 12.8927 18.2652 12.998 18 12.998Z" fill="#969696" stroke="#969696" stroke-width="1.3"/></svg>
     <span class="nb-label">Додати</span>
   </button>
 </nav>
